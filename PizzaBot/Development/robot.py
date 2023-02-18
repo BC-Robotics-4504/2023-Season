@@ -21,7 +21,7 @@ import rev
 import ctre
 import photonvision
 
-from autonomous.controllerPVAprilTagFollower import AprilTagController
+from autonomous.controllerPVAprilTagFollower import AprilTagPVController
 
 from componentsDrive import ComboTalonSRX, DriveTrainModule, ComboSparkMax
 from componentsColor import ColorModule
@@ -29,7 +29,6 @@ from componentsIMU import IMUModule
 from componentsHMI import HMIModule, FlightStickHMI
 from componentsVision import VisionModule
 from componentsLimelight import LimelightModule
-from collections import namedtuple
 
 # IntakeConfig = namedtuple("IntakeConfig", ["channelA", "channelB"])
 class MyRobot(MagicRobot):
@@ -41,7 +40,6 @@ class MyRobot(MagicRobot):
     vision : VisionModule
     limelight : LimelightModule
     # grabber: GrabberModule
-    
 
     # Intake_cfg = IntakeConfig(1, 2) # TODO: this might not work... 
     
@@ -54,7 +52,8 @@ class MyRobot(MagicRobot):
         # self.mainRight_motor = ComboSparkMax(2, [1,3], inverted=True)
         self.mainLeft_motor = ComboTalonSRX(6, [4,5], inverted=False)
         self.mainRight_motor = ComboTalonSRX(2, [1,3], inverted=True)
-
+        self.ATPVController = AprilTagPVController()
+        
         """"Grabber Setup"""
         
         """Elevator Setup"""
@@ -85,7 +84,7 @@ class MyRobot(MagicRobot):
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
 
-            AprilTagController.engage()
+            self.ATPVController.engage()
 
         else:
             self.drivetrain.disable_autoLockout()

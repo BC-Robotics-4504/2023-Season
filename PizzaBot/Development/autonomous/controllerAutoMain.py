@@ -1,19 +1,18 @@
 from magicbot import AutonomousStateMachine, state, timed_state
-from wpimath.controller import PIDController
 
-from componentsVision import VisionModule
-from componentsDrive import DriveTrainModule
-
-from controllerPVAprilTagFollower import AprilTagController
+# from autonomous.controllerPVAprilTagFollower import AprilTagPVController
+# from autonomous.controllerLLAprilTagFollower import AprilTagController
 
 from math import sqrt
 
 # THIS IS CODED TO WORK WITH THE PHOTONVISION MODULE, NOT THE LIMELIGHT
-class AprilTagController(AutonomousStateMachine):
+# class AutoMainController(AutonomousStateMachine):
 
-    MODE_NAME = "AprilTagPhotonvision"
-    DEFAULT = True
+#     APTVController : AprilTagPVController
 
-    @state(first=True)
-    def state_first(self):
-        AprilTagController.engage()
+#     MODE_NAME = "MainAuto"
+#     DEFAULT = True
+
+#     @state(first=True)
+#     def state_first(self):
+#         self.APTVController.engage()
