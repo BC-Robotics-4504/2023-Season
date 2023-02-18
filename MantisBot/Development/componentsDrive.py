@@ -85,8 +85,8 @@ class ComboSparkMax:
     def getPosition(self):
         enc = self.mainEncoder.getPosition()
         return enc
-
-    def getContoller(self):
+#FIXME!: There was a spelling error in getController. Controller was spelled "Contoller"
+    def getController(self):
         con = self.mainMotor.getPIDController()
         return con 
 
