@@ -7,7 +7,6 @@ from componentsDrive import DriveTrainModule
 
 from math import sqrt
 
-
 #//! THIS IS CODED TO WORK WITH THE LIMELIGHT, NOT THE PHOTONVISION MODULE 
 class AprilTagController(AutonomousStateMachine):
 
