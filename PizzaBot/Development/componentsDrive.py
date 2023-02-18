@@ -116,6 +116,9 @@ class DriveTrainModule:
         self.autoLockout = False
         return False
 
+    def is_lockedout(self):
+        return self.autoLockout
+
     # Arcade drive code from https://xiaoxiae.github.io/Robotics-Simplified-Website/drivetrain-control/arcade-drive/
     def setArcade(self, drive, rotate):
         """Drives the robot using arcade drive."""

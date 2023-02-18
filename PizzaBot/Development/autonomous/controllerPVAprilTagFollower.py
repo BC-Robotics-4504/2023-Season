@@ -1,4 +1,4 @@
-from magicbot import AutonomousStateMachine, state, timed_state
+from magicbot import state, timed_state, StateMachine
 from wpimath.controller import PIDController
 
 from componentsVision import VisionModule
@@ -7,10 +7,10 @@ from componentsDrive import DriveTrainModule
 from math import sqrt
 
 # THIS IS CODED TO WORK WITH THE PHOTONVISION MODULE, NOT THE LIMELIGHT
-class AprilTagController(AutonomousStateMachine):
+class AprilTagController(StateMachine):
 
     MODE_NAME = "AprilTagPhotonvision"
-    DEFAULT = True
+    DEFAULT = False
 
     drivetrain : DriveTrainModule
     vision : VisionModule
@@ -33,7 +33,6 @@ class AprilTagController(AutonomousStateMachine):
         self.anglePID = PIDController(self.kP_angle, self.kI_angle, self.kD_angle)
         self.goalRange = goalRange
         self.tagID = tagID
-
 
     @state(first=True)
     def follow(self):

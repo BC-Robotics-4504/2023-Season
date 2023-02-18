@@ -1,4 +1,4 @@
-from math import sin, cos, pi
+from math import sin, cos, pi, 
 from magicbot import StateMachine, state
 
 from componentsDrive import DriveTrainModule

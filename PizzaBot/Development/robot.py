@@ -21,6 +21,8 @@ import rev
 import ctre
 import photonvision
 
+from autonomous.controllerPVAprilTagFollower import AprilTagController
+
 from componentsDrive import ComboTalonSRX, DriveTrainModule, ComboSparkMax
 from componentsColor import ColorModule
 from componentsIMU import IMUModule
@@ -78,6 +80,16 @@ class MyRobot(MagicRobot):
 
     def teleopPeriodic(self) -> None:
         """Note: drivetrain will automatically function here!"""
+        if self.hmi.is_buttonPressed():
+
+            if not self.drivetrain.is_lockedout():
+                self.drivetrain.enable_autoLockout()
+
+            AprilTagController.engage()
+
+        else:
+            self.drivetrain.disable_autoLockout()
+
         # self.drivetrain.setLeft(self.hmi_interface.getInput()[0])   #TODO: this is a stupid fix
         # self.drivetrain.setRight(self.hmi_interface.getInput()[1])
         # color = self.color.getColor()
@@ -87,5 +99,4 @@ class MyRobot(MagicRobot):
         
 
 if __name__ == "__main__":
-
     wpilib.run(MyRobot)
