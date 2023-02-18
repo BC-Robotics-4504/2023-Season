@@ -139,11 +139,16 @@ class DriveTrainModule:
                 self.setLeft(-maximum)
                 self.setRight(difference)
 
+    def check_hmi(self):
+        (leftSpeed, rightSpeed) = self.hmi_interface.getInput()
+        self.setLeft(leftSpeed)
+        self.setRight(rightSpeed)
+        return False
 
     def execute(self):
 
         if not self.autoLockout:
-            (self.leftSpeed, self.rightSpeed) = self.hmi_interface.getInput()
+            self.check_hmi()
 
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():
