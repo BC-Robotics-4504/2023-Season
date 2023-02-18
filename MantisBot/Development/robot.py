@@ -54,13 +54,15 @@ class MyRobot(MagicRobot):
         """Robot initialization function"""
         
         """Intake Motor Configuration"""
-        self.pneumatic_hub = wpilib.PneumaticHub(12)
-        self.grabber_motor = GrabberSparkMax(13)
-        self.elevator_motor = ElevatorSparkMax(14)
+        self.grabber_pneumatics= wpilib.PneumaticHub(11)
+        self.grabber_motor = GrabberSparkMax(12, [])
+        self.elevator_motor = ElevatorSparkMax(13, [])
         
         """Drivetrain Motor Configuration"""
         self.mainLeft_motor = ComboSparkMax(6, [4,5], inverted=False)
         self.mainRight_motor = ComboSparkMax(2, [1,3], inverted=True)
+        # self.mainLeft_motor = ComboTalonSRX(6, [4,5], inverted=False)
+        # self.mainRight_motor = ComboTalonSRX(2, [1,3], inverted=True)
         
         """Sensor Setups"""
         self.colorSensor = rev.ColorSensorV3(wpilib.I2C.Port.kOnboard)
