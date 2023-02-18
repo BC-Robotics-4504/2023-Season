@@ -31,7 +31,7 @@ class GrabberSparkMax:
         enc = self.mainEncoder.getPosition()
         return enc
 
-    def getContoller(self):
+    def getController(self):
         con = self.mainMotor.getPIDController()
         return con 
 
@@ -45,7 +45,9 @@ class GrabberModule:
     '''
     REFERENCE: https://github.com/REVrobotics/SPARK-MAX-Examples/blob/master/Java/Position%20Closed%20Loop%20Control/src/main/java/frc/robot/Robot.java
     '''
-
+    PNEUMATIC_FORWARD_CHANNEL = 0
+    PNEUMATIC_REVERSE_CHANNEL = 1
+    
     grabber_motor: GrabberSparkMax
     grabber_pneumatics: wpilib.PneumaticHub
 

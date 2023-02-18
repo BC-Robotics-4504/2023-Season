@@ -45,7 +45,7 @@ class ElevatorSparkMax:
         enc = self.mainEncoder.getPosition()
         return enc
 
-    def getContoller(self):
+    def getController(self):
         con = self.mainMotor.getPIDController()
         return con 
 
