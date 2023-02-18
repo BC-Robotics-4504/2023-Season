@@ -15,8 +15,8 @@ class AprilTagController(AutonomousStateMachine):
     drivetrain : DriveTrainModule
     vision : VisionModule
 
-    kP_linear = .04
-    kI_linear = .01
+    kP_linear = 1
+    kI_linear = .1
     kD_linear = .0002
 
     kP_angle = .035
