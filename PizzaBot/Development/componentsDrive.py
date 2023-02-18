@@ -1,6 +1,8 @@
 import ctre
 import rev
 
+from componentsHMI import FlightStickHMI
+
 class ComboTalonSRX:
     def __init__(self, canID_leader, canID_followers, inverted=False):
         self.canID_leader = canID_leader
@@ -81,13 +83,16 @@ class ComboSparkMax:
 class DriveTrainModule:
     mainLeft_motor: ComboTalonSRX
     mainRight_motor: ComboTalonSRX
+    hmi_interface: FlightStickHMI
 
     def __init__(self):
         self.leftSpeed = 0
         self.leftSpeedChanged = False
         
         self.rightSpeed = 0
-        self.rightSpeedChanged = False           
+        self.rightSpeedChanged = False      
+
+        self.autoLockout = True
 
     def setLeft(self, value):
         self.leftSpeed = value*.4           #TODO: Remove .4 when used with comp bot
@@ -102,6 +107,14 @@ class DriveTrainModule:
     
     def is_rightChanged(self):
         return self.rightSpeedChanged
+
+    def enable_autoLockout(self):
+        self.autoLockout = True
+        return True
+
+    def disable_autoLockout(self):
+        self.autoLockout = False
+        return False
 
     # Arcade drive code from https://xiaoxiae.github.io/Robotics-Simplified-Website/drivetrain-control/arcade-drive/
     def setArcade(self, drive, rotate):
@@ -126,8 +139,17 @@ class DriveTrainModule:
                 self.setLeft(-maximum)
                 self.setRight(difference)
 
+    def check_hmi(self):
+        (leftSpeed, rightSpeed) = self.hmi_interface.getInput()
+        self.setLeft(leftSpeed)
+        self.setRight(rightSpeed)
+        return False
 
     def execute(self):
+
+        if not self.autoLockout:
+            self.check_hmi()
+
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():
             self.mainLeft_motor.setPercent(self.leftSpeed)
