@@ -92,7 +92,7 @@ class DriveTrainModule:
         self.rightSpeed = 0
         self.rightSpeedChanged = False      
 
-        self.autoLockout = False
+        self.autoLockout = True
 
     def setLeft(self, value):
         self.leftSpeed = value*.4           #TODO: Remove .4 when used with comp bot
@@ -141,7 +141,7 @@ class DriveTrainModule:
 
 
     def execute(self):
-        
+
         if not self.autoLockout:
             (self.leftSpeed, self.rightSpeed) = self.hmi.getInput()
 
