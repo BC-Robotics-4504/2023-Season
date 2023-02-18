@@ -90,7 +90,9 @@ class DriveTrainModule:
         self.leftSpeedChanged = False
         
         self.rightSpeed = 0
-        self.rightSpeedChanged = False      
+        self.rightSpeedChanged = False  
+
+        self.arcadeSpeed = [0,0]    
 
         self.autoLockout = True
 
@@ -118,6 +120,7 @@ class DriveTrainModule:
 
     # Arcade drive code from https://xiaoxiae.github.io/Robotics-Simplified-Website/drivetrain-control/arcade-drive/
     def setArcade(self, drive, rotate):
+        self.arcadeSpeed = [drive, rotate]
         """Drives the robot using arcade drive."""
         # variables to determine the quadrants
         maximum = max(abs(drive), abs(rotate))
@@ -138,12 +141,21 @@ class DriveTrainModule:
             else:            # III quadrant
                 self.setLeft(-maximum)
                 self.setRight(difference)
+    
+    def getArcadeLinear(self):
+        return self.arcadeSpeed[0]
+    
+    def getArcadeRotation(self):
+        return self.arcadeSpeed[1]
 
     def check_hmi(self):
         (leftSpeed, rightSpeed) = self.hmi_interface.getInput()
         self.setLeft(leftSpeed)
         self.setRight(rightSpeed)
         return False
+    
+    def clamp(self, num, min_value, max_value):
+        return max(min(num, max_value), min_value)
 
     def execute(self):
 

@@ -80,6 +80,7 @@ class MyRobot(MagicRobot):
         """Note: drivetrain will automatically function here!"""
         # self.drivetrain.setLeft(self.hmi_interface.getInput()[0])   #TODO: this is a stupid fix
         # self.drivetrain.setRight(self.hmi_interface.getInput()[1])
+        print(self.imu.getYPR())
         # color = self.color.getColor()
         # prox = self.color.getProximity()
         # ypr = self.imu.getYPR()

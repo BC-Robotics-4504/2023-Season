@@ -1,5 +1,10 @@
+from curses import KEY_PPAGE
 from photonvision import PhotonCamera, PhotonUtils
-from math import pi
+from math import pi, radians
+from pyparsing import line
+from wpimath.controller import PIDController
+
+from componentsDrive import DriveTrainModule as drivetrain
 class VisionModule:
 
     camera: PhotonCamera
@@ -10,6 +15,9 @@ class VisionModule:
         self.camera_pitch = camera_pitch_rad
         self.goal_range = goal_range_m
         self.result = None
+
+        self.PVAnglePID = PIDController(.035, .03, .0002)
+        self.PVLinearPID = PIDController(.035, .03, .0002)
 
     def getRange(self):
         if self.result.hasTargets():
@@ -49,6 +57,38 @@ class VisionModule:
         if self.result == None:
             return False
         return self.result.hasTargets()
+
+
+
+    def runPVAnglePID(self, tolerance, speed_tolerance):
+        isFinished = False
+
+        yaw = self.getPitch()
+        rotation_speed = self.PVAnglePID.calculate(yaw, 0)
+        rotation_speed = drivetrain.clamp(rotation_speed, -1, 1)
+        drivetrain.setArcade(drivetrain.getArcadeLinear(), rotation_speed)
+
+        # If angle is reached
+        if abs(yaw) <= tolerance and abs(rotation_speed) <= speed_tolerance:
+            self.PVAnglePID.reset()
+            isFinished = True
+        return isFinished
+
+    def runPVLinearPID(self, target_range, tolerance, speed_tolerance):
+        isFinished = False
+
+        # Calculate PID output and update motors
+        range = self.getRange()
+        linear_speed = self.PVLinearPID.calculate(range, target_range)
+        linear_speed = drivetrain.clamp(linear_speed, -1, 1)
+        drivetrain.setArcade(linear_speed, drivetrain.getArcadeRotation())
+
+        # If angle is reached
+        if abs(range) <= tolerance and abs(linear_speed) <= speed_tolerance:
+            self.PVLinearPID.reset()
+            isFinished = True
+        return isFinished
+
 
     def execute(self):
         result = self.camera.getLatestResult()
