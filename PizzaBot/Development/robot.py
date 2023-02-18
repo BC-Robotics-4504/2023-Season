@@ -27,8 +27,6 @@ from componentsIMU import IMUModule
 from componentsHMI import HMIModule, FlightStickHMI
 from componentsVision import VisionModule
 from componentsLimelight import LimelightModule
-from componentsGrabber import GrabberModule
-from componentsIntake import IntakeModule
 from collections import namedtuple
 
 # IntakeConfig = namedtuple("IntakeConfig", ["channelA", "channelB"])
@@ -40,7 +38,6 @@ class MyRobot(MagicRobot):
     hmi : HMIModule
     vision : VisionModule
     limelight : LimelightModule
-    intake: IntakeModule
     # grabber: GrabberModule
     
 
@@ -49,11 +46,6 @@ class MyRobot(MagicRobot):
 # rev._rev.CANSparkMax(8, rev._rev.CANSparkMaxLowLevel.MotorType.kBrushless)
     def createObjects(self):
         """Robot initialization function"""
-        
-        """Intake Motor Configuration"""
-        self.top_motor =  ComboSparkMax(7,[], inverted=False)
-        self.bottom_motor = ComboSparkMax(8, [], inverted=False)
-        self.pneumatic_hub = wpilib.PneumaticHub(11)
         
         """Drivetrain Motor Configuration"""
         # self.mainLeft_motor = ComboSparkMax(6, [4,5], inverted=False)
@@ -81,7 +73,7 @@ class MyRobot(MagicRobot):
 
     def teleopInit(self):
         """Disable Autonomous Lockout of Drivetrain access to the HMI"""
-        self.drivetrain.disable_autoLockout()
+        # self.drivetrain.disable_autoLockout()
         return False
 
     def teleopPeriodic(self) -> None:

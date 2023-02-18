@@ -53,7 +53,7 @@ class AprilTagController(AutonomousStateMachine):
 
         self.drivetrain.setArcade(forward_speed, rotation_speed)
         if self.drivetrain.leftSpeed != 0 or self.drivetrain.rightSpeed != 0:
-            print(self.drivetrain.leftSpeed, self.drivetrain.rightSpeed, rotation_speed)
+            print(self.drivetrain.leftSpeed, self.drivetrain.rightSpeed, rotation_speed, self.goalRange)
         
         # vL = (-forward_speed + rotation_speed)
         # vR = (-forward_speed - rotation_speed)
