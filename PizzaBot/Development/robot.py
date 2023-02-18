@@ -73,13 +73,13 @@ class MyRobot(MagicRobot):
 
     def teleopInit(self):
         """Disable Autonomous Lockout of Drivetrain access to the HMI"""
-        # self.drivetrain.disable_autoLockout()
+        self.drivetrain.disable_autoLockout()
         return False
 
     def teleopPeriodic(self) -> None:
         """Note: drivetrain will automatically function here!"""
-        self.drivetrain.setLeft(self.hmi_interface.getInput()[0])   #TODO: this is a stupid fix
-        self.drivetrain.setRight(self.hmi_interface.getInput()[1])
+        # self.drivetrain.setLeft(self.hmi_interface.getInput()[0])   #TODO: this is a stupid fix
+        # self.drivetrain.setRight(self.hmi_interface.getInput()[1])
         # color = self.color.getColor()
         # prox = self.color.getProximity()
         # ypr = self.imu.getYPR()
