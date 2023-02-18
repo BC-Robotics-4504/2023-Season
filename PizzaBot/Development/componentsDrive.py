@@ -83,7 +83,7 @@ class ComboSparkMax:
 class DriveTrainModule:
     mainLeft_motor: ComboTalonSRX
     mainRight_motor: ComboTalonSRX
-    hmi : FlightStickHMI
+    hmi_interface: FlightStickHMI
 
     def __init__(self):
         self.leftSpeed = 0
@@ -143,7 +143,7 @@ class DriveTrainModule:
     def execute(self):
 
         if not self.autoLockout:
-            (self.leftSpeed, self.rightSpeed) = self.hmi.getInput()
+            (self.leftSpeed, self.rightSpeed) = self.hmi_interface.getInput()
 
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():
