@@ -1,10 +1,10 @@
 from photonvision import PhotonCamera, PhotonUtils
-
+from math import pi
 class VisionModule:
 
     camera: PhotonCamera
 
-    def __init__(self, camera_height_m=.3, target_height_m=.3, camera_pitch_rad=0, goal_range_m=0):
+    def __init__(self, camera_height_m=0.17, target_height_m=0.1524, camera_pitch_rad=0, goal_range_m=0):
         self.camera_height = camera_height_m
         self.target_height = target_height_m
         self.camera_pitch = camera_pitch_rad
@@ -13,11 +13,13 @@ class VisionModule:
 
     def getRange(self):
         if self.result.hasTargets():
-            target_pitch = self.result.getBestTarget().getPitch()
+            # target_pitch_deg = self.result.getBestTarget().getPitch()
+            target_pitch_deg = self.result.getBestTarget().getYaw()
+            target_pitch_rad = target_pitch_deg/360*2*pi
             target_range = PhotonUtils.calculateDistanceToTarget(self.camera_height, 
                                                                 self.target_height, 
                                                                 self.camera_pitch,
-                                                                target_pitch)
+                                                                target_pitch_rad)
             return target_range
         else:
             return None
