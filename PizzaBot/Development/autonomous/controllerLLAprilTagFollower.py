@@ -8,7 +8,7 @@ from math import sqrt
 
 
 # THIS IS CODED TO WORK WITH THE LIMELIGHT, NOT THE PHOTONVISION MODULE 
-class AprilTagController(AutonomousStateMachine):
+class AprilTagLLController(AutonomousStateMachine):
 
     MODE_NAME = "AprilTagLimelight"
     DEFAULT = False
