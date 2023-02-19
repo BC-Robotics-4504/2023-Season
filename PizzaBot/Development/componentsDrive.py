@@ -30,6 +30,8 @@ class ComboTalonSRX:
         self.mainMotor.set(ctre._ctre.TalonSRXControlMode.PercentOutput, value)
         return False
         
+
+
     def getVelocity(self):
         vel = self.mainMotor.getSelectedSensorVelocity(0)
         return vel

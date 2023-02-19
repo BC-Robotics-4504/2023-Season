@@ -110,6 +110,10 @@ class DriveTrainModule:
     kFF = 0 
     kMaxOutput = 1 
     kMinOutput = -1
+    maxRPM = 5700
+    maxVel = 2000 # rpm
+    minVel = 0
+    maxAcc = 1500
     wheelDiameter_in = 2.5
 
     def __init__(self):
@@ -125,7 +129,7 @@ class DriveTrainModule:
         self.controllerLeft = self.__setupDistanceController__(self.mainLeft_motor)
         self.controllerRight = self.__setupDistanceController__(self.mainRight_motor)
 
-    def __setupDistanceController__(self, motor):
+    def __setupDistanceController__(self, motor, smartMotionSlot=0, allowedErr=0):
         controller = motor.getController()
         # set PID coefficients
         controller.setP(self.kP)
@@ -134,6 +138,10 @@ class DriveTrainModule:
         controller.setIZone(self.kIz)
         controller.setFF(self.kFF)
         controller.setOutputRange(self.kMinOutput, self.kMaxOutput)
+        controller.setSmartMotionMaxVelocity(self.maxVel, smartMotionSlot)
+        controller.setSmartMotionMinOutputVelocity(self.minVel, smartMotionSlot)
+        controller.setSmartMotionMaxAccel(self.maxAcc, smartMotionSlot)
+        controller.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot)
         return controller
 
     def setInput(self, fsTuple): # fsTuple = (fsL, fsR)
@@ -188,8 +196,8 @@ class DriveTrainModule:
     
     def __setMotorsDistance__(self):
         rotations = (self.targetDistance-self.currentDistance)/(self.wheelDiameter_in/25.4e-3*pi)
-        self.controllerLeft.setReference(rotations, rev.CANSparkMax.ControlType.kPosition)
-        self.controllerRight.setReference(rotations, rev.CANSparkMax.ControlType.kPosition)
+        self.controllerLeft.setReference(rotations, rev.CANSparkMax.ControlType.kSmartMotion)
+        self.controllerRight.setReference(rotations, rev.CANSparkMax.ControlType.kSmartMotion)
     
     def isAtDistance(self):
         if abs(self.currentDistance - self.targetDistance) < self.tol:

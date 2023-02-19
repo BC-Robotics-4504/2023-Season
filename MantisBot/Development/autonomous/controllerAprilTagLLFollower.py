@@ -1,7 +1,6 @@
 from magicbot import AutonomousStateMachine, state, timed_state
 from wpimath.controller import PIDController
 
-from componentsVision import VisionModule
 from componentsLimelight import LimelightModule
 from componentsDrive import DriveTrainModule
 
