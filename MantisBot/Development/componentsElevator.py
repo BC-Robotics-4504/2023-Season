@@ -68,6 +68,10 @@ class ElevatorModule:
     kFF = 0 
     kMaxOutput = 1 
     kMinOutput = -1
+    maxRPM = 5700
+    maxVel = 2000 # rpm
+    minVel = 0
+    maxAcc = 1500
     sprocketDiameter_in = 2.5
 
     def __init__(self):
@@ -79,10 +83,10 @@ class ElevatorModule:
         self.stateChanged = False
     
     def setup(self):
-        self.controller = self.__setupController__()
+        self.controller = self.__setupDistanceController__(self.elevator_motor)
 
-    def __setupController__(self):
-        controller = self.elevator_motor.getController()
+    def __setupDistanceController__(self, motor, smartMotionSlot=0, allowedErr=0):
+        controller = motor.getController()
         # set PID coefficients
         controller.setP(self.kP)
         controller.setI(self.kI)
@@ -90,6 +94,10 @@ class ElevatorModule:
         controller.setIZone(self.kIz)
         controller.setFF(self.kFF)
         controller.setOutputRange(self.kMinOutput, self.kMaxOutput)
+        controller.setSmartMotionMaxVelocity(self.maxVel, smartMotionSlot)
+        controller.setSmartMotionMinOutputVelocity(self.minVel, smartMotionSlot)
+        controller.setSmartMotionMaxAccel(self.maxAcc, smartMotionSlot)
+        controller.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot)
         return controller
 
     def __setRotations__(self, rotations):
