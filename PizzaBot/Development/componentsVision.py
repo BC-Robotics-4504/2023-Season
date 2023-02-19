@@ -1,7 +1,6 @@
 from curses import KEY_PPAGE
 from photonvision import PhotonCamera, PhotonUtils
 from math import pi, radians
-from pyparsing import line
 from wpimath.controller import PIDController
 
 from componentsDrive import DriveTrainModule as drivetrain
@@ -57,8 +56,6 @@ class VisionModule:
         if self.result == None:
             return False
         return self.result.hasTargets()
-
-
 
     def runPVAnglePID(self, tolerance, speed_tolerance):
         isFinished = False
