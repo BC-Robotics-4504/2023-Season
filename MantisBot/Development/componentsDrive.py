@@ -7,48 +7,6 @@ from math import pi
 from componentsHMI import FlightStickHMI
 from componentsIMU import IMUModule
 
-class ComboTalonSRX:
-    def __init__(self, canID_leader, canID_followers, inverted=False,
-                ticks_per_rotation=4096, wheel_diameter_in=6.25):
-        self.canID_leader = canID_leader
-        self.canID_followers = canID_followers
-        self.inverted = inverted
-        self.mainMotor = None
-        self.followerMotors = None
-        self.coefficient = 2*pi*wheel_diameter_in*0.0254/ticks_per_rotation
-
-        self.mainMotor = ctre.TalonSRX(self.canID_leader)
-        self.mainMotor.setInverted(self.inverted)
-
-        if not isinstance(self.canID_followers, list):
-            self.canID_followers = [self.canID_followers]
-
-        followerMotors = []
-        for canID in self.canID_followers:
-            follower = ctre.TalonSRX(canID)
-            follower.setInverted(self.inverted)
-            follower.follow(self.mainMotor)                              
-            followerMotors.append(follower)
-
-        self.followerMotors = followerMotors
-
-    def setPercent(self, value):
-        self.mainMotor.set(ctre._ctre.TalonSRXControlMode.PercentOutput, value)
-        return False
-
-    def getVelocity(self):
-        vel = self.mainMotor.getSelectedSensorVelocity(0)
-        return vel
-
-    def __getRawSensorPosition__(self):
-        pos = self.mainMotor.getSelectedSensorPosition(0)
-        return pos
-
-    def getDistance(self):
-        pos = self.__getRawSensorPosition__()*self.coefficient
-        return pos
-    
-
 class ComboSparkMax:
     def __init__(self, canID_leader, canID_followers, motorType='brushless', inverted=False):
         self.canID_leader = canID_leader
