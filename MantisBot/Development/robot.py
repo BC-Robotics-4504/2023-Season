@@ -9,12 +9,6 @@
 #		    _/    _/_/_/      _/        _/ 
 """
 
-
-"""
-    This is a demo program showing the use of the RobotDrive class,
-    specifically it contains the code necessary to operate a robot with
-    arcade drive.
-"""
 from magicbot import MagicRobot
 import wpilib
 import rev
