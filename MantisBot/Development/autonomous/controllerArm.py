@@ -31,7 +31,7 @@ class PlacementController(StateMachine):
         if self.grabber.isAtLevel():
             self.next_state_now('state_openGrabber')
 
-    @state(must_finish=True, timed_state=0.25)
+    @timed_state(must_finish=True, duration=0.25)
     def state_openGrabber(self):
         if not self.grabber.is_open():
             self.grabber.setOpen()
