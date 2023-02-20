@@ -1,5 +1,6 @@
 import ctre
 import rev 
+from wpimath.controller import PIDController
 
 from math import pi
 
@@ -97,8 +98,6 @@ class ComboSparkMax:
 class DriveTrainModule:
     mainLeft_motor: ComboSparkMax
     mainRight_motor: ComboSparkMax
-    # mainLeft_motor: ComboTalonSRX
-    # mainRight_motor: ComboTalonSRX
     hmi_interface: FlightStickHMI
     imu : IMUModule
 
@@ -123,11 +122,15 @@ class DriveTrainModule:
         self.autoLockout = True
         self.targetDistance = 0
         self.currentDistance = 0
-        self.stateChanged = False
+        self.targetAngle = 0
+        self.currentAngle = 0
+        self.driveControllerActive = False
+        self.angleControllerActive = False
 
     def setup(self):
         self.controllerLeft = self.__setupDistanceController__(self.mainLeft_motor)
         self.controllerRight = self.__setupDistanceController__(self.mainRight_motor)
+        self.controllerAngle = PIDController(.035, .03, .0002)
 
     def __setupDistanceController__(self, motor, smartMotionSlot=0, allowedErr=0):
         controller = motor.getController()
@@ -159,11 +162,6 @@ class DriveTrainModule:
         vR = self.mainRight_motor.getVelocity()
         return (vL, vR)
 
-    def getDistance(self):
-        dL = self.mainLeft_motor.getDistance()
-        dR = self.mainRight_motor.getDistance()
-        return (dR, dL)
-
     def enable_autoLockout(self):
         self.autoLockout = True
 
@@ -183,10 +181,13 @@ class DriveTrainModule:
         return False
     
     def setDistance(self, distance_m):
+        self.currentDistance = 0
         self.targetDistance = distance_m
         self.controllerLeft.resetController()
         self.controllerRight.resetController()
         self.enable_autoLockout()
+        self.distanceControllerActive = True
+        self.angleControllerActive = False
         self.stateChanged = True
         return False
 
@@ -195,40 +196,116 @@ class DriveTrainModule:
         return False
     
     def __setMotorsDistance__(self):
-        rotations = (self.targetDistance-self.currentDistance)/(self.wheelDiameter_in/25.4e-3*pi)
+        rotations = self.targetDistance/(self.wheelDiameter_in*25.4e-3*pi)
         self.controllerLeft.setReference(rotations, rev.CANSparkMax.ControlType.kSmartMotion)
         self.controllerRight.setReference(rotations, rev.CANSparkMax.ControlType.kSmartMotion)
     
     def isAtDistance(self):
         if abs(self.currentDistance - self.targetDistance) < self.tol:
-            self.currentDistance = 0
-            self.targetDistance = 0
-            self.disable_autoLockout()
-            return True
-                
+            return True          
         return False
-    
-    # def setAngle(self, angle_rad):
-    
-    # def isAtAngle(self):
-        
 
+    def resetDistanceController(self):
+        self.disable_autoLockout()
+        self.targetAngle = 0
+        self.distanceControllerActive = False    
+        return False  
+    
+    def setAngle(self, angle_rad):
+        self.targetAngle = angle_rad
+        self.distanceControllerActive = False
+        self.angleControllerActive = True
+        self.enable_autoLockout()
+        self.stateChanged = True
+        return False
+
+    def getAngle(self):
+        # FIXME: Do we need to address edge case where yaw and current position > 2*pi?
+        (yaw, *_) = self.imu.getYPR()
+        self.currentAngle = yaw #FIXME: is this in rad or degrees
+        return yaw
+
+    def __setMotorsAngle__(self):
+        # rotation_speed = self.imuPID.calculate(yaw, self.targetAngle_rad)
+        rotation_speed = self.controllerAngle.calculate(self.currentAngle, self.targetAngle)
+        self.__setArcade__(0, rotation_speed)
+        return False
+
+    def isAtAngle(self):
+        if self.controllerAngle.atSetpoint():
+            return True
+        return False
+
+    def resetAngleController(self):
+        self.controllerAngle.reset() #FIXME: Do we need this?
+        self.disable_autoLockout()
+        self.targetAngle = 0
+        self.angleControllerActive = False
+        return False
+
+    # Arcade drive code from https://xiaoxiae.github.io/Robotics-Simplified-Website/drivetrain-control/arcade-drive/
+    def __setArcade__(self, drive, rotate):
+        self.arcadeSpeed = [drive, rotate]
+        """Drives the robot using arcade drive."""
+        # variables to determine the quadrants
+        maximum = max(abs(drive), abs(rotate))
+        total, difference = drive + rotate, drive - rotate
+
+        # set speed according to the quadrant that the values are in
+        if drive >= 0:
+            if rotate >= 0:  # I quadrant
+                self.mainLeft_motor.setPercent(maximum)
+                self.mainRight_motor.setPercent(difference)
+            else:            # II quadrant
+                self.mainLeft_motor.setPercent(total)
+                self.mainRight_motor.setPercent(maximum)
+        else:
+            if rotate >= 0:  # IV quadrant
+                self.mainLeft_motor.setPercent(total)
+                self.mainRight_motor.setPercent(-maximum)
+            else:            # III quadrant
+                self.mainLeft_motor.setPercent(-maximum)
+                self.mainRight_motor.setPercent(difference)
+
+    def abortControllers(self):
+        self.distanceControllerActive = False
+        self.angleControllerActive = False
+
+    """
+    The execute() function is run once each loop in teleopPeriodic
+    """
     def execute(self):
-        '''This gets called at the end of the control loop'''
+        # Always poll current distance and current angle
         self.getDistance()
+        self.getAngle()
 
-        if self.stateChanged:
-            self.__setMotorsDistance__()
-            self.stateChanged = False
+        if self.is_autoLockoutActive():
+            if self.driveControllerActive:
 
-        if not self.is_autoLockoutActive():
-            self.getHMIInput()
-            self.setMotors()
-        
-        else: 
+                if self.stateChanged:
+                    self.__setMotorsDistance__()
+                    self.stateChanged = False
+
+                if self.isAtDistance():              
+                    self.resetDistanceController()
+
+            if self.angleControllerActive:
+
+                if self.stateChanged:
+                    self.__setMotorsAngle__()
+                    self.stateChanged = False
+
+                if self.isAtAngle():
+                    self.resetAngleController()
+
             """Note: An external function needs to call setMotors() function before this will do anything useful"""
             if self.is_changed():
                 self.setMotors()
+        
+        else: 
+            self.getHMIInput()
+            self.setMotors()
+
 
 
         
