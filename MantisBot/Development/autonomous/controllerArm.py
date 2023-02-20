@@ -52,5 +52,3 @@ class PlacementController(StateMachine):
         self.targetLevel = 0
         if self.elevator.nextLevel != self.targetLevel:
             self.elevator.setNextLevel(self.targetLevel)
-
-    
