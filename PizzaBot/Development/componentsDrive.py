@@ -13,9 +13,10 @@ class ComboTalonSRX:
 
         self.mainMotor = ctre.TalonSRX(self.canID_leader)
         self.mainMotor.setInverted(self.inverted)
-
         if not isinstance(self.canID_followers, list):
             self.canID_followers = [self.canID_followers]
+            
+        self.coefficient = 1
 
         followerMotors = []
         for canID in self.canID_followers:
@@ -29,8 +30,6 @@ class ComboTalonSRX:
     def setPercent(self, value):
         self.mainMotor.set(ctre._ctre.TalonSRXControlMode.PercentOutput, value)
         return False
-        
-
 
     def getVelocity(self):
         vel = self.mainMotor.getSelectedSensorVelocity(0)
@@ -43,6 +42,11 @@ class ComboTalonSRX:
     def getDistance(self):
         pos = self.__getRawSensorPosition__()*self.coefficient
         return pos
+    
+    def setDistance(self, distance):
+        self.mainMotor.set(ctre._ctre.TalonSRXControlMode.MotionMagic, distance)
+
+        
     
 
 class ComboSparkMax:

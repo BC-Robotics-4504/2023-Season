@@ -87,17 +87,14 @@ class MyRobot(MagicRobot):
             
             print(self.follow_controller.current_state.title())
             self.follow_controller.engage()
+            
+        # TODO: Put on different button to make robot drive forward set distance
+        # self.drivetrain.mainLeft_motor.setDistance(10)
+        # self.drivetrain.mainRight_motor.setDistance(10)
+        # print(self.drivetrain.mainLeft_motor.getDistance(), self.drivetrain.mainLeft_motor.getDistance())
 
         else:   
             self.drivetrain.disable_autoLockout()
-
-        # self.drivetrain.setLeft(self.hmi_interface.getInput()[0])   #TODO: this is a stupid fix
-        # self.drivetrain.setRight(self.hmi_interface.getInput()[1])
-        # print(self.imu.getYPR())
-        # color = self.color.getColor()
-        # prox = self.color.getProximity()
-        # ypr = self.imu.getYPR()
-        # print(color, prox, ypr)
         
 
 if __name__ == "__main__":
