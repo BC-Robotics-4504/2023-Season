@@ -112,7 +112,7 @@ class DriveTrainModule:
 
     def enable_autoLockout(self):
         self.autoLockout = True
-        return True
+        return False
 
     def disable_autoLockout(self):
         self.autoLockout = False

@@ -21,7 +21,7 @@ import rev
 import ctre
 import photonvision
 
-from autonomous.controllerPVAprilTagFollower import AprilTagPVController
+from autonomous.controllerPVAprilTagFollowerTeleop import AprilTagPVControllerTeleop
 
 from componentsDrive import ComboTalonSRX, DriveTrainModule, ComboSparkMax
 from componentsColor import ColorModule
@@ -39,6 +39,8 @@ class MyRobot(MagicRobot):
     hmi : HMIModule
     vision : VisionModule
     limelight : LimelightModule
+    
+    follow_controller : AprilTagPVControllerTeleop
     # grabber: GrabberModule
 
     # Intake_cfg = IntakeConfig(1, 2) # TODO: this might not work... 
@@ -52,7 +54,6 @@ class MyRobot(MagicRobot):
         # self.mainRight_motor = ComboSparkMax(2, [1,3], inverted=True)
         self.mainLeft_motor = ComboTalonSRX(6, [4,5], inverted=False)
         self.mainRight_motor = ComboTalonSRX(2, [1,3], inverted=True)
-        self.ATPVController = AprilTagPVController()
         
         """"Grabber Setup"""
         
@@ -83,15 +84,16 @@ class MyRobot(MagicRobot):
 
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
+            
+            print(self.follow_controller.current_state.title())
+            self.follow_controller.engage()
 
-            self.ATPVController.engage()
-
-        else:
+        else:   
             self.drivetrain.disable_autoLockout()
 
         # self.drivetrain.setLeft(self.hmi_interface.getInput()[0])   #TODO: this is a stupid fix
         # self.drivetrain.setRight(self.hmi_interface.getInput()[1])
-        print(self.imu.getYPR())
+        # print(self.imu.getYPR())
         # color = self.color.getColor()
         # prox = self.color.getProximity()
         # ypr = self.imu.getYPR()

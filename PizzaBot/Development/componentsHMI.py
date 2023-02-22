@@ -17,7 +17,7 @@ class FlightStickHMI:
 
         # Right Stick Commands
         fsR = self.rightStick.getY()
-        fsRb2 = self.rightStick.getRawButtonPressed(2)
+        fsRb2 = self.rightStick.getRawButton(2)
 
         if fsL != self.fsL or fsR != self.fsR or fsRb2 != self.fsRb2:
             self.fsL = fsL
@@ -44,6 +44,7 @@ class HMIModule:
         self.fsRb2 = False
         self.fsL = 0
         self.changed = False
+        self.enabled = True
 
     def getInput(self): # fsTuple = (fsL, fsR)
         self.changed = False

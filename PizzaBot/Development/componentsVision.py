@@ -1,4 +1,3 @@
-from curses import KEY_PPAGE
 from photonvision import PhotonCamera, PhotonUtils
 from math import pi, radians
 from wpimath.controller import PIDController
