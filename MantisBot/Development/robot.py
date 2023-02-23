@@ -9,19 +9,13 @@
 #		    _/    _/_/_/      _/        _/ 
 """
 
-
-"""
-    This is a demo program showing the use of the RobotDrive class,
-    specifically it contains the code necessary to operate a robot with
-    arcade drive.
-"""
 from magicbot import MagicRobot
 import wpilib
 import rev
 import ctre
 import photonvision
 
-from componentsDrive import ComboTalonSRX, DriveTrainModule, ComboSparkMax
+from componentsDrive import DriveTrainModule, ComboSparkMax
 from componentsColor import ColorModule
 from componentsGrabber import GrabberModule
 from componentsIMU import IMUModule
@@ -31,10 +25,8 @@ from componentsLimelight import LimelightModule
 from componentsElevator import ElevatorModule, ElevatorSparkMax
 from componentsGrabber import GrabberModule, GrabberSparkMax
 
-# from componentsIntake import IntakeModule
-#from collections import namedtuple
+from autonomous.controllerAprilTagPVFollower import AprilTagPVController
 
-# IntakeConfig = namedtuple("IntakeConfig", ["channelA", "channelB"])
 class MyRobot(MagicRobot):
     
     drivetrain : DriveTrainModule
@@ -61,8 +53,6 @@ class MyRobot(MagicRobot):
         """Drivetrain Motor Configuration"""
         self.mainLeft_motor = ComboSparkMax(6, [4,5], inverted=False)
         self.mainRight_motor = ComboSparkMax(2, [1,3], inverted=True)
-        # self.mainLeft_motor = ComboTalonSRX(6, [4,5], inverted=False)
-        # self.mainRight_motor = ComboTalonSRX(2, [1,3], inverted=True)
         
         """Sensor Setups"""
         self.colorSensor = rev.ColorSensorV3(wpilib.I2C.Port.kOnboard)
@@ -75,6 +65,9 @@ class MyRobot(MagicRobot):
 
         """User Controller Configuration"""
         self.hmi_interface = FlightStickHMI(0, 1)
+
+        """Controllers"""
+        self.ATPVController = AprilTagPVController()
         
         pass
 
@@ -85,11 +78,15 @@ class MyRobot(MagicRobot):
 
     def teleopPeriodic(self) -> None:
         """Note: drivetrain will automatically function here!"""
+        if self.hmi.is_buttonPressed():
 
-        # color = self.color.getColor()
-        # prox = self.color.getProximity()
-        # ypr = self.imu.getYPR()
-        # print(color, prox, ypr)
+            if not self.drivetrain.is_autoLockoutActive():
+                self.drivetrain.enable_autoLockout()
+
+            self.ATPVController.engage()
+
+        else:
+            self.drivetrain.disable_autoLockout()
         
 
 if __name__ == "__main__":

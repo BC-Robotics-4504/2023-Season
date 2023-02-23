@@ -1,5 +1,10 @@
 from networktables import NetworkTables
 from photonvision import PhotonCamera, PhotonUtils
+from math import radians, degrees
+from wpimath.controller import PIDController
+
+from componentsDrive import DriveTrainModule as drivetrain
+
 
 class LimelightModule:
 
@@ -18,6 +23,11 @@ class LimelightModule:
         self.targetY = self.table.getNumber('ty',None)
         self.targetArea = self.table.getNumber('ta',None)
         # targetSkew = table.getNumber('ts',None)
+
+        self.LLAnglePID = PIDController(.035, .03, .0002)
+        self.LLLinearPID = PIDController(.035, .03, .0002)
+
+
 
     def getRange(self):
         if self.hasTargets:
@@ -53,6 +63,41 @@ class LimelightModule:
 
     def hasTargets(self):
         return self.hasTargets
+
+    def runLLAnglePID(self, tolerance, speed_tolerance):
+            isFinished = False
+
+            yaw = self.getX()
+            rotation_speed = self.LLAnglePID.calculate(yaw, 0)
+            rotation_speed = drivetrain.clamp(rotation_speed, -1, 1)
+            drivetrain.setArcade(drivetrain.getArcadeLinear(), rotation_speed)
+
+            # If angle is reached
+            if abs(yaw) <= tolerance and abs(rotation_speed) <= speed_tolerance:
+                self.LLAnglePID.reset()
+                isFinished = True
+            return isFinished
+
+    def runLLLinearPID(self, target_range, tolerance, speed_tolerance):
+        isFinished = False
+
+        # Calculate PID output and update motors
+        linear_speed = self.LLLinearPID.calculate(range, target_range)
+        linear_speed = drivetrain.clamp(linear_speed, -1, 1)
+        drivetrain.setArcade(linear_speed, drivetrain.getArcadeRotation())
+
+        # If angle is reached
+        if abs(range) <= tolerance and abs(linear_speed) <= speed_tolerance:
+            self.LLLinearPID.reset()
+            isFinished = True
+        return isFinished
+
+    def execute(self):
+        result = self.camera.getLatestResult()
+        self.result = result
+        pass
+
+
 
     def execute(self):
         self.hasTargets = bool(self.table.getNumber('tv',None))

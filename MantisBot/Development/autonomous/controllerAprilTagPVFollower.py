@@ -1,4 +1,4 @@
-from magicbot import AutonomousStateMachine, state, timed_state
+from magicbot import StateMachine, state, timed_state
 from wpimath.controller import PIDController
 
 from componentsVision import VisionModule
@@ -7,7 +7,7 @@ from componentsDrive import DriveTrainModule
 from math import sqrt
 
 #//! THIS IS CODED TO WORK WITH THE PHOTONVISION MODULE, NOT THE LIMELIGHT
-class AprilTagController(AutonomousStateMachine):
+class AprilTagPVController(StateMachine):
 
     MODE_NAME = "AprilTagPhotonvision"
     DEFAULT = False

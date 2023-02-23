@@ -21,13 +21,14 @@ import rev
 import ctre
 import photonvision
 
+from autonomous.controllerPVAprilTagFollowerTeleop import AprilTagPVControllerTeleop
+
 from componentsDrive import ComboTalonSRX, DriveTrainModule, ComboSparkMax
 from componentsColor import ColorModule
 from componentsIMU import IMUModule
 from componentsHMI import HMIModule, FlightStickHMI
 from componentsVision import VisionModule
 from componentsLimelight import LimelightModule
-from collections import namedtuple
 
 # IntakeConfig = namedtuple("IntakeConfig", ["channelA", "channelB"])
 class MyRobot(MagicRobot):
@@ -38,8 +39,9 @@ class MyRobot(MagicRobot):
     hmi : HMIModule
     vision : VisionModule
     limelight : LimelightModule
-    # grabber: GrabberModule
     
+    follow_controller : AprilTagPVControllerTeleop
+    # grabber: GrabberModule
 
     # Intake_cfg = IntakeConfig(1, 2) # TODO: this might not work... 
     
@@ -52,7 +54,7 @@ class MyRobot(MagicRobot):
         # self.mainRight_motor = ComboSparkMax(2, [1,3], inverted=True)
         self.mainLeft_motor = ComboTalonSRX(6, [4,5], inverted=False)
         self.mainRight_motor = ComboTalonSRX(2, [1,3], inverted=True)
-
+        
         """"Grabber Setup"""
         
         """Elevator Setup"""
@@ -78,14 +80,22 @@ class MyRobot(MagicRobot):
 
     def teleopPeriodic(self) -> None:
         """Note: drivetrain will automatically function here!"""
-        # self.drivetrain.setLeft(self.hmi_interface.getInput()[0])   #TODO: this is a stupid fix
-        # self.drivetrain.setRight(self.hmi_interface.getInput()[1])
-        # color = self.color.getColor()
-        # prox = self.color.getProximity()
-        # ypr = self.imu.getYPR()
-        # print(color, prox, ypr)
+        if self.hmi.is_buttonPressed():
+
+            if not self.drivetrain.is_lockedout():
+                self.drivetrain.enable_autoLockout()
+            
+            print(self.follow_controller.current_state.title())
+            self.follow_controller.engage()
+            
+        # TODO: Put on different button to make robot drive forward set distance
+        # self.drivetrain.mainLeft_motor.setDistance(10)
+        # self.drivetrain.mainRight_motor.setDistance(10)
+        # print(self.drivetrain.mainLeft_motor.getDistance(), self.drivetrain.mainLeft_motor.getDistance())
+
+        else:   
+            self.drivetrain.disable_autoLockout()
         
 
 if __name__ == "__main__":
-
     wpilib.run(MyRobot)
