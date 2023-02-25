@@ -5,13 +5,9 @@
 """
 
 #		    _/  _/    _/_/_/_/    _/    _/  _/   
-
 #		   _/  _/    _/        _/  _/  _/  _/    
-
 #		  _/_/_/_/  _/_/_/    _/  _/  _/_/_/_/   
-
 #		     _/          _/  _/  _/      _/      
-
 #		    _/    _/_/_/      _/        _/ 
 """
 
@@ -125,7 +121,7 @@ class MyRobot(MagicRobot):
     def teleopInit(self):
         """Disable Autonomous Lockout of Drivetrain access to the HMI"""
 
-        self.drivetrain.enable_autoLockout()
+        self.drivetrain.disable_autoLockout()
 
         self.drivetrain.resetDistance()
 
