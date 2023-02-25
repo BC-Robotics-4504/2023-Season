@@ -21,7 +21,7 @@ class IMUModule:
 
     PID = None
     
-    def PID(self, target_heading, tolerance, speed_tolerance):
+    def runPID(self, target_heading, tolerance = 5, speed_tolerance = .1):
         isFinished = False
 
         # Convert degree heading into usuable form
