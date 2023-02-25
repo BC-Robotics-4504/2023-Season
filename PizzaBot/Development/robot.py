@@ -24,6 +24,7 @@
 from magicbot import MagicRobot
 
 import wpilib
+from wpilib import SmartDashboard
 
 import rev
 import ctre
@@ -134,7 +135,8 @@ class MyRobot(MagicRobot):
 
         """Note: drivetrain will automatically function here!"""
 
-        print(self.drivetrain.mainRight_motor.__getRawSensorPosition__()/4096/10, self.drivetrain.mainLeft_motor.__getRawSensorPosition__()/4096/10)
+        SmartDashboard.putNumber('Right Motor Revolutions = ', self.drivetrain.mainRight_motor.__getRawSensorPosition__()/4096/10)
+        SmartDashboard.putNumber('Left Motor Revolutions = ', self.drivetrain.mainLeft_motor.__getRawSensorPosition__()/4096/10)
 
         if self.hmi.is_buttonPressed():
 
@@ -144,7 +146,7 @@ class MyRobot(MagicRobot):
                 self.drivetrain.enable_autoLockout()
             
 
-            print(self.follow_controller.current_state.title())
+            SmartDashboard.putString('Follower Controller State = ', self.follow_controller.current_state.title())
             
 
             self.follow_controller.engage()
