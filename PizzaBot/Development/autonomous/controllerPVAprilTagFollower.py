@@ -15,20 +15,26 @@ class AprilTagPVController(AutonomousStateMachine):
     drivetrain : DriveTrainModule
     vision : VisionModule
 
-    goalRange = 0
 
     def setup(self, tagID=3, goalRange=2):
         self.goalRange = goalRange
         self.tagID = tagID
+        self.isFinished = False
 
     @state(first=True)
     def follow(self):
         if self.vision.hasTargets():
             self.vision.runPVAnglePID(5, .1)
-            self.vision.runPVLinearPID(self.goalRange, .05, .1)
+            # self.isFinished = self.vision.runPVLinearPID(self.goalRange, .05, .1)
+            print(self.drivetrain.getArcadeLinear(), self.drivetrain.getArcadeRotation())
 
         else:
             self.drivetrain.setArcade(0,0)
+
+        if self.isFinished:
+            self.next_state_now('stop')
+
+        
         
     @state()
     def stop(self):

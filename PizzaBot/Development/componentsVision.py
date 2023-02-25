@@ -16,7 +16,7 @@ class VisionModule:
         self.result = None
 
         self.PVAnglePID = PIDController(.035, .03, .0002)
-        self.PVLinearPID = PIDController(.035, .03, .0002)
+        self.PVLinearPID = PIDController(.1, .1, .0002)
 
     def getRange(self):
         if self.result.hasTargets():
@@ -60,7 +60,7 @@ class VisionModule:
     def runPVAnglePID(self, tolerance, speed_tolerance):
         isFinished = False
 
-        yaw = self.getPitch()
+        yaw = self.getYaw()
         rotation_speed = self.PVAnglePID.calculate(yaw, 0)
         rotation_speed = self.drivetrain.clamp(rotation_speed, -1, 1)
         self.drivetrain.setArcade(self.drivetrain.getArcadeLinear(), rotation_speed)
@@ -69,6 +69,7 @@ class VisionModule:
         if abs(yaw) <= tolerance and abs(rotation_speed) <= speed_tolerance:
             self.PVAnglePID.reset()
             isFinished = True
+            print('finished')
         return isFinished
 
     def runPVLinearPID(self, target_range, tolerance, speed_tolerance):
