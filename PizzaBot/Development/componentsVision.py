@@ -2,9 +2,10 @@ from photonvision import PhotonCamera, PhotonUtils
 from math import pi, radians
 from wpimath.controller import PIDController
 
-from componentsDrive import DriveTrainModule as drivetrain
+from componentsDrive import DriveTrainModule
 class VisionModule:
 
+    drivetrain: DriveTrainModule
     camera: PhotonCamera
 
     def __init__(self, camera_height_m=0.17, target_height_m=0.1524, camera_pitch_rad=0, goal_range_m=0):
@@ -61,8 +62,8 @@ class VisionModule:
 
         yaw = self.getPitch()
         rotation_speed = self.PVAnglePID.calculate(yaw, 0)
-        rotation_speed = drivetrain.clamp(rotation_speed, -1, 1)
-        drivetrain.setArcade(drivetrain.getArcadeLinear(), rotation_speed)
+        rotation_speed = self.drivetrain.clamp(rotation_speed, -1, 1)
+        self.drivetrain.setArcade(self.drivetrain.getArcadeLinear(), rotation_speed)
 
         # If angle is reached
         if abs(yaw) <= tolerance and abs(rotation_speed) <= speed_tolerance:
@@ -76,8 +77,8 @@ class VisionModule:
         # Calculate PID output and update motors
         range = self.getRange()
         linear_speed = self.PVLinearPID.calculate(range, target_range)
-        linear_speed = drivetrain.clamp(linear_speed, -1, 1)
-        drivetrain.setArcade(linear_speed, drivetrain.getArcadeRotation())
+        linear_speed = self.drivetrain.clamp(linear_speed, -1, 1)
+        self.drivetrain.setArcade(-linear_speed, self.drivetrain.getArcadeRotation())
 
         # If angle is reached
         if abs(range) <= tolerance and abs(linear_speed) <= speed_tolerance:

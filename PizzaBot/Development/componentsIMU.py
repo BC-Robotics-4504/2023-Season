@@ -4,11 +4,11 @@ import ctre
 from math import radians, degrees
 from wpimath.controller import PIDController
 
-from componentsDrive import DriveTrainModule as drivetrain
+from componentsDrive import DriveTrainModule
 
 
 class IMUModule:
-
+    drivetrain: DriveTrainModule
     imuSensor: ctre.Pigeon2
 
     def __init__(self):
@@ -29,8 +29,8 @@ class IMUModule:
 
         yaw = self.getYPR()[0]
         rotation_speed = self.imuPID.calculate(yaw, self.targetAngle_rad)
-        rotation_speed = drivetrain.clamp(rotation_speed, -1, 1)
-        drivetrain.setArcade(0, rotation_speed)
+        rotation_speed = self.drivetrain.clamp(rotation_speed, -1, 1)
+        self.drivetrain.setArcade(0, rotation_speed)
 
         # If angle is reached
         if abs(yaw - self.targetAngle_rad) <= tolerance and abs(rotation_speed) <= speed_tolerance:
