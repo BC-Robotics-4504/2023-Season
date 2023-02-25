@@ -4,6 +4,20 @@ import rev
 from componentsHMI import FlightStickHMI
 
 class ComboTalonSRX:
+
+    #: Which PID slot to pull gains from. Starting 2018, you can choose from
+    #: 0,1,2 or 3. Only the first two (0,1) are visible in web-based
+    #: configuration.
+    kSlotIdx = 0
+
+    #: Talon SRX/ Victor SPX will supported multiple (cascaded) PID loops. For
+    #: now we just want the primary one.
+    kPIDLoopIdx = 0
+
+    #: set to zero to skip waiting for confirmation, set to nonzero to wait and
+    #: report to DS if action fails.
+    kTimeoutMs = 10
+
     def __init__(self, canID_leader, canID_followers, inverted=False):
         self.canID_leader = canID_leader
         self.canID_followers = canID_followers
@@ -12,11 +26,35 @@ class ComboTalonSRX:
         self.followerMotors = None
 
         self.mainMotor = ctre.TalonSRX(self.canID_leader)
+        
+        self.mainMotor.configSelectedFeedbackSensor(
+            ctre._ctre.TalonSRXFeedbackDevice.QuadEncoder,
+            # ctre._ctre.TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative,
+            self.kPIDLoopIdx,
+            self.kTimeoutMs,
+        )
+
         self.mainMotor.setInverted(self.inverted)
+
+        self.mainMotor.configNominalOutputForward(0, self.kTimeoutMs)
+        self.mainMotor.configNominalOutputReverse(0, self.kTimeoutMs)
+        self.mainMotor.configPeakOutputForward(1, self.kTimeoutMs)
+        self.mainMotor.configPeakOutputReverse(-1, self.kTimeoutMs)
+    
+        self.mainMotor.selectProfileSlot(self.kSlotIdx, self.kPIDLoopIdx)
+        self.mainMotor.config_kP(self.kSlotIdx, .2)
+        self.mainMotor.config_kI(self.kSlotIdx, 0.0)
+        self.mainMotor.config_kD(self.kSlotIdx, 0.0)
+        self.mainMotor.config_kF(self.kSlotIdx, 0.2)
+        self.mainMotor.configMotionCruiseVelocity(15000, self.kTimeoutMs)
+        self.mainMotor.configMotionAcceleration(6000, self.kTimeoutMs)
+        self.mainMotor.setSelectedSensorPosition(0, self.kPIDLoopIdx, self.kTimeoutMs)
+
         if not isinstance(self.canID_followers, list):
             self.canID_followers = [self.canID_followers]
             
         self.coefficient = 1
+        self.gear_ratio = 10
 
         followerMotors = []
         for canID in self.canID_followers:
@@ -41,13 +79,19 @@ class ComboTalonSRX:
 
     def getDistance(self):
         pos = self.__getRawSensorPosition__()*self.coefficient
+        print(pos)
         return pos
+
+    def resetDistance(self):
+        self.mainMotor.setSelectedSensorPosition(0, self.kPIDLoopIdx, self.kTimeoutMs)
+        return False
     
     def setDistance(self, distance):
-        self.mainMotor.set(ctre._ctre.TalonSRXControlMode.MotionMagic, distance)
+        ticks = distance * 4096 * self.gear_ratio
+        print("when will we get the robot?", distance, ticks)
+        self.mainMotor.set(ctre._ctre.TalonSRXControlMode.MotionMagic, ticks)
+        return False
 
-        
-    
 
 class ComboSparkMax:
     def __init__(self, canID_leader, canID_followers, motorType='brushless', inverted=False):
@@ -107,6 +151,16 @@ class DriveTrainModule:
     def setRight(self, value):
         self.rightSpeed = value
         self.rightSpeedChanged = True
+
+    def resetDistance(self):
+        self.mainRight_motor.resetDistance()
+        self.mainLeft_motor.resetDistance()
+
+    def setDistance(self, value):
+        self.mainRight_motor.setDistance(value)
+        self.mainLeft_motor.setDistance(value)
+        print(value)
+        return False
         
     def is_leftChanged(self):
         return self.leftSpeedChanged
