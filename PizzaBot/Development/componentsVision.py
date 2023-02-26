@@ -16,9 +16,9 @@ class VisionModule:
         self.result = None
 
         self.PVAnglePID = PIDController(.035, .03, .0002)
-        self.PVLinearPID = PIDController(.035, .2, .0002)
+        self.PVLinearPID = PIDController(.4, .03, .0002)
 
-    def getRange(self):
+    def geX(self):
         if self.result.hasTargets():
             target_pitch_deg = self.result.getBestTarget().getPitch()
             # target_pitch_deg = self.result.getBestTarget().getYaw()
@@ -51,15 +51,26 @@ class VisionModule:
                 return id
             else:
                 return None
+    def getX(self):
+        if self.result.hasTargets():
+            X = self.result.getBestTarget().getBestCameraToTarget().X()
+            return X
+        else:
+            return None  
+    def getY(self):
+        if self.result.hasTargets():
+            Y = self.result.getBestTarget().getBestCameraToTarget().X()
+            return Y
+        else:
+            return None  
 
     def hasTargets(self):
         if self.result == None:
             return False
         return self.result.hasTargets()
 
-    def runPVAnglePID(self, tolerance, speed_tolerance):
+    def runPVAnglePID(self, tolerance = 5, speed_tolerance = .1):
         isFinished = False
-
         yaw = self.getYaw()
         rotation_speed = self.PVAnglePID.calculate(yaw, 0)
         rotation_speed = self.drivetrain.clamp(rotation_speed, -1, 1)
@@ -71,27 +82,21 @@ class VisionModule:
             isFinished = True
         return isFinished
 
-    def runPVLinearPID(self, target_range, tolerance, speed_tolerance):
+    def runPVLinearPID(self, target_range = .5, tolerance = .1, speed_tolerance = .1):
         isFinished = False
-
         # Calculate PID output and update motors
-        trange = -(self.getRange())
-        linear_speed = self.PVLinearPID.calculate(trange, target_range)
-        # linear_speed = self.drivetrain.clamp(linear_speed, -1, 1)
-        # print(f"target_range = {target_range}/+-{tolerance}")
-        # print(f"range = {range}")
-        # print("Lspeed = " + str(linear_speed))
-        self.drivetrain.setArcade(-(linear_speed), self.drivetrain.getArcadeRotation())
-        error = trange - target_range
-        print(trange, target_range, error)
+        X = self.getX()
+        linear_speed = self.PVLinearPID.calculate(X, target_range)
+        linear_speed = self.drivetrain.clamp(linear_speed, -1, 1)
+        self.drivetrain.setArcade(linear_speed, self.drivetrain.getArcadeRotation())
+        error = X - target_range
+        print(X, target_range, error)
         print(self.result.getBestTarget().getPitch())
-        # If angle is reached
-        # if abs(error) <= tolerance and abs(linear_speed) <= speed_tolerance:
-        if abs(error) <= tolerance:
 
+        # If angle is reached
+        if abs(error) <= tolerance and abs(linear_speed) <= speed_tolerance:
             self.PVLinearPID.reset()
             isFinished = True
-            print('finished')
         return isFinished
 
 

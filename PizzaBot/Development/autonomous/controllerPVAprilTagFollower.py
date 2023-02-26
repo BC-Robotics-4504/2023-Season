@@ -16,19 +16,17 @@ class AprilTagPVController(AutonomousStateMachine):
     vision : VisionModule
 
 
-    def setup(self, tagID=3, goalRange=3):
+    def setup(self, tagID=3, goalRange=1):
         self.goalRange = goalRange
         self.tagID = tagID
 
     @state(first=True)
     def follow(self):
         isFinished = False
-        self.lowest_value = 0
-        self.highest_value = 0
         if self.vision.hasTargets():
             self.drivetrain.enable_autoLockout()
             self.vision.runPVAnglePID(5, .1)
-            isFinished = self.vision.runPVLinearPID(self.goalRange, .1, .1)
+            isFinished = self.vision.runPVLinearPID(self.goalRange, .2, .3)
             # print(self.drivetrain.getArcadeLinear(), self.drivetrain.getArcadeRotation())
             # print(self.vision.getYaw(), self.vision.getRange(), self.goalRange)
         
@@ -51,4 +49,6 @@ class AprilTagPVController(AutonomousStateMachine):
         self.drivetrain.setLeft(0)
         self.drivetrain.setRight(0)
         self.drivetrain.disable_autoLockout()
+        print("fin")
+        print(self.vision.getX())
         return False
