@@ -28,6 +28,7 @@ import photonvision
 
 from autonomous.controllerPVAprilTagFollowerTeleop import AprilTagPVControllerTeleop
 from autonomous.controllerParkAprilTag import ParkingController
+# from autonomous.controllerScoreCube import ScoreCubeController
 
 
 from componentsDrive import ComboTalonSRX, DriveTrainModule, ComboSparkMax
@@ -51,6 +52,9 @@ class MyRobot(MagicRobot):
 
     follow_controller : AprilTagPVControllerTeleop
     parking_controller : ParkingController
+    # scoreCube_controller : ScoreCubeController
+    # ScoreCubeController.parking_controller.MODE_NAME = 'TeleopMain>ScoreCube>ParkingController'
+
 
     # grabber: GrabberModule
 
@@ -103,15 +107,20 @@ class MyRobot(MagicRobot):
 
         SmartDashboard.putNumber('Right Motor Revolutions = ', self.drivetrain.mainRight_motor.__getRawSensorPosition__()/4096/10)
         SmartDashboard.putNumber('Left Motor Revolutions = ', self.drivetrain.mainLeft_motor.__getRawSensorPosition__()/4096/10)
-        
-        if self.hmi.is_buttonPressed():
 
+        if self.hmi.is_buttonPressed('R', 2):
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
 
             SmartDashboard.putString('Follower Controller State = ', self.follow_controller.current_state.title())
-
             self.follow_controller.engage()
+
+        # if self.hmi.is_buttonPressed('R', 1):
+        #     if not self.drivetrain.is_lockedout():
+        #         self.drivetrain.enable_autoLockout()
+            
+        #     SmartDashboard.putString('Follower Controller State = ', self.scoreCube_controller.current_state.title())
+        #     self.scoreCube_controller.engage()
             
 
         # TODO: Put on different button to make robot drive forward set distance

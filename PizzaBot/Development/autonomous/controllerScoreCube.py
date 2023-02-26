@@ -6,7 +6,6 @@ from componentsPhotonVision import PhotonVisionModule
 from componentsIMU import IMUModule
 
 from autonomous.controllerParkAprilTag import ParkingController
-# from autonomous.controllerPVAprilTagFollower import PVAprilTagFollowerController
 
 class ScoreCubeController(StateMachine):
     photonvision : PhotonVisionModule
@@ -14,15 +13,11 @@ class ScoreCubeController(StateMachine):
     imu : IMUModule
 
     parking_controller : ParkingController
-    ParkingController.MODE_NAME = 'ParkingController(ScoreCube)'
+    ParkingController.MODE_NAME = 'ScoreCube>ParkingController'
     ParkingController.DEFAULT = False
 
-    # follower_controller : PVAprilTagFollowerController
-    # PVAprilTagFollowerController.MODE_NAME = 'ParkingController(ScoreCube)'
-    # PVAprilTagFollowerController.DEFAULT = False
-
     MODE_NAME = "ScoreCube"
-    DEFAULT = True
+    DEFAULT = False
     isEngaged = False
 
     targetId = None
