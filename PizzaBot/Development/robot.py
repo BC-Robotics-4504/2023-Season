@@ -27,14 +27,16 @@ import ctre
 import photonvision
 
 from autonomous.controllerPVAprilTagFollowerTeleop import AprilTagPVControllerTeleop
+from autonomous.controllerParkAprilTag import ParkingController
 
 
 from componentsDrive import ComboTalonSRX, DriveTrainModule, ComboSparkMax
 from componentsColor import ColorModule
 from componentsIMU import IMUModule
 from componentsHMI import HMIModule, FlightStickHMI
-from componentsVision import VisionModule
+from componentsPhotonVision import PhotonVisionModule
 from componentsLimelight import LimelightModule
+
 
 # IntakeConfig = namedtuple("IntakeConfig", ["channelA", "channelB"])
 
@@ -44,10 +46,11 @@ class MyRobot(MagicRobot):
     color : ColorModule
     imu : IMUModule
     hmi : HMIModule
-    vision : VisionModule
+    photonvision : PhotonVisionModule
     limelight : LimelightModule
 
     follow_controller : AprilTagPVControllerTeleop
+    parking_controller : ParkingController
 
     # grabber: GrabberModule
 
@@ -72,7 +75,6 @@ class MyRobot(MagicRobot):
         """Sensor Setups"""
         self.colorSensor = rev.ColorSensorV3(wpilib.I2C.Port.kOnboard)
         
-
         """IMU Configuration"""
         self.imuSensor = ctre.Pigeon2(11)
 
@@ -101,7 +103,7 @@ class MyRobot(MagicRobot):
 
         SmartDashboard.putNumber('Right Motor Revolutions = ', self.drivetrain.mainRight_motor.__getRawSensorPosition__()/4096/10)
         SmartDashboard.putNumber('Left Motor Revolutions = ', self.drivetrain.mainLeft_motor.__getRawSensorPosition__()/4096/10)
-
+        
         if self.hmi.is_buttonPressed():
 
             if not self.drivetrain.is_lockedout():

@@ -1,7 +1,7 @@
 from magicbot import state, timed_state, StateMachine, AutonomousStateMachine
 from wpimath.controller import PIDController
 
-from componentsVision import VisionModule
+from componentsPhotonVision import PhotonVisionModule
 from componentsDrive import DriveTrainModule
 
 from math import sqrt
@@ -13,7 +13,7 @@ class AprilTagPVController(AutonomousStateMachine):
     # DEFAULT = True
 
     drivetrain : DriveTrainModule
-    vision : VisionModule
+    photonvision : PhotonVisionModule
 
     kP_linear = 1
     kI_linear = .1
@@ -36,11 +36,11 @@ class AprilTagPVController(AutonomousStateMachine):
 
     @state(first=True)
     def follow(self):
-        if self.vision.hasTargets():
-            target_range = self.vision.getRange()
+        if self.photonvision.hasTargets():
+            target_range = self.photonvision.getRange()
             forward_speed = -(self.linearPID.calculate(target_range, self.goalRange))
 
-            yaw = self.vision.getYaw()
+            yaw = self.photonvision.getYaw()
             rotation_speed = self.anglePID.calculate(yaw, 0)
 
         else:
@@ -59,7 +59,7 @@ class AprilTagPVController(AutonomousStateMachine):
 
         # self.drivetrain.setLeft(vL)
         # self.drivetrain.setRight(vR)
-        # print(self.vision.hasTargets(), vL, vR)
+        # print(self.photonvision.hasTargets(), vL, vR)
 
 
 

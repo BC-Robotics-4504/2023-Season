@@ -6,7 +6,7 @@ class FlightStickHMI:
         self.rightStick = wpilib.Joystick(stickRight_ID)
         
         self.fsR = 0
-        self.fsRb2 = False
+        self.fsRButtons = list(range(12))
         
         self.fsL = 0
         self.changed = True
@@ -17,12 +17,15 @@ class FlightStickHMI:
 
         # Right Stick Commands
         fsR = self.rightStick.getY()
-        fsRb2 = self.rightStick.getRawButton(2)
 
-        if fsL != self.fsL or fsR != self.fsR or fsRb2 != self.fsRb2:
+        fsRButtons = list(range(12))
+        for i in range (12):
+            fsRButtons[i] = self.rightStick.getRawButton(i+1)
+
+        if fsL != self.fsL or fsR != self.fsR or fsRButtons != self.fsRButtons:
             self.fsL = fsL
             self.fsR = fsR
-            self.fsRb2 = fsRb2
+            self.fsRBUttons = fsRButtons
             self.changed = True
             return True
 
@@ -30,8 +33,8 @@ class FlightStickHMI:
             self.changed = False
             return False
 
-    def getButton(self):
-        return self.fsRb2
+    def getButton(self, buttonNum):     # TODO: If this code errors out, it's probably because of this change(see lines 9, 21-23, 28 too)
+        return self.fsRButtons[buttonNum + 1]
 
     def getInput(self):
         return (self.fsL, self.fsR)

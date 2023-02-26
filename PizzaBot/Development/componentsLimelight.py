@@ -64,7 +64,7 @@ class LimelightModule:
     def hasTargets(self):
         return self.hasTargets
 
-    def runLLAnglePID(self, tolerance, speed_tolerance):
+    def runAnglePID(self, tolerance, speed_tolerance):
             isFinished = False
 
             yaw = self.getX()
@@ -78,7 +78,7 @@ class LimelightModule:
                 isFinished = True
             return isFinished
 
-    def runLLLinearPID(self, target_range, tolerance, speed_tolerance):
+    def runLinearPID(self, target_range, tolerance, speed_tolerance):
         isFinished = False
 
         # Calculate PID output and update motors

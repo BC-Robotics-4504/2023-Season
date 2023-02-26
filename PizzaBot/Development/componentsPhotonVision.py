@@ -3,7 +3,7 @@ from math import pi, radians
 from wpimath.controller import PIDController
 
 from componentsDrive import DriveTrainModule
-class VisionModule:
+class PhotonVisionModule:
 
     drivetrain: DriveTrainModule
     camera: PhotonCamera
@@ -15,10 +15,10 @@ class VisionModule:
         self.goal_range = goal_range_m
         self.result = None
 
-        self.PVAnglePID = PIDController(.035, .03, .0002)
-        self.PVLinearPID = PIDController(.4, .03, .0002)
+        self.anglePID = PIDController(.035, .03, .0002)
+        self.linearPID = PIDController(.4, .03, .0002)
 
-    def geX(self):
+    def getRange(self): # DEPRICATED? USE getX
         if self.result.hasTargets():
             target_pitch_deg = self.result.getBestTarget().getPitch()
             # target_pitch_deg = self.result.getBestTarget().getYaw()
@@ -37,20 +37,12 @@ class VisionModule:
             return yaw
         else:
             return None
-
     def getPitch(self):
         if self.result.hasTargets():
             yaw = self.result.getBestTarget().getPitch()
             return yaw
         else:
             return None    
-    def getID(self):
-        if self.result is not None:
-            if self.result.hasTargets():
-                id = self.result.getBestTarget().getFiducialId()
-                return id
-            else:
-                return None
     def getX(self):
         if self.result.hasTargets():
             X = self.result.getBestTarget().getBestCameraToTarget().X()
@@ -63,30 +55,36 @@ class VisionModule:
             return Y
         else:
             return None  
-
+    def getID(self):
+        if self.result is not None:
+            if self.result.hasTargets():
+                id = self.result.getBestTarget().getFiducialId()
+                return id
+            else:
+                return None
     def hasTargets(self):
         if self.result == None:
             return False
         return self.result.hasTargets()
 
-    def runPVAnglePID(self, tolerance = 5, speed_tolerance = .1):
+    def runAnglePID(self, tolerance = 5, speed_tolerance = .1):
         isFinished = False
         yaw = self.getYaw()
-        rotation_speed = self.PVAnglePID.calculate(yaw, 0)
+        rotation_speed = self.anglePID.calculate(yaw, 0)
         rotation_speed = self.drivetrain.clamp(rotation_speed, -1, 1)
         self.drivetrain.setArcade(self.drivetrain.getArcadeLinear(), rotation_speed)
 
         # If angle is reached
         if abs(yaw) <= tolerance and abs(rotation_speed) <= speed_tolerance:
-            self.PVAnglePID.reset()
+            self.anglePID.reset()
             isFinished = True
         return isFinished
 
-    def runPVLinearPID(self, target_range = .5, tolerance = .1, speed_tolerance = .1):
+    def runLinearPID(self, target_range = .5, tolerance = .1, speed_tolerance = .1):
         isFinished = False
         # Calculate PID output and update motors
         X = self.getX()
-        linear_speed = self.PVLinearPID.calculate(X, target_range)
+        linear_speed = self.linearPID.calculate(X, target_range)
         linear_speed = self.drivetrain.clamp(linear_speed, -1, 1)
         self.drivetrain.setArcade(linear_speed, self.drivetrain.getArcadeRotation())
         error = X - target_range
@@ -95,7 +93,7 @@ class VisionModule:
 
         # If angle is reached
         if abs(error) <= tolerance and abs(linear_speed) <= speed_tolerance:
-            self.PVLinearPID.reset()
+            self.linearPID.reset()
             isFinished = True
         return isFinished
 

@@ -2,17 +2,21 @@ from math import sin, cos, pi, radians, degrees
 from magicbot import StateMachine, state
 
 from componentsDrive import DriveTrainModule
-from componentsVision import VisionModule
+from componentsPhotonVision import PhotonVisionModule
 from componentsIMU import IMUModule
 
-class ScoreCubeController(StateMachine):
-    vision : VisionModule
+class ParkingController(StateMachine):
+    photonvision : PhotonVisionModule
     drivetrain : DriveTrainModule
     imu : IMUModule
 
+    MODE_NAME = "ParkAprilTag"
+    DEFAULT = False
+    isEngaged = False
+
     targetId = None
     new_target = False
-    enagaged = False
+    isEnagaged = False
 
     X = 0
     Y = 0
@@ -21,20 +25,20 @@ class ScoreCubeController(StateMachine):
     angleTolerance = 5
     motorTolerance = .2
 
-    def align(self):
+    def park(self):
         self.engage()
 
     @ state(first=True, must_finish=True)
     def state_rotateAngle(self):
         # Get values for course when AprilTag is found
         if self.new_target == False:
-            self.X = self.vision.getX()
-            self.Y = self.vision.getY()
-            self.theta = self.vision.getPitch()
+            self.X = self.photonvision.getX()
+            self.Y = self.photonvision.getY()
+            self.theta = self.photonvision.getPitch()
 
-            self.targetAngle_rad = self.imu.getYPR() + self.theta   #TODO: figure out if IMU uses degrees or radians
+            self.targetAngle_rad = self.imu.getYPR()[0] + self.theta   #TODO: figure out if IMU uses degrees or radians
 
-            self.targetId = self.vision.getID()
+            self.targetId = self.photonvision.getID()
             self.new_target = True
 
             if self.Y > 0:
@@ -42,7 +46,6 @@ class ScoreCubeController(StateMachine):
             else:
                 self.turn90 = -90
 
-        #TODO: edit componentsIMU runPID to conform with the rest of the PID functions
         # Rotate angle theta
         isFinished = self.imu.runPID(self.theta)
         # If angle is reached
@@ -67,9 +70,10 @@ class ScoreCubeController(StateMachine):
         if isFinished:
             self.next_state_now('state_alignTarget')
 
+    @ state(must_finish=True)
     def state_alignTarget(self):
-        # Correct angle with vision PID
-        isFinished = self.vision.runPVAnglePID()
+        # Correct angle with photonvision PID
+        isFinished = self.photonvision.runAnglePID()
         # If angle is reached
         if isFinished:
             self.next_state_now('state_moveSecondLeg')
