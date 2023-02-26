@@ -3,7 +3,6 @@
 #!/usr/bin/env python3
 
 """
-
 #		    _/  _/    _/_/_/_/    _/    _/  _/   
 #		   _/  _/    _/        _/  _/  _/  _/    
 #		  _/_/_/_/  _/_/_/    _/  _/  _/_/_/_/   
@@ -13,11 +12,8 @@
 
 
 """"
-
     This is where all of our robot code 
-
     is pulled together from component modules to
-
      define the behavior of diffrent components
 """
 
