@@ -35,7 +35,7 @@ if __name__ == '__main__':
     plt.figure(figsize=(4,3))
     plt.plot(distance_m, area, marker='.', linestyle='', linewidth=1.0, label='Measurements')   
 
-    plt.plot(x, func(x, *popt), linestyle='--', color='k', linewidth=1.0, label=f'{popt[0]:0.3f}'+r'$x-$'+f'{popt[1]:0.3f}' )
+    plt.plot(x, func(x, *popt), linestyle='--', color='k', linewidth=1.0, label=f'{popt[0]:0.3f}'+r'$x^{-2}-$'+f'{popt[1]:0.3f}' )
     plt.legend(loc='upper right')
     plt.grid(which='both', alpha=0.15)
     plt.xlabel(r'Distance to April Tag, $d$ (m)')
