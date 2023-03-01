@@ -20,7 +20,7 @@ from componentsColor import ColorModule
 from componentsGrabber import GrabberModule
 from componentsIMU import IMUModule
 from componentsHMI import HMIModule, FlightStickHMI
-from componentsVision import VisionModule
+from componentsPhotonVision import PhotonVisionModule
 from componentsLimelight import LimelightModule
 from componentsElevator import ElevatorModule, ElevatorSparkMax
 from componentsGrabber import GrabberModule, GrabberSparkMax
@@ -33,7 +33,7 @@ class MyRobot(MagicRobot):
     color : ColorModule
     imu : IMUModule
     hmi : HMIModule
-    vision : VisionModule
+    vision : PhotonVisionModule
     limelight : LimelightModule
     grabber : GrabberModule
     elevator: ElevatorModule
