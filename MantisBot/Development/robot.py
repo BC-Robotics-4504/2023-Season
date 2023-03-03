@@ -74,7 +74,7 @@ class MyRobot(MagicRobot):
 
     def teleopPeriodic(self) -> None:
         """Note: drivetrain will automatically function here!"""
-        if self.hmi.is_buttonPressed():
+        if self.hmi.is_buttonPressed('R', 2):
 
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
