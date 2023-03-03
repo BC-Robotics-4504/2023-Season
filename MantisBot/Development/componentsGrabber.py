@@ -33,7 +33,7 @@ class GrabberSparkMax:
     allowedErr = 0
 
     def __init__(self, canID_leader, canID_followers, motorType='brushless', inverted=False,
-                gear_ratio=20, wheel_diameter=6.5):
+                gear_ratio=64, wheel_diameter=6.5):
         self.canID_leader = canID_leader
         self.canID_followers = canID_followers
         self.inverted = inverted
