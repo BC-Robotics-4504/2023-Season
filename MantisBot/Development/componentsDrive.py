@@ -25,15 +25,16 @@ class ComboSparkMax:
     minVel = 0
     allowedErr = 0
 
-    def __init__(self, canID_leader, canID_followers, motorType='brushless', inverted=False, gearRatio=1, wheelDiameter=6):
+    def __init__(self, canID_leader, canID_followers, motorType='brushless', inverted=False, 
+                 gear_ratio=1, wheel_diameter=6):
         self.canID_leader = canID_leader
         self.canID_followers = canID_followers
         self.inverted = inverted
         self.mainMotor = None
         self.followerMotors = None
-        self.gearRatio = gearRatio
-        self.wheelDiameter = wheelDiameter
-        self.distance_to_rotations = 1/(wheelDiameter*gearRatio)
+        self.gear_ratio = gear_ratio
+        self.wheel_diameter = wheel_diameter
+        self.distance_to_rotations = 1/(2*pi*wheel_diameter*gear_ratio)
 
         if motorType == 'brushless':
             mtype = rev.CANSparkMaxLowLevel.MotorType.kBrushless

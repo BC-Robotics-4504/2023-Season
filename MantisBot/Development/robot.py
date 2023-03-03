@@ -23,7 +23,7 @@ from componentsHMI import HMIModule, FlightStickHMI
 from componentsPhotonVision import PhotonVisionModule
 from componentsLimelight import LimelightModule
 from componentsElevator import ElevatorModule, ElevatorSparkMax
-from componentsGrabber import GrabberModule, GrabberSparkMax
+from componentsGrabber import GrabberModule, GrabberSparkMax, GrabberPneumatics
 
 from autonomous.controllerAprilTagPVFollower import AprilTagPVController
 
@@ -36,17 +36,13 @@ class MyRobot(MagicRobot):
     vision : PhotonVisionModule
     limelight : LimelightModule
     grabber : GrabberModule
-    elevator: ElevatorModule
-    
-    # intake: IntakeModule
-    # Intake_cfg = IntakeConfig(1, 2) # TODO: this might not work... 
-    
+    elevator: ElevatorModule    
 
     def createObjects(self):
         """Robot initialization function"""
         
         """Intake Motor Configuration"""
-        self.grabber_pneumatics= wpilib.PneumaticHub(11)
+        self.grabber_pneumatics= GrabberPneumatics(11)
         self.grabber_motor = GrabberSparkMax(12, [])
         self.elevator_motor = ElevatorSparkMax(13, [])
         
@@ -80,7 +76,7 @@ class MyRobot(MagicRobot):
         """Note: drivetrain will automatically function here!"""
         if self.hmi.is_buttonPressed():
 
-            if not self.drivetrain.is_autoLockoutActive():
+            if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
 
             self.ATPVController.engage()

@@ -1,7 +1,7 @@
 from magicbot import StateMachine, state, timed_state
 from wpimath.controller import PIDController
 
-from componentsVision import VisionModule
+from componentsPhotonVision import PhotonVisionModule
 from componentsDrive import DriveTrainModule
 
 from math import sqrt
@@ -13,7 +13,7 @@ class AprilTagPVController(StateMachine):
     DEFAULT = False
 
     drivetrain : DriveTrainModule
-    vision : VisionModule
+    vision : PhotonVisionModule
 
     kP_linear = 1
     kI_linear = .01

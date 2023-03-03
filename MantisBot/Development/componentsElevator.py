@@ -1,5 +1,5 @@
 import rev 
-import math
+from math import pi
 
 ElevatorLevelDict_m = {
     0: 0,
@@ -14,14 +14,33 @@ def positionToNextLevel(current_level, next_level):
     return ElevatorLevelDict_m[next_level] - ElevatorLevelDict_m[current_level]
 
 class ElevatorSparkMax:
+
+    # PID coefficients
+    kP = 5e-5
+    kI = 1e-6
+    kD = 0
+    kIz = 0
+    kFF = 0.000156
+    kMaxOutput = 1
+    kMinOutput = -1
+    maxRPM = 5700
+
+    # Smart Motion Coefficients
+    maxVel = 2000 # rpm
+    maxAcc = 1500
+    minVel = 0
+    allowedErr = 0
+
     def __init__(self, canID_leader, canID_followers, motorType='brushless', inverted=False,
-                wheel_diameter_in=6.5, ticks_per_rotation=42):
+                gear_ratio=20, wheel_diameter=6.5):
         self.canID_leader = canID_leader
         self.canID_followers = canID_followers
         self.inverted = inverted
         self.mainMotor = None
         self.followerMotors = None
-        self.coefficient = 2*math.pi*wheel_diameter_in*0.0254/ticks_per_rotation
+        self.gear_ratio = gear_ratio
+        self.wheel_diameter = wheel_diameter
+        self.distance_to_rotations = 1/(2*pi*wheel_diameter*gear_ratio)
 
         if motorType == 'brushless':
             mtype = rev.CANSparkMaxLowLevel.MotorType.kBrushless
@@ -30,7 +49,7 @@ class ElevatorSparkMax:
 
         self.mainMotor = rev.CANSparkMax(canID_leader, mtype)
         self.mainMotor.setInverted(inverted)
-        self.mainEncoder = self.mainMotor.getEncoder(rev.SparkMaxRelativeEncoder.Type.kHallSensor, 42)
+        self.mainController, self.mainEncoder = self.__configureEncoder__(self.mainMotor)
 
         followerMotors = []
         for canID in self.canID_followers:
@@ -41,16 +60,44 @@ class ElevatorSparkMax:
 
         self.followerMotors = followerMotors
 
-    def getPosition(self):
-        enc = self.mainEncoder.getPosition()
-        return enc
+    def __configureEncoder__(self, motor, smartMotionSlot=0):
+        mainController = motor.getPIDController()
+        mainEncoder = motor.getEncoder()
+        
+        # PID parameters
+        mainController.setP(self.kP)
+        mainController.setI(self.kI)
+        mainController.setD(self.kD)
+        mainController.setIZone(self.kIz)
+        mainController.setFF(self.kFF)
+        mainController.setOutputRange(self.kMinOutput, self.kMaxOutput)
 
-    def getController(self):
-        con = self.mainMotor.getPIDController()
-        return con 
+        # Smart Motion Parameters
+        mainController.setSmartMotionMaxVelocity(self.maxVel, smartMotionSlot)
+        mainController.setSmartMotionMinOutputVelocity(self.minVel, smartMotionSlot)
+        mainController.setSmartMotionMaxAccel(self.maxAcc, smartMotionSlot)
+        mainController.setSmartMotionAllowedClosedLoopError(self.allowedErr, smartMotionSlot)
+        return mainController, mainEncoder
 
-    def resetEncoder(self):
+    def setPercent(self, value):
+        self.mainMotor.set(value)
+        return False
+
+    def getVelocity(self):
+        vel = self.mainEncoder.getVelocity() #rpm
+        return vel
+
+    def getDistance(self):
+        pos = self.mainEncoder.getPosition()
+        return pos
+
+    def resetDistance(self):
         self.mainEncoder.setPosition(0)
+        return False
+
+    def setDistance(self, distance):
+        rotations = distance*self.distance_to_rotations
+        self.mainController.setReference(rotations, rev.CANSparkMax.ControlType.kSmartMotion)
         return False
 
 class ElevatorModule:
@@ -60,64 +107,22 @@ class ElevatorModule:
 
     elevator_motor: ElevatorSparkMax
 
-    tol = 0.1
-    kP = 0.1
-    kI = 1e-4
-    kD = 1
-    kIz = 0 
-    kFF = 0 
-    kMaxOutput = 1 
-    kMinOutput = -1
-    maxRPM = 5700
-    maxVel = 2000 # rpm
-    minVel = 0
-    maxAcc = 1500
-    sprocketDiameter_in = 2.5
-
-    def __init__(self):
+    def __init__(self, tol=0.05):
         self.currentPosition = 0
         self.nextPosition = 0
         self.currentLevel = 0
         self.nextLevel = 0
-        self.coefficient = math.pi*self.sprocketDiameter_in/25.3e-3 # m/cycle
         self.stateChanged = False
-    
-    def setup(self):
-        self.controller = self.__setupDistanceController__(self.elevator_motor)
-
-    def __setupDistanceController__(self, motor, smartMotionSlot=0, allowedErr=0):
-        controller = motor.getController()
-        # set PID coefficients
-        controller.setP(self.kP)
-        controller.setI(self.kI)
-        controller.setD(self.kD)
-        controller.setIZone(self.kIz)
-        controller.setFF(self.kFF)
-        controller.setOutputRange(self.kMinOutput, self.kMaxOutput)
-        controller.setSmartMotionMaxVelocity(self.maxVel, smartMotionSlot)
-        controller.setSmartMotionMinOutputVelocity(self.minVel, smartMotionSlot)
-        controller.setSmartMotionMaxAccel(self.maxAcc, smartMotionSlot)
-        controller.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot)
-        return controller
-
-    def __setRotations__(self, rotations):
-        self.controller.setReference(rotations, rev.CANSparkMax.ControlType.kPosition)
-        return False
-
-    def __setPosition__(self, position):
-        self.nextElevatorPosition = position
-        rotations = position/self.coefficient
-        self.__setRotations__(rotations)
-        return False
+        self.tol = tol
 
     def goToNextLevel(self, next_level):
-        position = positionToNextLevel(self.currentLevel, self.nextLevel)
-        self.nextElevatorPosition = position
-        self.__setPosition__(position)
+        distance = positionToNextLevel(self.currentLevel, self.nextLevel)
+        self.nextElevatorPosition = distance
+        self.elevator_motor.setDistance(distance)
         return False
 
     def getPosition(self):
-        self.currentElevatorPosition = self.elevator_motor.getPosition()
+        self.currentElevatorPosition = self.elevator_motor.getDistance()
         return False
 
     def isAtLevel(self):

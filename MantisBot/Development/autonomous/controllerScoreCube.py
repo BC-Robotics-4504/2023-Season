@@ -22,7 +22,7 @@ class ScoreCubeController(StateMachine):
 
     targetId = None
     new_target = False
-    enagaged = False
+    engaged = False
 
     X = 0
     Y = 0
