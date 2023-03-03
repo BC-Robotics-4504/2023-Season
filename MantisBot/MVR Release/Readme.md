@@ -11,6 +11,7 @@ python -m robotpy_installer install robotpy
 - **[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (1x):
     - CAN ID `12`
     - 1:64 gear ratio
+    - Drives [Neo Motor](https://www.revrobotics.com/rev-21-1650/)
 
 - **[Pneumatic Hub](https://www.revrobotics.com/rev-11-1852/)**:
     - CAN ID `11`
@@ -20,6 +21,7 @@ python -m robotpy_installer install robotpy
 - **[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (1x, +1 spare):
     - CAN ID `13`
     - 1:20 gear ratio
+    - Drives [Neo Motor](https://www.revrobotics.com/rev-21-1650/)
 
 ###### Drivetrain
 - **[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (4x):
@@ -27,11 +29,13 @@ python -m robotpy_installer install robotpy
         - Leader CAN ID `6`
         - Follower CAN ID `4`
         - XX gear ratio
+        - Drives XX
 
     - *RIGHT SIDE*: 
         - Leader CAN ID `2`
         - Follower CAN ID `1`
         - XX gear ratio
+        - Drives XX
 
 ###### Sensors
 - **[Pigeon 2.0](https://www.google.com/search?client=safari&rls=en&q=pigeon+2.0&ie=UTF-8&oe=UTF-8)**:
