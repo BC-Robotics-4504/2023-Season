@@ -6,7 +6,7 @@ python -m pip install robotpy
 python -m robotpy_installer download robotpy
 python -m robotpy_installer install robotpy
 ```
-## Hardware Description
+## Baseline Hardware Specifications
 ###### Grabber Arm
 - **[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (1x):
     - CAN ID `12`
