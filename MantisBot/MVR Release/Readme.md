@@ -26,14 +26,17 @@ python -m robotpy_installer install robotpy
     - *LEFT SIDE*: 
         - Leader CAN ID `6`
         - Follower CAN ID `4`
+        - XX gear ratio
+
     - *RIGHT SIDE*: 
         - Leader CAN ID `2`
         - Follower CAN ID `1`
+        - XX gear ratio
 
 ###### Sensors
 - **[Pigeon 2.0](https://www.google.com/search?client=safari&rls=en&q=pigeon+2.0&ie=UTF-8&oe=UTF-8)**:
     - CAN ID `11`
-    - Axes: Z up, X forward, Y right
+    - Orientation: Z up, X forward, Y right
 
 - **[Limelight 2.0](https://docs.limelightvision.io/en/latest/)**: 
     - Static IP address `10.4.45.11`
