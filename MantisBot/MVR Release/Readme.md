@@ -6,8 +6,11 @@ python -m pip install robotpy
 python -m robotpy_installer download robotpy
 python -m robotpy_installer install robotpy
 ```
+
 ## Baseline Hardware Specifications
-###### Grabber Arm
+
+### Grabber Arm
+
 - **[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (1x):
     - CAN ID `12`
     - 1:64 gear ratio
@@ -18,14 +21,16 @@ python -m robotpy_installer install robotpy
     - CAN ID `11`
     - Double solenoid
 
-###### Elevator
+### Elevator
+
 - **[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (1x, +1 spare):
     - CAN ID `13`
     - 1:20 gear ratio
     - Drives [Neo Brushless Motor V1.1](https://www.revrobotics.com/rev-21-1650/)
     - Sprocket diameter XX
 
-###### Drivetrain
+### Drivetrain
+
 - **[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (4x):
     - *LEFT SIDE*: 
         - Leader CAN ID `6`
@@ -45,7 +50,7 @@ python -m robotpy_installer install robotpy
         - Wheel diameter 6 in (0.1524 m) OD
         - Non-inverted
 
-###### Sensors
+### Sensors
 - **[Pigeon 2.0](https://www.google.com/search?client=safari&rls=en&q=pigeon+2.0&ie=UTF-8&oe=UTF-8)**:
     - CAN ID `11`
     - Orientation: Z up, X forward, Y right
@@ -58,17 +63,23 @@ python -m robotpy_installer install robotpy
     - Camera Name `MSWebCam`
 
 ## Robot Controls
-###### **Left Flight Stick**:
+
+### **Left Flight Stick**:
+
 - Ipnut device ID `0`
 - **Y-Axis**:
 - **Trigger**:
 
-###### **Right Flight Stick**:
+### **Right Flight Stick**:
+
 - Input device ID `1`
 - **Y-Axis**:
 - **Trigger**:
 
 ## Autonomous Operation
+
 ###### **MODE 1**:
+
 ###### **MODE 2**:
+
 ###### **MODE 3**:
