@@ -8,12 +8,12 @@ python -m robotpy_installer install robotpy
 ```
 ## Robot Controls
 ###### **Left Flight Stick**:
-rgb(9, 105, 218) **Y-Axis**:
-rgb(9, 105, 218) **Trigger**:
+`rgb(9, 105, 218)` **Y-Axis**:
+`rgb(9, 105, 218)` **Trigger**:
 
 ###### **Left Flight Stick**:
-rgb(9, 105, 218) **Y-Axis**:
-rgb(9, 105, 218) **Trigger**:
+`rgb(9, 105, 218)` **Y-Axis**:
+`rgb(9, 105, 218)` **Trigger**:
 
 ## Autonomous Operation
 ###### **MODE 1**:
