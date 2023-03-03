@@ -11,7 +11,7 @@ python -m robotpy_installer install robotpy
 - **Y-Axis**:
 - **Trigger**:
 
-###### **Left Flight Stick**:
+###### **Right Flight Stick**:
 - **Y-Axis**:
 - **Trigger**:
 
