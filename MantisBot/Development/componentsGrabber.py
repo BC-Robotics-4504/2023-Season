@@ -41,7 +41,7 @@ class GrabberSparkMax:
         self.followerMotors = None
         self.gear_ratio = gear_ratio
         self.wheel_diameter = wheel_diameter
-        self.distance_to_rotations = gear_ratio/(2*pi*wheel_diameter)
+        self.distance_to_rotations = 1/(2*pi*wheel_diameter*gear_ratio)
 
         if motorType == 'brushless':
             mtype = rev.CANSparkMaxLowLevel.MotorType.kBrushless

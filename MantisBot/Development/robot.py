@@ -43,8 +43,8 @@ class MyRobot(MagicRobot):
         
         """Intake Motor Configuration"""
         self.grabber_pneumatics= GrabberPneumatics(11)
-        self.grabber_motor = GrabberSparkMax(12, [], wheel_diameter=0.0508, gear_ratio=64)
-        self.elevator_motor = ElevatorSparkMax(13, [], wheel_diameter=0.0508, gear_ratio=20)
+        self.grabber_motor = GrabberSparkMax(12, [], wheel_diameter=0.0508, gear_ratio=1/64)
+        self.elevator_motor = ElevatorSparkMax(13, [], wheel_diameter=0.0508, gear_ratio=1/20)
         
         """Drivetrain Motor Configuration"""
         self.mainLeft_motor = ComboSparkMax(6, [4,5], inverted=False, wheel_diameter=0.1524, gear_ratio=30/68)
