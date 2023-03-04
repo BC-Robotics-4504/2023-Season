@@ -50,22 +50,36 @@ python -m robotpy_installer install robotpy
 
 - **[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (4x):
   - *LEFT SIDE*: 
-    - Leader CAN ID `6`
-    - Follower CAN ID `4`
-    - 30:68 gear ratio
     - Drives 2x [Neo Brushless Motor V1.1](https://www.revrobotics.com/rev-21-1650/)
     - [2 Motor Gearbox](https://www.revrobotics.com/rev-21-2099/)
-    - Wheel diameter 6 in (0.1524 m) OD
     - Inverted
 
+| Position | Value | Unit |
+| --- | --- | --- |
+| Leader CAN ID | 6 |  |
+| Follower CAN ID | 4 |  |
+| Gear Ratio | 30:68 |  |
+| Wheel Diameter | 0.1524 (6) | m (in) |
+| Ground (Default)| XX | m |
+| Score Low | XX | m |
+| Score Mid | XX | m |
+| Score High | XX | m |
+
   - *RIGHT SIDE*: 
-    - Leader CAN ID `2`
-    - Follower CAN ID `1`
-    - 30:68 gear ratio
     - Drives 2x [Neo Brushless Motor V1.1](https://www.revrobotics.com/rev-21-1650/)
     - [2 Motor Gearbox](https://www.revrobotics.com/rev-21-2099/)
-    - Wheel diameter 6 in (0.1524 m) OD
     - Non-inverted
+
+| Position | Value | Unit |
+| --- | --- | --- |
+| Leader CAN ID | 2 |  |
+| Follower CAN ID | 1 |  |
+| Gear Ratio | 30:68 |  |
+| Wheel Diameter | 0.1524 (6) | m (in) |
+| Ground (Default)| XX | m |
+| Score Low | XX | m |
+| Score Mid | XX | m |
+| Score High | XX | m |
 
 ### Sensors
 
