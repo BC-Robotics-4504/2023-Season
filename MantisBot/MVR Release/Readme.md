@@ -86,3 +86,11 @@ python -m robotpy_installer install robotpy
 ### **MODE 2**
 
 ### **MODE 3**
+
+## Game Controller Functionality
+
+[] Move toward target AprilTag
+[] Move toward target retro-reflective tape
+[] Pick up gamepiece
+[] Navigate to target and place high/med/low
+[] Balance on charging station
