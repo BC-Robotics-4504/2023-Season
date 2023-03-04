@@ -79,14 +79,6 @@ python -m robotpy_installer install robotpy
 - **Y-Axis**:
 - **Trigger**:
 
-## Autonomous Operation
-
-### **MODE 1**
-
-### **MODE 2**
-
-### **MODE 3**
-
 ## Game Controller Functionality
 
 - [ ] **<CONTROLLER_NAME>**: Move toward target AprilTag
@@ -94,3 +86,11 @@ python -m robotpy_installer install robotpy
 - [ ] **<CONTROLLER_NAME>**: Pick up gamepiece
 - [ ] **<CONTROLLER_NAME>**: Navigate to target and place high/med/low
 - [ ] **<CONTROLLER_NAME>**: Balance on charging station
+
+## Autonomous Operation
+
+### **MODE 1**
+
+### **MODE 2**
+
+### **MODE 3**
