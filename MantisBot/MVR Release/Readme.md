@@ -9,7 +9,7 @@ python -m robotpy_installer download robotpy
 python -m robotpy_installer install robotpy
 ```
 
-## Baseline Hardware Specifications
+## Hardware Configuration
 
 ### Grabber Arm
 
