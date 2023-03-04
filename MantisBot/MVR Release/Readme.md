@@ -89,12 +89,12 @@ python -m robotpy_installer install robotpy
 
 ## Game Controller Functionality
 
-[] Move toward target AprilTag
+[] **<CONTROLLER_NAME>**: Move toward target AprilTag
 
-[] Move toward target retro-reflective tape
+[] **<CONTROLLER_NAME>**: Move toward target retro-reflective tape
 
-[] Pick up gamepiece
+[] **<CONTROLLER_NAME>**: Pick up gamepiece
 
-[] Navigate to target and place high/med/low
+[] **<CONTROLLER_NAME>**: Navigate to target and place high/med/low
 
-[] Balance on charging station
+[] **<CONTROLLER_NAME>**: Balance on charging station
