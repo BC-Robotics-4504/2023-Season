@@ -32,7 +32,7 @@ class ElevatorSparkMax:
     allowedErr = 0
 
     def __init__(self, canID_leader, canID_followers, motorType='brushless', inverted=False,
-                gear_ratio=20, wheel_diameter=6.5):
+                gear_ratio=20, wheel_diameter=0.0508):
         self.canID_leader = canID_leader
         self.canID_followers = canID_followers
         self.inverted = inverted
@@ -40,7 +40,7 @@ class ElevatorSparkMax:
         self.followerMotors = None
         self.gear_ratio = gear_ratio
         self.wheel_diameter = wheel_diameter
-        self.distance_to_rotations = 1/(2*pi*wheel_diameter*gear_ratio)
+        self.distance_to_rotations = gear_ratio/(2*pi*wheel_diameter)
 
         if motorType == 'brushless':
             mtype = rev.CANSparkMaxLowLevel.MotorType.kBrushless

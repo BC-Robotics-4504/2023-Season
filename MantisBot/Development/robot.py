@@ -43,12 +43,12 @@ class MyRobot(MagicRobot):
         
         """Intake Motor Configuration"""
         self.grabber_pneumatics= GrabberPneumatics(11)
-        self.grabber_motor = GrabberSparkMax(12, [])
-        self.elevator_motor = ElevatorSparkMax(13, [])
+        self.grabber_motor = GrabberSparkMax(12, [], wheel_diameter=0.0508, gear_ratio=64)
+        self.elevator_motor = ElevatorSparkMax(13, [], wheel_diameter=0.0508, gear_ratio=20)
         
         """Drivetrain Motor Configuration"""
-        self.mainLeft_motor = ComboSparkMax(6, [4,5], inverted=False)
-        self.mainRight_motor = ComboSparkMax(2, [1,3], inverted=True)
+        self.mainLeft_motor = ComboSparkMax(6, [4,5], inverted=False, wheel_diameter=0.1524, gear_ratio=30/68)
+        self.mainRight_motor = ComboSparkMax(2, [1,3], inverted=True, wheel_diameter=0.1524, gear_ratio=30/68)
         
         """Sensor Setups"""
         self.colorSensor = rev.ColorSensorV3(wpilib.I2C.Port.kOnboard)
