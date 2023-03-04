@@ -16,15 +16,15 @@ python -m robotpy_installer install robotpy
 ### Grabber Arm
 
 - **[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (1x):
-  - CAN ID `12`
-  - 1:64 gear ratio
   - Drives [Neo Brushless Motor V1.1](https://www.revrobotics.com/rev-21-1650/)
-  - Sprocket diameter XX
 
-| Position | Distance (m) |
-| --- | --- |
-| Retracted | XX |
-| Extended | XX |
+| Position | Value | Unit |
+| --- | --- | --- |
+| CAN ID | 12 |  |
+| Gear Ratio | 1:64 |  |
+| Spricket Diameter | XX | m |
+| Retracted | XX | m |
+| Extended | XX | m|
 
 - **[Pneumatic Hub](https://www.revrobotics.com/rev-11-1852/)**:
   - CAN ID `11`
@@ -33,17 +33,18 @@ python -m robotpy_installer install robotpy
 ### Elevator
 
 - **[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (1x, +1 spare):
-  - CAN ID `13`
-  - 1:20 gear ratio
   - Drives [Neo Brushless Motor V1.1](https://www.revrobotics.com/rev-21-1650/)
-  - Sprocket diameter XX
 
-| Position | Distance (m) |
-| --- | --- |
-| Ground (Default)| XX |
-| Score Low | XX |
-| Score Mid | XX |
-| Score High | XX |
+| Position | Value | Unit |
+| --- | --- | --- |
+| CAN ID | 13 |  |
+| Gear Ratio | 1:20 |  |
+| Spricket Diameter | XX | m |
+| Ground (Default)| XX | m |
+| Score Low | XX | m |
+| Score Mid | XX | m |
+| Score High | XX | m |
+
 
 ### Drivetrain
 
