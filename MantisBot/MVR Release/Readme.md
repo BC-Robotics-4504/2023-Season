@@ -1,3 +1,7 @@
+```diff
+@@ text in yellow
+```
+
 # Miami Valley Regional
 
 ## Robotpy Setup
@@ -13,13 +17,13 @@ python -m robotpy_installer install robotpy
 
 ### Grabber Arm
 
-- **[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (1x):
+- @@**[SparkMax](https://www.revrobotics.com/rev-11-2158/)** (1x):
   - CAN ID `12`
   - 1:64 gear ratio
   - Drives [Neo Brushless Motor V1.1](https://www.revrobotics.com/rev-21-1650/)
   - Sprocket diameter XX
 
-- **[Pneumatic Hub](https://www.revrobotics.com/rev-11-1852/)**:
+- @@**[Pneumatic Hub](https://www.revrobotics.com/rev-11-1852/)**:
   - CAN ID `11`
   - Double solenoid
 
