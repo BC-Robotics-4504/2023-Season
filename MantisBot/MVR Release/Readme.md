@@ -22,7 +22,7 @@ python -m robotpy_installer install robotpy
 | --- | --- | --- |
 | CAN ID | 12 |  |
 | Gear Ratio | 1:64 |  |
-| Spricket Diameter | XX | m |
+| Sprocket Diameter | 0.0762 (3) | m (in) |
 | Retracted | XX | m |
 | Extended | XX | m|
 
@@ -39,7 +39,7 @@ python -m robotpy_installer install robotpy
 | --- | --- | --- |
 | CAN ID | 13 |  |
 | Gear Ratio | 1:20 |  |
-| Spricket Diameter | XX | m |
+| Sprocket Diameter | 0.0508 (2) | m (in) |
 | Ground (Default)| XX | m |
 | Score Low | XX | m |
 | Score Mid | XX | m |
@@ -86,6 +86,14 @@ python -m robotpy_installer install robotpy
 - **[Pigeon 2.0](https://www.google.com/search?client=safari&rls=en&q=pigeon+2.0&ie=UTF-8&oe=UTF-8)**:
   - CAN ID `11`
   - Orientation: Z up, X forward, Y right
+
+| Sensor Direction | Robot Direction |
+| --- | --- |
+| +X | Right |
+| +Y | Forward |
+| +Z | Up |
+
+
 
 - **[Limelight 2.0](https://docs.limelightvision.io/en/latest/)**:
   - Static IP address `10.4.45.11`
