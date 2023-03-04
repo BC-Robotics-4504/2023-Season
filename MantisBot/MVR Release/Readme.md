@@ -21,6 +21,11 @@ python -m robotpy_installer install robotpy
   - Drives [Neo Brushless Motor V1.1](https://www.revrobotics.com/rev-21-1650/)
   - Sprocket diameter XX
 
+| Position | Distance (m) |
+| --- | --- |
+| Retracted | XX |
+| Extended | XX |
+
 - **[Pneumatic Hub](https://www.revrobotics.com/rev-11-1852/)**:
   - CAN ID `11`
   - Double solenoid
@@ -32,6 +37,13 @@ python -m robotpy_installer install robotpy
   - 1:20 gear ratio
   - Drives [Neo Brushless Motor V1.1](https://www.revrobotics.com/rev-21-1650/)
   - Sprocket diameter XX
+
+| Position | Distance (m) |
+| --- | --- |
+| Ground (Default)| XX |
+| Score Low | XX |
+| Score Mid | XX |
+| Score High | XX |
 
 ### Drivetrain
 
