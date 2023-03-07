@@ -47,6 +47,9 @@
     "bold": false,
     "italic": false
   }
+],
+"python.analysis.extraPaths": [
+  "./MantisBot/Legacy"
 ]
 
 }
