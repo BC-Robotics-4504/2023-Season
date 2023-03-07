@@ -5,7 +5,7 @@ from wpimath.controller import PIDController
 from math import pi
 
 from componentsHMI import FlightStickHMI
-from componentsIMU import IMUModule
+# from componentsIMU import IMUModule
 
 class ComboSparkMax:
 

@@ -1,7 +1,7 @@
-import imp
-import wpilib
+# import imp
+# import wpilib
 import ctre
-from math import radians, degrees
+from math import radians #, degrees
 from wpimath.controller import PIDController
 
 from componentsDrive import DriveTrainModule

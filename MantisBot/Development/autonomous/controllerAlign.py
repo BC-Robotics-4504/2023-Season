@@ -2,11 +2,11 @@ from math import sin, cos, pi
 from magicbot import StateMachine, state
 
 from componentsDrive import DriveTrainModule
-from componentsVision import VisionModule
+# from componentsVision import VisionModule
 from componentsIMU import IMUModule
 
 class AlignAprilTagController(StateMachine):
-    vision : VisionModule
+    # vision : VisionModule
     drivetrain : DriveTrainModule
     imu : IMUModule
 
