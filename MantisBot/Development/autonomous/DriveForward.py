@@ -15,7 +15,8 @@ class DriveForward(AutonomousStateMachine):
     @timed_state(duration=3, first=True)
     def drive_forward(self):
         print('does this thing work?********************************************')
-        self.drivetrain.setArcade(0.05, 0)
+        self.drivetrain.setDistance(10)
+        
 
     # @state()
     # def stop_state(self):
