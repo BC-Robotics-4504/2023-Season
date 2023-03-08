@@ -1,6 +1,7 @@
 import ctre
 import rev 
 from wpimath.controller import PIDController
+from wpilib import SmartDashboard
 
 from math import pi
 
@@ -42,12 +43,14 @@ class ComboSparkMax:
             mtype = rev.CANSparkMaxLowLevel.MotorType.kBrushed # FIXME!: Is this right?
 
         self.mainMotor = rev.CANSparkMax(canID_leader, mtype)
+        self.mainMotor.restoreFactoryDefaults()
         self.mainMotor.setInverted(self.inverted)
         self.mainController, self.mainEncoder = self.__configureEncoder__(self.mainMotor)
 
         followerMotors = []
         for canID in self.canID_followers:
             follower = rev.CANSparkMax(canID, mtype)
+            follower.restoreFactoryDefaults()
             follower.setInverted(self.inverted)
             follower.follow(self.mainMotor)                              
             followerMotors.append(follower)
@@ -112,7 +115,7 @@ class DriveTrainModule:
         self.autoLockout = True
 
     def setLeft(self, value):
-        self.leftSpeed = value*.4           #TODO: Remove .4 when used with comp bot
+        self.leftSpeed = value
         self.leftSpeedChanged = True
         
     def setRight(self, value):
@@ -126,7 +129,6 @@ class DriveTrainModule:
     def setDistance(self, value):
         self.mainRight_motor.setDistance(value)
         self.mainLeft_motor.setDistance(value)
-        print(value)
         return False
         
     def is_leftChanged(self):
@@ -189,7 +191,7 @@ class DriveTrainModule:
 
         if not self.autoLockout:
             self.check_hmi()
-
+        
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():
             self.mainLeft_motor.setPercent(self.leftSpeed)

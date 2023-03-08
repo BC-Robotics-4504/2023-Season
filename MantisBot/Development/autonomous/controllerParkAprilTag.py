@@ -2,11 +2,11 @@ from math import sin, cos, pi, radians, degrees
 from magicbot import StateMachine, state
 
 from componentsDrive import DriveTrainModule
-from componentsPhotonVision import PhotonVisionModule
+# from componentsPhotonVision import PhotonVisionModule
 from componentsIMU import IMUModule
 
 class ParkingController(StateMachine):
-    photonvision : PhotonVisionModule
+    # photonvision : PhotonVisionModule
     drivetrain : DriveTrainModule
     imu : IMUModule
 

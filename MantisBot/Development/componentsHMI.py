@@ -6,10 +6,10 @@ class FlightStickHMI:
         self.rightStick = wpilib.Joystick(stickRight_ID)
         
         self.fsR = 0
-        self.fsRButtons = list(range(12))
+        self.fsRButtons = list(range(8)) #FIXME!!!
         
         self.fsL = 0
-        self.fsLButtons = list(range(12))
+        self.fsLButtons = list(range(8)) #FIXME!!!
 
         self.changed = True
 
@@ -20,11 +20,11 @@ class FlightStickHMI:
         # Right Stick Commands
         fsR = self.rightStick.getY()
 
-        fsRButtons = list(range(12))
+        fsRButtons = list(range(8)) #FIXME!!!  
         for i in range(len(fsRButtons)):
             fsRButtons[i] = self.rightStick.getRawButton(i+1)
 
-        fsLButtons = list(range(8))
+        fsLButtons = list(range(8)) #FIXME!!!  
         for i in range(len(fsLButtons)):
             fsLButtons[i] = self.leftStick.getRawButton(i+1)
 
@@ -44,7 +44,7 @@ class FlightStickHMI:
         return self.fsRButtons[buttonNum - 1]
 
     def getLButton(self, buttonNum):
-            return self.fsLButtons[buttonNum - 1]
+        return self.fsLButtons[buttonNum - 1]
 
     def getInput(self):
         return (self.fsL, self.fsR)
@@ -54,10 +54,10 @@ class HMIModule:
 
     def __init__(self):
         self.fsR = 0
-        self.fsRButtons = list(range(12))
+        self.fsRButtons = list(range(8)) #FIXME!!!
 
         self.fsL = 0
-        self.fsLButtons = list(range(8))
+        self.fsLButtons = list(range(8)) # FIXME!!!
 
         self.changed = False
         self.enabled = True
@@ -72,16 +72,20 @@ class HMIModule:
     def is_buttonPressed(self, stick, buttonNum):
         if stick == 'L' or stick == 0:
             return self.fsLButtons[buttonNum - 1]
+        
         elif stick == 'R' or stick == 1:
             return self.fsRButtons[buttonNum - 1]
 
     def execute(self):
         if self.hmi_interface.is_changedInput():
             (self.fsL, self.fsR) = self.hmi_interface.getInput()
+            
             for i in range(len(self.fsRButtons)):
                 self.fsRButtons[i] = self.hmi_interface.getRButton(i+1)
+                
             for i in range(len(self.fsLButtons)):
                 self.fsLButtons[i] = self.hmi_interface.getLButton(i+1)
+                
             self.changed = True
 
 

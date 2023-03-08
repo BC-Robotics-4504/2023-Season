@@ -56,8 +56,8 @@ python -m robotpy_installer install robotpy
 
 | Position | Value | Unit |
 | --- | --- | --- |
-| Leader CAN ID | 6 |  |
-| Follower CAN ID | 4 |  |
+| Leader CAN ID | 2 |  |
+| Follower CAN ID | 1 |  |
 | Gear Ratio | 30:68 |  |
 | Wheel Diameter | 0.1524 (6) | m (in) |
 | Ground (Default)| XX | m |
@@ -72,14 +72,16 @@ python -m robotpy_installer install robotpy
 
 | Position | Value | Unit |
 | --- | --- | --- |
-| Leader CAN ID | 2 |  |
-| Follower CAN ID | 1 |  |
+| Leader CAN ID | 3 |  |
+| Follower CAN ID | 4 |  |
 | Gear Ratio | 30:68 |  |
 | Wheel Diameter | 0.1524 (6) | m (in) |
 | Ground (Default)| XX | m |
 | Score Low | XX | m |
 | Score Mid | XX | m |
 | Score High | XX | m |
+
+### Robot IP Address
 
 ### Sensors
 
