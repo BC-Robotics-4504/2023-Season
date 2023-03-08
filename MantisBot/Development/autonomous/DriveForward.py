@@ -1,24 +1,25 @@
 from magicbot import AutonomousStateMachine, timed_state, state
-import wpilib
 
 # this is one of your components
 from componentsDrive import DriveTrainModule as DriveTrain
 
 
 class DriveForward(AutonomousStateMachine):
-    MODE_NAME = "Drive Forward"
-    DEFAULT = False
-
     # Injected from the definition in robot.py
+    
+    MODE_NAME = "Drive Forward"
+    DEFAULT = True
+    
     drivetrain: DriveTrain
 
-    @timed_state(duration=3.0, first=True, must_finish=True)
+    @timed_state(duration=3, first=True)
     def drive_forward(self):
-        self.drivetrain.setInput((-0.25, 0.25))
+        print('does this thing work?********************************************')
+        self.drivetrain.setArcade(0.05, 0)
 
-    @state()
-    def stop_state(self):
-        self.drivetrain.setInput((0, 0))
+    # @state()
+    # def stop_state(self):
+    #     self.drivetrain.setDistance(0)
 
     # def on_enable(self) -> None:
     #     return None
