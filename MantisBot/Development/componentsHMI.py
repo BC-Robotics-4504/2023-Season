@@ -6,27 +6,37 @@ class FlightStickHMI:
         self.rightStick = wpilib.Joystick(stickRight_ID)
         
         self.fsR = 0
-        self.fsRButtons = list(range(8)) #FIXME!!!
+        self.numfsRButtons = 11
+        self.fsRButtons = list(range(self.numfsRButtons)) 
         
         self.fsL = 0
-        self.fsLButtons = list(range(8)) #FIXME!!!
+        self.numfsLButtons = 11
+        self.fsLButtons = list(range(self.numfsLButtons))
 
         self.changed = True
+
+        self.DEADZONE = .05
 
     def is_changedInput(self):
         # Left Stick Commands
         fsL = self.leftStick.getY()
+        if abs(fsL) < self.DEADZONE:
+            fsL = 0
+
+        fsLButtons = list(range(self.numfsLButtons)) 
+        for i in range(len(fsLButtons)):
+            fsLButtons[i] = self.leftStick.getRawButton(i+1)
 
         # Right Stick Commands
         fsR = self.rightStick.getY()
+        if abs(fsL) < self.DEADZONE:
+            fsL = 0
 
-        fsRButtons = list(range(8)) #FIXME!!!  
+        fsRButtons = list(range(self.numfsRButtons)) 
         for i in range(len(fsRButtons)):
             fsRButtons[i] = self.rightStick.getRawButton(i+1)
 
-        fsLButtons = list(range(8)) #FIXME!!!  
-        for i in range(len(fsLButtons)):
-            fsLButtons[i] = self.leftStick.getRawButton(i+1)
+        # print(fsL, fsR)
 
         if fsL != self.fsL or fsR != self.fsR or fsRButtons != self.fsRButtons or fsLButtons != self.fsLButtons:
             self.fsL = fsL
@@ -54,10 +64,10 @@ class HMIModule:
 
     def __init__(self):
         self.fsR = 0
-        self.fsRButtons = list(range(8)) #FIXME!!!
+        self.fsRButtons = list(range(11))
 
         self.fsL = 0
-        self.fsLButtons = list(range(8)) # FIXME!!!
+        self.fsLButtons = list(range(11))
 
         self.changed = False
         self.enabled = True
@@ -85,7 +95,7 @@ class HMIModule:
                 
             for i in range(len(self.fsLButtons)):
                 self.fsLButtons[i] = self.hmi_interface.getLButton(i+1)
+
                 
             self.changed = True
-
 

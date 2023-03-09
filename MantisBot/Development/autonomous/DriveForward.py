@@ -12,10 +12,10 @@ class DriveForward(AutonomousStateMachine):
     
     drivetrain: DriveTrain
 
-    @timed_state(duration=3, first=True)
+    @timed_state(duration=300, first=True)
     def drive_forward(self):
-        print('does this thing work?********************************************')
-        self.drivetrain.setDistance(10)
+        self.drivetrain.resetDistance()
+        self.drivetrain.setDistance(1)
         
 
     # @state()

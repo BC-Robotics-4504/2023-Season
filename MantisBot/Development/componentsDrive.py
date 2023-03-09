@@ -95,6 +95,7 @@ class ComboSparkMax:
     def setDistance(self, distance):
         rotations = distance # FIXME!!!
         self.mainController.setReference(rotations, rev.CANSparkMax.ControlType.kSmartMotion)
+        print(self.getDistance())
         return False
 
 
