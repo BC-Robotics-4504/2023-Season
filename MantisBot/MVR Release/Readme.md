@@ -58,7 +58,7 @@ python -m robotpy_installer install robotpy
 | --- | --- | --- |
 | Leader CAN ID | 2 |  |
 | Follower CAN ID | 1 |  |
-| Gear Ratio | 30:68 |  |
+| Gear Ratio | (68/30)x(52/11) |  |
 | Wheel Diameter | 0.1524 (6) | m (in) |
 | Ground (Default)| XX | m |
 | Score Low | XX | m |
@@ -74,7 +74,7 @@ python -m robotpy_installer install robotpy
 | --- | --- | --- |
 | Leader CAN ID | 3 |  |
 | Follower CAN ID | 4 |  |
-| Gear Ratio | 30:68 |  |
+| Gear Ratio | (68/30)x(52/11)|  |
 | Wheel Diameter | 0.1524 (6) | m (in) |
 | Ground (Default)| XX | m |
 | Score Low | XX | m |
@@ -86,7 +86,7 @@ python -m robotpy_installer install robotpy
 ### Sensors
 
 - **[Pigeon 2.0](https://www.google.com/search?client=safari&rls=en&q=pigeon+2.0&ie=UTF-8&oe=UTF-8)**:
-  - CAN ID `11`
+  - CAN ID `15`
   - Orientation: Z up, X forward, Y right
 
 | Sensor Direction | Robot Direction |
