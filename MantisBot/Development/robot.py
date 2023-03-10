@@ -49,14 +49,14 @@ class MyRobot(MagicRobot):
         self.elevator_motor = ElevatorSparkMax(13, [], wheel_diameter=0.0508, gear_ratio=1/20)
         
         """Drivetrain Motor Configuration"""
-        self.mainLeft_motor = ComboSparkMax(3, [4], inverted=True, wheel_diameter=0.1524, gear_ratio=30/68)
-        self.mainRight_motor = ComboSparkMax(2, [1], inverted=False, wheel_diameter=0.1524, gear_ratio=30/68)
+        self.mainLeft_motor = ComboSparkMax(3, [4], inverted=True, wheel_diameter=0.1524, gear_ratio=(52*68)/(11*30))
+        self.mainRight_motor = ComboSparkMax(2, [1], inverted=False, wheel_diameter=0.1524, gear_ratio=(52*68)/(11*30))
         
         """Sensor Setups"""
         self.colorSensor = rev.ColorSensorV3(wpilib.I2C.Port.kOnboard)
         
         """IMU Configuration"""
-        self.imuSensor = ctre.Pigeon2(11)
+        self.imuSensor = ctre.Pigeon2(15)
 
         """Camera Configurtation"""
         self.camera = photonvision.PhotonCamera('MSWebCam')
@@ -70,6 +70,9 @@ class MyRobot(MagicRobot):
         pass
 
     def teleopInit(self):
+        self.mainLeft_motor.resetDistance()
+        self.mainRight_motor.resetDistance()
+
         """Disable Autonomous Lockout of Drivetrain access to the HMI"""
         self.drivetrain.disable_autoLockout()
         return False
@@ -85,6 +88,9 @@ class MyRobot(MagicRobot):
 
         else:
             self.drivetrain.disable_autoLockout()
+
+        # print(self.drivetrain.mainLeft_motor.getDistance(), self.drivetrain.mainRight_motor.getDistance())
+    
         
 
 if __name__ == "__main__":

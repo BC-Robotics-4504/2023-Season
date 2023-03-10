@@ -2,6 +2,7 @@ from magicbot import AutonomousStateMachine, timed_state, state
 
 # this is one of your components
 from componentsDrive import DriveTrainModule as DriveTrain
+from componentsIMU import IMUModule as IMU
 
 
 class DriveForward(AutonomousStateMachine):
@@ -9,13 +10,31 @@ class DriveForward(AutonomousStateMachine):
     
     MODE_NAME = "Drive Forward"
     DEFAULT = True
-    
     drivetrain: DriveTrain
-
-    @timed_state(duration=300, first=True)
-    def drive_forward(self):
+    imu: IMU
+    def setup(self):
         self.drivetrain.resetDistance()
-        self.drivetrain.setDistance(1)
+
+    @state(first=True, must_finish=True)
+    def zero_encoder(self):
+        self.drivetrain.resetDistance()
+        self.next_state_now('drive_forward')
+
+    @state(must_finish=True)
+    def drive_forward(self):
+        self.drivetrain.setDistance(3)
+        if abs(3 - self.drivetrain.mainLeft_motor.getDistance()) < .001:
+            self.next_state_now('turn_90')
+
+    @state(must_finish=True)
+    def turn_90(self):
+        isFinished = False
+        isFinished = self.imu.runPID(self, 90)
+        if isFinished:
+            self.next_state_now('zero_encoder')
+            self.cycles+=1
+
+
         
 
     # @state()

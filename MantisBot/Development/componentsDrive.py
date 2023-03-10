@@ -27,7 +27,7 @@ class ComboSparkMax:
     allowedErr = 0
 
     def __init__(self, canID_leader, canID_followers, motorType='brushless', inverted=False, 
-                 gear_ratio=1, wheel_diameter=0.1524):
+                 gear_ratio=(52*68)/(11*30), wheel_diameter=0.1524):
         self.canID_leader = canID_leader
         self.canID_followers = canID_followers
         self.inverted = inverted
@@ -35,7 +35,8 @@ class ComboSparkMax:
         self.followerMotors = None
         self.gear_ratio = gear_ratio
         self.wheel_diameter = wheel_diameter
-        self.distance_to_rotations = 1/(2*pi*wheel_diameter*gear_ratio)
+        # self.distance_to_rotations = 22.6244
+        self.distance_to_rotations = gear_ratio/(pi*wheel_diameter)
 
         if motorType == 'brushless':
             mtype = rev.CANSparkMaxLowLevel.MotorType.kBrushless
@@ -81,11 +82,11 @@ class ComboSparkMax:
         return False
 
     def getVelocity(self):
-        vel = self.mainEncoder.getVelocity() #rpm
+        vel = -self.mainEncoder.getVelocity() #rpm
         return vel
 
     def getDistance(self):
-        pos = self.mainEncoder.getPosition()
+        pos = -self.mainEncoder.getPosition() / self.distance_to_rotations
         return pos
 
     def resetDistance(self):
@@ -93,8 +94,8 @@ class ComboSparkMax:
         return False
     
     def setDistance(self, distance):
-        rotations = distance # FIXME!!!
-        self.mainController.setReference(rotations, rev.CANSparkMax.ControlType.kSmartMotion)
+        rotations = distance * self.distance_to_rotations
+        self.mainController.setReference(-rotations, rev.CANSparkMax.ControlType.kSmartMotion)
         print(self.getDistance())
         return False
 
