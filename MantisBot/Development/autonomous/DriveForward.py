@@ -9,7 +9,7 @@ class DriveForward(AutonomousStateMachine):
     # Injected from the definition in robot.py
     
     MODE_NAME = "Drive Forward"
-    DEFAULT = True
+    DEFAULT = False
     drivetrain: DriveTrain
     imu: IMU
     def setup(self):

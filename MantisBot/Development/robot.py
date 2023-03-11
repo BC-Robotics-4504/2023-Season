@@ -45,8 +45,8 @@ class MyRobot(MagicRobot):
         
         """Intake Motor Configuration"""
         self.grabber_pneumatics= GrabberPneumatics(11)
-        self.grabber_motor = GrabberSparkMax(12, [], wheel_diameter=0.0508, gear_ratio=1/64)
-        self.elevator_motor = ElevatorSparkMax(13, [], wheel_diameter=0.0508, gear_ratio=1/20)
+        self.grabber_motor = GrabberSparkMax(12, [], wheel_diameter=0.0762, gear_ratio=64/1)
+        self.elevator_motor = ElevatorSparkMax(13, [], wheel_diameter=0.0382, gear_ratio=10/1)
         
         """Drivetrain Motor Configuration"""
         self.mainLeft_motor = ComboSparkMax(3, [4], inverted=True, wheel_diameter=0.1524, gear_ratio=(52*68)/(11*30))
@@ -72,6 +72,8 @@ class MyRobot(MagicRobot):
     def teleopInit(self):
         self.mainLeft_motor.resetDistance()
         self.mainRight_motor.resetDistance()
+        self.elevator_motor.resetDistance()
+        self.grabber_motor.resetDistance()
 
         """Disable Autonomous Lockout of Drivetrain access to the HMI"""
         self.drivetrain.disable_autoLockout()
@@ -83,12 +85,13 @@ class MyRobot(MagicRobot):
 
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-
+            
             # self.ATPVController.engage()
 
         else:
             self.drivetrain.disable_autoLockout()
-
+        print(self.grabber_motor.getDistance())
+        self.grabber_motor.setDistance(.05)
         # print(self.drivetrain.mainLeft_motor.getDistance(), self.drivetrain.mainRight_motor.getDistance())
     
         

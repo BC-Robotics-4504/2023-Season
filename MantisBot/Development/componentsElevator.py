@@ -17,7 +17,7 @@ class ElevatorSparkMax:
 
     # PID coefficients
     kP = 5e-5
-    kI = 1e-6
+    kI = 1e-7
     kD = 0
     kIz = 0
     kFF = 0.000156
@@ -32,15 +32,15 @@ class ElevatorSparkMax:
     allowedErr = 0
 
     def __init__(self, canID_leader, canID_followers, motorType='brushless', inverted=False,
-                gear_ratio=20, wheel_diameter=0.0508):
+                gear_ratio=20, wheel_diameter=0.0381 ): # 1.5 inch sprocket diameter
         self.canID_leader = canID_leader
         self.canID_followers = canID_followers
         self.inverted = inverted
         self.mainMotor = None
         self.followerMotors = None
         self.gear_ratio = gear_ratio
-        self.wheel_diameter = wheel_diameter
-        self.distance_to_rotations = 1/(2*pi*wheel_diameter*gear_ratio)
+        self.sprocket_diameter = wheel_diameter
+        self.distance_to_rotations = gear_ratio/(pi*wheel_diameter)
 
         if motorType == 'brushless':
             mtype = rev.CANSparkMaxLowLevel.MotorType.kBrushless
@@ -88,7 +88,7 @@ class ElevatorSparkMax:
         return vel
 
     def getDistance(self):
-        pos = self.mainEncoder.getPosition()
+        pos = -self.mainEncoder.getPosition() / self.distance_to_rotations
         return pos
 
     def resetDistance(self):
@@ -96,8 +96,8 @@ class ElevatorSparkMax:
         return False
 
     def setDistance(self, distance):
-        rotations = distance*self.distance_to_rotations
-        self.mainController.setReference(rotations, rev.CANSparkMax.ControlType.kSmartMotion)
+        rotations = distance * self.distance_to_rotations
+        self.mainController.setReference(-rotations, rev.CANSparkMax.ControlType.kSmartMotion)
         return False
 
 class ElevatorModule:
