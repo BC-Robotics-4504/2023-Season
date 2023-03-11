@@ -15,21 +15,22 @@ class MoveGrabber(AutonomousStateMachine):
     grabber : Grabber
     imu: IMU
 
-    @state(first=True, must_finish=True)
-    def zero_encoders(self):
+    def score(self, elevator_height = 1, grabber_length = .12):
+        self.elevator_height = elevator_height
+        self.grabber_length = grabber_length
+        self.engage()
 
-        self.next_state_now('raise_grabber')
 
-    @state(must_finish=True)
+    @state(first = True, must_finish=True)
     def raise_grabber(self):
-        dist = 1
+        dist = self.elevator_height
         self.elevator.elevator_motor.setDistance(dist)
         if abs(dist-self.elevator.elevator_motor.getDistance()) < .001:
             self.next_state_now('extend_grabber')
 
     @state(must_finish=True)
     def extend_grabber(self):
-        dist = 0.12
+        dist = self.grabber_length
         self.grabber.grabber_motor.setDistance(dist)
         if abs(dist-self.grabber.grabber_motor.getDistance()) < .001:
             self.next_state_now('wait')

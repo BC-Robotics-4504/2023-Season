@@ -28,6 +28,7 @@ from componentsGrabber import GrabberModule, GrabberSparkMax, GrabberPneumatics
 # from autonomous.controllerAprilTagPVFollower import AprilTagPVController
 
 from autonomous.DriveForward import DriveForward
+from autonomous.superstructureTest import MoveGrabber
 
 class MyRobot(MagicRobot):
     
@@ -88,10 +89,20 @@ class MyRobot(MagicRobot):
             
             # self.ATPVController.engage()
 
+        if self.hmi.is_buttonPressed('L', 3): # High goal
+            if not self.drivetrain.is_lockedout():
+                self.drivetrain.enable_autoLockout()
+            MoveGrabber.score(self, elevator_height=1, grabber_length=.12)
+
+        if self.hmi.is_buttonPressed('L', 2): # Mid goal
+            if not self.drivetrain.is_lockedout():
+                self.drivetrain.enable_autoLockout()
+            MoveGrabber.score(self, elevator_height=1, grabber_length=.06)
+        
         else:
             self.drivetrain.disable_autoLockout()
-        print(self.grabber_motor.getDistance())
-        self.grabber_motor.setDistance(.05)
+
+        print(self.elevator_motor.getDistance(), self.grabber_motor.getDistance())
         # print(self.drivetrain.mainLeft_motor.getDistance(), self.drivetrain.mainRight_motor.getDistance())
     
         
