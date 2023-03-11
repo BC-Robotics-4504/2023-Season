@@ -51,6 +51,7 @@ class GrabberSparkMax:
         self.mainMotor = rev.CANSparkMax(canID_leader, mtype)
         self.mainMotor.setInverted(inverted)
         self.mainController, self.mainEncoder = self.__configureEncoder__(self.mainMotor)
+        self.resetDistance()
 
     def __configureEncoder__(self, motor, smartMotionSlot=0):
         mainController = motor.getPIDController()
@@ -137,6 +138,7 @@ class GrabberModule:
         self.nextLevel = 0
         self.stateChanged = False
         self.tol = tol
+        
 
     def setPosition(self, distance):
         self.nextElevatorPosition = distance

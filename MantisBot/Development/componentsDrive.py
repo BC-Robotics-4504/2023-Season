@@ -47,6 +47,7 @@ class ComboSparkMax:
         self.mainMotor.restoreFactoryDefaults()
         self.mainMotor.setInverted(self.inverted)
         self.mainController, self.mainEncoder = self.__configureEncoder__(self.mainMotor)
+        self.resetDistance()
 
         followerMotors = []
         for canID in self.canID_followers:

@@ -50,6 +50,7 @@ class ElevatorSparkMax:
         self.mainMotor = rev.CANSparkMax(canID_leader, mtype)
         self.mainMotor.setInverted(inverted)
         self.mainController, self.mainEncoder = self.__configureEncoder__(self.mainMotor)
+        self.resetDistance()
 
         followerMotors = []
         for canID in self.canID_followers:
