@@ -6,10 +6,10 @@ from componentsGrabber import GrabberModule as Grabber
 from componentsIMU import IMUModule as IMU
 
 
-class DriveForward(AutonomousStateMachine):
+class MoveGrabber(AutonomousStateMachine):
     # Injected from the definition in robot.py
     
-    MODE_NAME = "Test Superwtructure"
+    MODE_NAME = "Test Superstructure"
     DEFAULT = True
     elevator : Elevator
     grabber : Grabber
@@ -17,31 +17,34 @@ class DriveForward(AutonomousStateMachine):
 
     @state(first=True, must_finish=True)
     def zero_encoders(self):
-        self.elevator.elevator_motor.resetDistance()
+
         self.next_state_now('raise_grabber')
 
     @state(must_finish=True)
     def raise_grabber(self):
-        self.elevator.elevator_motor.setDistance(.5)
-        if abs(.5-self.elevator.elevator_motor.getDistance()) < .001:
+        dist = 1
+        self.elevator.elevator_motor.setDistance(dist)
+        if abs(dist-self.elevator.elevator_motor.getDistance()) < .001:
             self.next_state_now('extend_grabber')
 
     @state(must_finish=True)
     def extend_grabber(self):
-        self.grabber.grabber_motor.setDistance(.05)
-        if abs(.05-self.grabber.grabber_motor.getDistance()) < .001:
+        dist = 0.12
+        self.grabber.grabber_motor.setDistance(dist)
+        if abs(dist-self.grabber.grabber_motor.getDistance()) < .001:
             self.next_state_now('wait')
 
-    @timed_state(must_finish=True, duration=2)
+    @timed_state(duration=4, must_finish=True, next_state='retract_grabber')
     def wait(self):
         imuseless = True
-        self.next_state('retract_grabber')
+        # self.next_state('retract_grabber')
 
 
     @state(must_finish=True)
     def retract_grabber(self):
-        self.grabber.grabber_motor.setDistance(.00)
-        if abs(-self.grabber.grabber_motor.getDistance()) < .001:
+        dist = 0.01
+        self.grabber.grabber_motor.setDistance(dist)
+        if abs(dist-self.grabber.grabber_motor.getDistance()) < .001:
             self.next_state_now('lower_grabber')  
 
     @state(must_finish=True)
