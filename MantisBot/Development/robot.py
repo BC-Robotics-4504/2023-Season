@@ -99,12 +99,19 @@ class MyRobot(MagicRobot):
                 self.drivetrain.enable_autoLockout()
             MoveGrabber.score(self, elevator_height=1, grabber_length=.06)
         
+        if self.hmi.is_buttonPressed('L', 4): #Low Goal
+            if not self.drivetrain.is_lockedout():
+                self.drivetrain.enable_autoLockout()
+            MoveGrabber.score(self, elevator_height=.25, grabber_length=.06)
+        
+        
         else:
             self.drivetrain.disable_autoLockout()
 
         print(self.elevator_motor.getDistance(), self.grabber_motor.getDistance())
         # print(self.drivetrain.mainLeft_motor.getDistance(), self.drivetrain.mainRight_motor.getDistance())
     
+        print(self.hmi.is_buttonPressed('L', 3))
         
 
 if __name__ == "__main__":
