@@ -9,7 +9,7 @@ class LEDModule:
     def __init__(self, channel, multiplier=1):
         self.channel=channel
         self.pwm=PWM(channel)
-        self.setMultipier(multipier)
+        self.setMultipier(multiplier)
     
     def setMultiplier(multiplier):
         if multiplier == 1:
