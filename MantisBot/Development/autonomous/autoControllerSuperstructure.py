@@ -36,7 +36,6 @@ class Superstructure(AutonomousStateMachine):
     def wait(self):
         imuseless = True
 
-
     @state(must_finish=True)
     def retract_grabber(self):
         dist = 0.0

@@ -82,15 +82,17 @@ class MyRobot(MagicRobot):
 
     def teleopPeriodic(self) -> None:
         """Note: drivetrain will automatically function here!"""
-        # if self.hmi.is_buttonPressed('R', 2):
+        if self.hmi.is_buttonPressed('R', 2):
 
-        #     if not self.drivetrain.is_lockedout():
-        #         self.drivetrain.enable_autoLockout()
+            if not self.drivetrain.is_lockedout():
+                self.drivetrain.enable_autoLockout()
             
-            # self.ATPVController.engage()
+            self.ATPVController.engage()
 
         if self.hmi.is_buttonPressed('L', 3): # High goal
-            if not self.drivetrain.is_lockedout():
+            if not self.drivetrain.is_lockedout(): 
+                #TODO: do we want to really lock out the drivetrain here or 
+                # would it be better to go into some low-speed clamp mode?
                 self.drivetrain.enable_autoLockout()
             self.superstructure.score(elevator_height=1, grabber_length=.12)
             print("L3 Pressed")
