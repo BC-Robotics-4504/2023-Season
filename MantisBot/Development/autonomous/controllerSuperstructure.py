@@ -38,7 +38,6 @@ class Superstructure(StateMachine):
         imuseless = True
         # self.next_state('retract_grabber')
 
-
     @state(must_finish=True)
     def retract_grabber(self):
         dist = 0.01
@@ -50,5 +49,5 @@ class Superstructure(StateMachine):
     def lower_grabber(self):
         self.elevator.elevator_motor.setDistance(0)
         if abs(-self.elevator.elevator_motor.getDistance()) < .001:
-            isFinished = True     
+            isFinished = True # FIXME: What is this doing? This variable gets destroyed every function call during this state.
 

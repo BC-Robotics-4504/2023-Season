@@ -35,7 +35,6 @@ class Superstructure(AutonomousStateMachine):
     @timed_state(duration=4, must_finish=True, next_state='retract_grabber')
     def wait(self):
         imuseless = True
-        # self.next_state('retract_grabber')
 
 
     @state(must_finish=True)
@@ -49,5 +48,5 @@ class Superstructure(AutonomousStateMachine):
     def lower_grabber(self):
         self.elevator.elevator_motor.setDistance(0)
         if abs(-self.elevator.elevator_motor.getDistance()) < .001:
-            isFinished = True     
+            isFinished = True #FIXME: What is this doing?
 
