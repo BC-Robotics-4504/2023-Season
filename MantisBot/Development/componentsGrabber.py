@@ -4,9 +4,8 @@ import wpilib
 
 GrabberLevelDict_m = {
     0: 0,
-    1: 0.35,
-    2: 0.65,
-    3: 1.0,
+    1: 0.06,
+    2: 0.12,
 }
 
 def distanceToNextLevel(current_level, next_level):
@@ -131,7 +130,7 @@ class GrabberModule:
     grabber_motor: GrabberSparkMax
     grabber_pneumatics: GrabberPneumatics
 
-    def __init__(self, tol=0.05):
+    def __init__(self, tol=0.001):
         self.currentPosition = 0
         self.nextPosition = 0
         self.currentLevel = 0
@@ -140,27 +139,22 @@ class GrabberModule:
         self.tol = tol
         
 
-    def setPosition(self, distance):
-        self.nextElevatorPosition = distance
+    def goToLevel(self, level):
+        distance = GrabberLevelDict_m(level)
+        self.nextLevel = level
+        self.nextPosition = distance
         self.grabber_motor.setDistance(distance)
         return False
 
-    def setNextLevel(self, next_level):
-        if next_level not in GrabberLevelDict_m.keys():
-            return True
-
-        self.nextElevatorLevel = next_level
-        distance = distanceToNextLevel(self.currentLevel, next_level)
-
-        self.nextElevatorPosition = distance
-        self.setPosition(distance)
-
-    def getPosition(self):
-        self.currentElevatorPosition = self.grabber_motor.getDistance()
+    def getDistance(self):
+        return self.currentPosition
+    
+    def updateDistance(self):
+        self.currentPosition = self.grabber_motor.getDistance()
         return False
 
     def isAtLevel(self):
-        if abs(self.currentPosition - self.nextPosition) < self.tol:
+        if abs(self.currentPosition - self.nextPosition) <= self.tol:
             self.currentLevel = self.nextLevel
             return True
 
@@ -192,7 +186,7 @@ class GrabberModule:
 
     def execute(self):
         # Update grabber position
-        self.getPosition()
+        self.updateDistance(self)
 
         # Check if state has changed
         if self.stateChanged:

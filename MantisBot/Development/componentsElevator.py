@@ -3,15 +3,14 @@ from math import pi
 
 ElevatorLevelDict_m = {
     0: 0,
-    1: 0.35,
-    2: 0.65,
-    3: 1.0,
+    1: 0.25,
+    2: 1.0,
+    3: 1.025,
 }
 
-def positionToNextLevel(current_level, next_level):
-    assert current_level in ElevatorLevelDict_m.keys(), '[+] ERROR: current level argument not a valid level'
+def positionToNextLevel(next_level):
     assert next_level in ElevatorLevelDict_m.keys(), '[+] ERROR: next level argument not a valid level'
-    return ElevatorLevelDict_m[next_level] - ElevatorLevelDict_m[current_level]
+    return ElevatorLevelDict_m[next_level]
 
 class ElevatorSparkMax:
 
@@ -108,7 +107,7 @@ class ElevatorModule:
 
     elevator_motor: ElevatorSparkMax
 
-    def __init__(self, tol=0.05):
+    def __init__(self, tol=0.001):
         self.currentPosition = 0
         self.nextPosition = 0
         self.currentLevel = 0
@@ -116,32 +115,29 @@ class ElevatorModule:
         self.stateChanged = False
         self.tol = tol
 
-    def goToNextLevel(self, next_level):
+    def goToLevel(self, level):
         distance = positionToNextLevel(self.currentLevel, self.nextLevel)
         self.nextElevatorPosition = distance
         self.elevator_motor.setDistance(distance)
         return False
 
-    def getPosition(self):
+    def getDistance(self):
+        return self.currentElevatorPosition
+    
+    def updateDistance(self):
         self.currentElevatorPosition = self.elevator_motor.getDistance()
         return False
 
     def isAtLevel(self):
-        if abs(self.currentPosition - self.nextPosition) < self.tol:
+        if abs(self.currentPosition - self.nextPosition) <= self.tol:
             self.currentLevel = self.nextLevel
             return True
 
         return False
 
-    def setNextLevel(self, next_level):
-        if next_level not in ElevatorLevelDict_m.keys():
-            return True
-        self.stateChanged = True
-        self.nextElevatorLevel = next_level
-
     def execute(self):
         # Update elevator position
-        self.getPosition()
+        self.updateDistance()
 
         # Move level if needed
         if self.stateChanged:

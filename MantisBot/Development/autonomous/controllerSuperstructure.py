@@ -13,24 +13,25 @@ class Superstructure(StateMachine):
     grabber : Grabber
     imu: IMU
 
-    def score(self, elevator_height = 1, grabber_length = .12):
-        self.elevator_height = elevator_height
-        self.grabber_length = grabber_length
-        self.engage()
+    position = 0
 
+    def setScoringPosition(self, elevator_level, grabber_level):
+        self.grabber_level = grabber_level
+        self.elevator_level = elevator_level
+
+    def score(self):
+        self.engage()
 
     @state(first = True, must_finish=True)
     def raise_grabber(self):
-        dist = self.elevator_height
-        self.elevator.elevator_motor.setDistance(dist)
-        if abs(dist-self.elevator.elevator_motor.getDistance()) < .001:
+        self.elevator.goToLevel(self.elevator_level)
+        if self.elevator.isAtLevel():
             self.next_state_now('extend_grabber')
 
     @state(must_finish=True)
     def extend_grabber(self):
-        dist = self.grabber_length
-        self.grabber.grabber_motor.setDistance(dist)
-        if abs(dist-self.grabber.grabber_motor.getDistance()) < .001:
+        self.grabber.goToLevel(self.grabber_level)
+        if self.grabber.isAtLevel():
             self.next_state_now('wait')
 
     @timed_state(duration=4, must_finish=True, next_state='retract_grabber')
@@ -40,14 +41,13 @@ class Superstructure(StateMachine):
 
     @state(must_finish=True)
     def retract_grabber(self):
-        dist = 0.01
-        self.grabber.grabber_motor.setDistance(dist)
-        if abs(dist-self.grabber.grabber_motor.getDistance()) < .001:
+        self.grabber.goToLevel(0)
+        if self.grabber.isAtLevel():
             self.next_state_now('lower_grabber')  
 
     @state(must_finish=True)
     def lower_grabber(self):
-        self.elevator.elevator_motor.setDistance(0)
-        if abs(-self.elevator.elevator_motor.getDistance()) < .001:
+        self.elevator.goToLevel(0)
+        if self.elevator.isAtLevel():
             isFinished = True # FIXME: What is this doing? This variable gets destroyed every function call during this state.
 
