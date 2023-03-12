@@ -104,4 +104,3 @@ class HMIModule:
 
         (self.fsL, self.fsR) = self.hmi_interface.getInput()
         
-
