@@ -15,11 +15,9 @@ class Superstructure(StateMachine):
 
     position = 0
 
-    def setScoringPosition(self, elevator_level, grabber_level):
+    def scorePosition(self, elevator_level, grabber_level):
         self.grabber_level = grabber_level
         self.elevator_level = elevator_level
-
-    def score(self):
         self.engage()
 
     @state(first = True, must_finish=True)

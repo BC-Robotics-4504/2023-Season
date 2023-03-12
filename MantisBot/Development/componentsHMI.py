@@ -79,12 +79,18 @@ class HMIModule:
         return (self.fsL, self.fsR)
     
     def getLeftButton(self, button_id):
-        value = self.hmi_interface.getLeftButtons(button_id)
-        return value
+        if button_id in self.hmi_interface.fsLButtons.keys():
+            value = self.hmi_interface.getLeftButtons(button_id)
+            return value
+        else:
+            return False
     
     def getRightButton(self, button_id):
-        value = self.hmi_interface.getRightButtons(button_id)
-        return value
+        if button_id in self.hmi_interface.fsRButtons.keys():
+            value = self.hmi_interface.getRightButtons(button_id)
+            return value
+        else:
+            return False
 
     def is_changed(self):
         return self.changed
