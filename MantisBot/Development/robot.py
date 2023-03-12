@@ -82,32 +82,35 @@ class MyRobot(MagicRobot):
 
     def teleopPeriodic(self) -> None:
         """Note: drivetrain will automatically function here!"""
-        if self.hmi.is_buttonPressed('R', 2):
+        # if self.hmi.is_buttonPressed('R', 2):
 
-            if not self.drivetrain.is_lockedout():
-                self.drivetrain.enable_autoLockout()
+        #     if not self.drivetrain.is_lockedout():
+        #         self.drivetrain.enable_autoLockout()
             
-            self.ATPVController.engage()
+            # self.ATPVController.engage()
 
         if self.hmi.is_buttonPressed('L', 3): # High goal
             if not self.drivetrain.is_lockedout(): 
                 #TODO: do we want to really lock out the drivetrain here or 
                 # would it be better to go into some low-speed clamp mode?
                 self.drivetrain.enable_autoLockout()
-            self.superstructure.score(elevator_height=1, grabber_length=.12)
+            self.superstructure.setScoringPosition(elevator_level=3, grabber_evel=2)
+            self.superstructure.score()
             print("L3 Pressed")
 
         if self.hmi.is_buttonPressed('L', 2): # Mid goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            self.superstructure.score(elevator_height=1, grabber_length=.06)
+            self.superstructure.setScoringPosition(elevator_level=2, grabber_evel=1)
+            self.superstructure.score()
             print("L2 Pressed")
 
         
         if self.hmi.is_buttonPressed('L', 4): #Low Goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            self.superstructure.score(elevator_height=.25, grabber_length=.12)
+            self.superstructure.setScoringPosition(elevator_level=1, grabber_evel=1)
+            self.superstructure.score()
             print("L4 Pressed")
  
         else:
