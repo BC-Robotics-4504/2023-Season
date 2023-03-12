@@ -144,7 +144,7 @@ class GrabberModule:
         self.nextLevel = level
         self.nextPosition = distance
         self.grabber_motor.setDistance(distance)
-        return False
+        return self.isAtLevel()
 
     def getDistance(self):
         return self.currentPosition

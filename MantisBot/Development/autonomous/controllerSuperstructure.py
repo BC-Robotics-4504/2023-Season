@@ -24,14 +24,12 @@ class Superstructure(StateMachine):
 
     @state(first = True, must_finish=True)
     def raise_grabber(self):
-        self.elevator.goToLevel(self.elevator_level)
-        if self.elevator.isAtLevel():
+        if self.elevator.goToLevel(self.elevator_level):
             self.next_state_now('extend_grabber')
 
     @state(must_finish=True)
     def extend_grabber(self):
-        self.grabber.goToLevel(self.grabber_level)
-        if self.grabber.isAtLevel():
+        if self.grabber.goToLevel(self.grabber_level):
             self.next_state_now('wait')
 
     @timed_state(duration=4, must_finish=True, next_state='retract_grabber')
@@ -41,13 +39,11 @@ class Superstructure(StateMachine):
 
     @state(must_finish=True)
     def retract_grabber(self):
-        self.grabber.goToLevel(0)
-        if self.grabber.isAtLevel():
+        if self.grabber.goToLevel(0):
             self.next_state_now('lower_grabber')  
 
     @state(must_finish=True)
     def lower_grabber(self):
-        self.elevator.goToLevel(0)
-        if self.elevator.isAtLevel():
+        if self.elevator.goToLevel(0):
             isFinished = True # FIXME: What is this doing? This variable gets destroyed every function call during this state.
 

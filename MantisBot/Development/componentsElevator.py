@@ -119,7 +119,7 @@ class ElevatorModule:
         distance = positionToNextLevel(self.currentLevel, self.nextLevel)
         self.nextElevatorPosition = distance
         self.elevator_motor.setDistance(distance)
-        return False
+        return self.isAtLevel()
 
     def getDistance(self):
         return self.currentElevatorPosition

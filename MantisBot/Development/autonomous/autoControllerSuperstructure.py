@@ -20,14 +20,12 @@ class Superstructure(AutonomousStateMachine):
 
     @state(first = True, must_finish=True)
     def raise_grabber(self):
-        self.elevator.goToLevel(3)
-        if self.elevator.isAtLevel():
+        if self.elevator.goToLevel(3):
             self.next_state_now('extend_grabber')
 
     @state(must_finish=True)
     def extend_grabber(self):
-        self.grabber.goToLevel(2)
-        if self.grabber.isAtLevel():
+        if self.grabber.goToLevel(2):
             self.next_state_now('wait')
 
     @timed_state(duration=4, must_finish=True, next_state='retract_grabber')
@@ -36,16 +34,15 @@ class Superstructure(AutonomousStateMachine):
 
     @state(must_finish=True)
     def retract_grabber(self):
-        self.grabber.goToLevel(0)
-        if self.grabber.isAtLevel():
+        if self.grabber.goToLevel(0):
             self.next_state_now('lower_grabber')  
 
     @state(must_finish=True)
     def lower_grabber(self):
-        self.elevator.goToLevel(0) # TODO: need to get this running without interfacing directly with elevator_motor wrappers--use elevator module
-        if self.elevator.isAtLevel():
+        if self.elevator.goToLevel(0):
             isFinished = True #FIXME: What is this doing?
-            # TODO: add code here to continue drivetrain routine
+    
+    # TODO: add code here to continue drivetrain routine
 
     # @state(must_finish=True)
     # def turn_to_charging_station(self):
