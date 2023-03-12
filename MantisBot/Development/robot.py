@@ -116,8 +116,6 @@ class MyRobot(MagicRobot):
         else:
             self.drivetrain.disable_autoLockout()
 
-        # print(self.elevator_motor.getDistance(), self.grabber_motor.getDistance())
-        # print(self.drivetrain.mainLeft_motor.getDistance(), self.drivetrain.mainRight_motor.getDistance())
         
 
 if __name__ == "__main__":

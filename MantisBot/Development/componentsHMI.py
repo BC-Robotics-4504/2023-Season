@@ -6,7 +6,7 @@ class FlightStickHMI:
         self.rightStick = wpilib.Joystick(stickRight_ID)
         
         self.fsR = 0
-        self.fsRbuttons = {i:{'value':False, 'changed':False} for i in range(1, self.rightStick.getButtonCount())}
+        self.fsRButtons = {i:{'value':False, 'changed':False} for i in range(1, self.rightStick.getButtonCount())}
         
         self.fsL = 0
         self.fsLButtons = {i:{'value':False, 'changed':False} for i in range(1, self.leftStick.getButtonCount())}
@@ -37,6 +37,7 @@ class FlightStickHMI:
         return value
     
     def getRightButtons(self, button_id):
+        print(self.fsRButtons.keys())
         value = self.fsRButtons[button_id]['value']
         self.fsRButtons[button_id]['changed'] = False
         return value
@@ -78,10 +79,12 @@ class HMIModule:
         return (self.fsL, self.fsR)
     
     def getLeftButton(self, button_id):
-        return self.hmi_interface.getLeftButtons(button_id)
+        value = self.hmi_interface.getLeftButtons(button_id)
+        return value
     
     def getRightButton(self, button_id):
-        return self.hmi_interface.getRightButtons(button_id)
+        value = self.hmi_interface.getRightButtons(button_id)
+        return value
 
     def is_changed(self):
         return self.changed
