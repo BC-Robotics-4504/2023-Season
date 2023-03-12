@@ -1,15 +1,12 @@
 from magicbot import AutonomousStateMachine, timed_state, state
 
-# this is one of your components
 from componentsElevator import ElevatorModule as Elevator
 from componentsGrabber import GrabberModule as Grabber
 from componentsIMU import IMUModule as IMU
 
 
-class MoveGrabber(AutonomousStateMachine):
-    # Injected from the definition in robot.py
-    
-    MODE_NAME = "Auto Test Superstructure"
+class Superstructure(AutonomousStateMachine):
+    MODE_NAME = "Auto Superstructure Controller"
     DEFAULT = True
     elevator : Elevator
     grabber : Grabber

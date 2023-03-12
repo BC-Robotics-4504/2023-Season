@@ -9,12 +9,14 @@
 #		    _/    _/_/_/      _/        _/ 
 """
 
+# Libraries 
 from magicbot import MagicRobot
 import wpilib
 import rev
 import ctre
 import photonvision
 
+# Components
 from componentsDrive import DriveTrainModule, ComboSparkMax
 from componentsColor import ColorModule
 from componentsGrabber import GrabberModule
@@ -25,13 +27,16 @@ from componentsHMI import HMIModule, FlightStickHMI
 from componentsElevator import ElevatorModule, ElevatorSparkMax
 from componentsGrabber import GrabberModule, GrabberSparkMax, GrabberPneumatics
 
+# Controllers
 # from autonomous.controllerAprilTagPVFollower import AprilTagPVController
-
 from autonomous.DriveForward import DriveForward
-from autonomous.superstructureTest import MoveGrabber
+from autonomous.controllerSuperstructure import Superstructure
 
 class MyRobot(MagicRobot):
-    
+    # High level components
+    superstructure : Superstructure
+
+    # Low level components
     drivetrain : DriveTrainModule
     color : ColorModule
     imu : IMUModule
@@ -71,47 +76,43 @@ class MyRobot(MagicRobot):
         pass
 
     def teleopInit(self):
-        self.mainLeft_motor.resetDistance()
-        self.mainRight_motor.resetDistance()
-        self.elevator_motor.resetDistance()
-        self.grabber_motor.resetDistance()
-
         """Disable Autonomous Lockout of Drivetrain access to the HMI"""
         self.drivetrain.disable_autoLockout()
         return False
 
     def teleopPeriodic(self) -> None:
         """Note: drivetrain will automatically function here!"""
-        if self.hmi.is_buttonPressed('R', 2):
+        # if self.hmi.is_buttonPressed('R', 2):
 
-            if not self.drivetrain.is_lockedout():
-                self.drivetrain.enable_autoLockout()
+        #     if not self.drivetrain.is_lockedout():
+        #         self.drivetrain.enable_autoLockout()
             
             # self.ATPVController.engage()
 
         if self.hmi.is_buttonPressed('L', 3): # High goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            MoveGrabber.score(self, elevator_height=1, grabber_length=.12)
+            self.superstructure.score(elevator_height=1, grabber_length=.12)
+            print("L3 Pressed")
 
         if self.hmi.is_buttonPressed('L', 2): # Mid goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            MoveGrabber.score(self, elevator_height=1, grabber_length=.06)
+            self.superstructure.score(elevator_height=1, grabber_length=.06)
+            print("L2 Pressed")
+
         
         if self.hmi.is_buttonPressed('L', 4): #Low Goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            MoveGrabber.score(self, elevator_height=.25, grabber_length=.06)
-        
-        
+            self.superstructure.score(elevator_height=.25, grabber_length=.12)
+            print("L4 Pressed")
+ 
         else:
             self.drivetrain.disable_autoLockout()
 
-        print(self.elevator_motor.getDistance(), self.grabber_motor.getDistance())
+        # print(self.elevator_motor.getDistance(), self.grabber_motor.getDistance())
         # print(self.drivetrain.mainLeft_motor.getDistance(), self.drivetrain.mainRight_motor.getDistance())
-    
-        print(self.hmi.is_buttonPressed('L', 3))
         
 
 if __name__ == "__main__":

@@ -6,10 +6,8 @@ from componentsGrabber import GrabberModule as Grabber
 from componentsIMU import IMUModule as IMU
 
 
-class MoveGrabber(StateMachine):
-    # Injected from the definition in robot.py
-    
-    MODE_NAME = "Test Superstructure"
+class Superstructure(StateMachine):    
+    MODE_NAME = "Superstructure Controller"
     DEFAULT = False
     elevator : Elevator
     grabber : Grabber

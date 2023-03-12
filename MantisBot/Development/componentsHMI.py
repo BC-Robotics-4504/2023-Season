@@ -95,6 +95,9 @@ class HMIModule:
                 
             for i in range(len(self.fsLButtons)):
                 self.fsLButtons[i] = self.hmi_interface.getLButton(i+1)
+            
+            # print("Left  = " + str(self.fsLButtons))
+            # print("Right = " + str(self.fsRButtons))
 
                 
             self.changed = True
