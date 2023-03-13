@@ -4,22 +4,26 @@ from magicbot import StateMachine, timed_state, state
 from componentsElevator import ElevatorModule as Elevator
 from componentsGrabber import GrabberModule as Grabber
 from componentsIMU import IMUModule as IMU
+from componentsDrive import DriveTrainModule as DriveTrain
 
 
-class Superstructure(StateMachine):    
-    MODE_NAME = "Superstructure Controller"
-    DEFAULT = False
+class AutoMode(StateMachine):    
+    MODE_NAME = "Autonomous Mode"
+    DEFAULT = True
     elevator : Elevator
     grabber : Grabber
+    drivetrain : DriveTrain
     imu: IMU
 
     position = 0
-    engaged = False
-
+    
+    @state(must_finish=True, next_state='retract_grabber')
+    
+        
+        
     def scorePosition(self, elevator_level, grabber_level):
         self.grabber_level = grabber_level
         self.elevator_level = elevator_level
-        self.engaged = True
         self.engage()
 
     @state(first = True, must_finish=True)
@@ -45,10 +49,5 @@ class Superstructure(StateMachine):
     @state(must_finish=True)
     def lower_grabber(self):
         if self.elevator.goToLevel(0):
-            self.engaged = False
-            self.next_state_now('wait')
+            isFinished = True # FIXME: What is this doing? This variable gets destroyed every function call during this state.
 
-    @state(must_finish=True)
-    def wait(self):
-        if self.engaged == True:
-            self.next_state_now('extend_grabber')
