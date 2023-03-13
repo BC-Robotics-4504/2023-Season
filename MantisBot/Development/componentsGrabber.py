@@ -140,7 +140,7 @@ class GrabberModule:
         
 
     def goToLevel(self, level):
-        distance = GrabberLevelDict_m(level)
+        distance = GrabberLevelDict_m[level]
         self.nextLevel = level
         self.nextPosition = distance
         self.grabber_motor.setDistance(distance)
@@ -186,7 +186,7 @@ class GrabberModule:
 
     def execute(self):
         # Update grabber position
-        self.updateDistance(self)
+        self.updateDistance()
 
         # Check if state has changed
         if self.stateChanged:

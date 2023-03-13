@@ -53,8 +53,8 @@ class FlightStickHMI:
     def updateRightSick(self):
         # Right Stick Commands
         fsR = self.rightStick.getY()
-        if abs(fsL) < self.DEADZONE:
-            fsL = 0
+        if abs(fsR) < self.DEADZONE:
+            fsR = 0
         self.fsR = fsR
         return False
 
