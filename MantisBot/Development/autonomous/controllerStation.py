@@ -39,7 +39,7 @@ class Station(StateMachine):
         
     @state(must_finish=True)    #Grabber Closes when Left Button 4 is Pressed
     def close_grabber(self):
-        if self.hmi.getRightButton(1):
+        if self.hmi.getLeftButton(1):
             self.grabber.closeGrabber()
             self.next_state_now('retract_grabber')
 
