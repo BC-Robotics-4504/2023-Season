@@ -12,6 +12,7 @@ class DriveForward(AutonomousStateMachine):
     DEFAULT = False
     drivetrain: DriveTrain
     imu: IMU
+
     def setup(self):
         self.drivetrain.resetDistance()
 
@@ -22,15 +23,12 @@ class DriveForward(AutonomousStateMachine):
 
     @state(must_finish=True)
     def drive_forward(self):
-        self.drivetrain.setDistance(3)
-        if abs(3 - self.drivetrain.mainLeft_motor.getDistance()) < .001:
+        if self.drivetrain.goToDistance(3):
             self.next_state_now('turn_90')
 
     @state(must_finish=True)
     def turn_90(self):
-        isFinished = False
-        isFinished = self.imu.runPID(self, 90)
-        if isFinished:
+        if self.imu.goToAngle(90):
             self.next_state_now('zero_encoder')
             self.cycles+=1
 
