@@ -126,10 +126,10 @@ class MyRobot(MagicRobot):
         else:
             self.drivetrain.disable_autoLockout()
 
-        if self.hmi.getLeftButton(6):
+        if self.hmi.getLeftButton(1):
             self.grabber.closeGrabber()
 
-        if self.hmi.getLeftButton(7):
+        if self.hmi.getRightButton(1):
             self.grabber.openGrabber()
 
         

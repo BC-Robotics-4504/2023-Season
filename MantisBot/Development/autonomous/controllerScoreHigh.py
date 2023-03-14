@@ -19,8 +19,8 @@ class ScoreHigh(StateMachine):
     engaged = False
 
     def score(self):
-        self.grabber_level = 3
-        self.elevator_level = 2
+        self.grabber_level = 2
+        self.elevator_level = 3
         self.engaged = True
         self.engage()
 
@@ -36,7 +36,7 @@ class ScoreHigh(StateMachine):
 
     @state(must_finish=True)    #Grabber Closes when Left Button 3 is Pressed
     def wait_for_confirm(self):
-        if self.hmi.getLeftButton(3):
+        if self.hmi.getLeftButton(1):
             self.grabber.closeGrabber()
             self.next_state('retract_grabber')
 
