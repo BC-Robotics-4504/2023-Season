@@ -5,7 +5,7 @@ from wpilib import SmartDashboard
 
 from math import pi
 
-from componentsHMI import FlightStickHMI
+from componentsHMI import FlightStickHMI, HMIModule
 # from componentsIMU import IMUModule
 
 class ComboSparkMax:
@@ -105,6 +105,9 @@ class DriveTrainModule:
     mainLeft_motor: ComboSparkMax
     mainRight_motor: ComboSparkMax
     hmi_interface: FlightStickHMI
+    hmi : HMIModule
+
+    CLAMP = .1
 
     def __init__(self):
         self.leftSpeed = 0
@@ -214,6 +217,10 @@ class DriveTrainModule:
         if not self.autoLockout:
             self.check_hmi()
         
+        if self.hmi.getRightButton(2):
+            self.leftSpeed *= self.CLAMP
+            self.rightSpeed *= self.CLAMP
+
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():
             self.mainLeft_motor.setPercent(self.leftSpeed)
