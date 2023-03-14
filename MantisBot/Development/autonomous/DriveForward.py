@@ -12,10 +12,6 @@ class DriveForward(AutonomousStateMachine):
     DEFAULT = True
     drivetrain: DriveTrain
     imu: IMU
-    
-    drive_distance = 3
-    turn_angle = 90
-    
     def setup(self):
         self.drivetrain.resetDistance()
 
@@ -25,37 +21,18 @@ class DriveForward(AutonomousStateMachine):
         self.next_state_now('drive_forward')
     
     @state(must_finish=True)
-    def drive_forward(self): # FIXME: need to abstract like grabber/elevator
-        self.drivetrain.setDistance(self.drive_distance)
-        if abs(self.drive_distance - self.drivetrain.mainLeft_motor.getDistance()) < .001:
+    def drive_forward(self):
+        self.drivetrain.setDistance(3)
+        if abs(3 - self.drivetrain.mainLeft_motor.getDistance()) < .001:
             self.next_state_now('turn_90')
        
     @state(must_finish=True)
     def turn_90(self):
-        print('Yay, I made it!')
         isFinished = False
-        isFinished = self.imu.runPID(90)
+        isFinished = self.imu.runPID(self, 90)
         if isFinished:
-            self.next_state_now('stop')
-          # self.cycles+=1
-
-    @state(must_finish=True)
-    def stop(self):
-        self.drivetrain.setArcade(0,0)
-        self.next_state_now('drive_forward2')
-
-    @state(must_finish=True)
-    def drive_forward2(self): # FIXME: need to abstract like grabber/elevator
-        current_distance = self.drivetrain.mainLeft_motor.getDistance()
-        self.drivetrain.setDistance(1 + current_distance)
-        if abs(self.drive_distance - self.drivetrain.mainLeft_motor.getDistance()) < .001:
-            self.next_state_now('turn_90')
-          
-          
-          
-    @state
-    def drive(self):
-        self.drivetrain.setArcade(0,0)
+            self.next_state_now('zero_encoder')
+            self.cycles+=1
 
 
         

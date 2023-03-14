@@ -117,6 +117,9 @@ class DriveTrainModule:
 
         self.autoLockout = True
 
+        self.target_distance = 0
+        self.tolerance = 0.001
+
     def setLeft(self, value):
         self.leftSpeed = value
         self.leftSpeedChanged = True
@@ -133,7 +136,17 @@ class DriveTrainModule:
         self.mainRight_motor.setDistance(value)
         self.mainLeft_motor.setDistance(value)
         return False
-        
+    
+    def goToDistance(self, distance):
+        self.setDistance(distance)
+        return self.isAtDistance()
+    
+    def isAtDistance(self):
+        dL = self.mainLeft_motor.getDistance()
+        if abs(self.target_distance - dL) <= self.tolerance:
+            return True
+        return False       
+
     def is_leftChanged(self):
         return self.leftSpeedChanged
     
