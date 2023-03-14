@@ -116,16 +116,16 @@ class ElevatorModule:
         self.tol = tol
 
     def goToLevel(self, level):
-        distance = positionToNextLevel(self.nextLevel)
-        self.nextElevatorPosition = distance
+        distance = positionToNextLevel(level)
+        self.nextPosition = distance
         self.elevator_motor.setDistance(distance)
         return self.isAtLevel()
 
     def getDistance(self):
-        return self.currentElevatorPosition
+        return self.currentPosition
     
     def updateDistance(self):
-        self.currentElevatorPosition = self.elevator_motor.getDistance()
+        self.currentPosition = self.elevator_motor.getDistance()
         return False
 
     def isAtLevel(self):

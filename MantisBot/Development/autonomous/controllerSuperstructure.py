@@ -29,10 +29,10 @@ class Superstructure(StateMachine):
 
     @state(must_finish=True)
     def extend_grabber(self):
-        if self.grabber.goToLevel(self.grabber_level):
-            self.next_state_now('wait')
+         if self.grabber.goToLevel(self.grabber_level):
+             self.next_state_now('wait')
 
-    @timed_state(duration=4, must_finish=True, next_state='retract_grabber')
+    @timed_state(duration=2, must_finish=True, next_state='retract_grabber')
     def wait(self):
         imuseless = True
         # self.next_state('retract_grabber')
@@ -45,10 +45,11 @@ class Superstructure(StateMachine):
     @state(must_finish=True)
     def lower_grabber(self):
         if self.elevator.goToLevel(0):
-            self.next_state_now('wait')
+            self.engaged = False
+            self.next_state_now('dormant')
     
     @state(must_finish=True)
-    def wait(self):
+    def dormant(self):
         if self.engaged:
-            self.next_state('raise grabber')
+            self.next_state_now('raise_grabber')
 

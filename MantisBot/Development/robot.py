@@ -31,10 +31,12 @@ from componentsGrabber import GrabberModule, GrabberSparkMax, GrabberPneumatics
 # from autonomous.controllerAprilTagPVFollower import AprilTagPVController
 from autonomous.DriveForward import DriveForward
 from autonomous.controllerSuperstructure import Superstructure
+from autonomous.controllerScoreLow import ScoreLow
 
 class MyRobot(MagicRobot):
     # High level components
     superstructure : Superstructure
+    scoreLow : ScoreLow
 
     # Low level components
     drivetrain : DriveTrainModule
@@ -100,13 +102,14 @@ class MyRobot(MagicRobot):
         if self.hmi.getLeftButton(2): # Mid goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
+                print('lockout')
             self.superstructure.scorePosition(elevator_level=2, grabber_level=1)
             print("L2 Pressed")
 
         if self.hmi.getLeftButton(4): #Low Goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            self.superstructure.scorePosition(elevator_level=1, grabber_level=1)
+            self.scoreLow.scoreLow()
             print("L4 Pressed")
  
         else:

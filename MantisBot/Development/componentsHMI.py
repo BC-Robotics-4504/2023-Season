@@ -17,18 +17,14 @@ class FlightStickHMI:
 
     def updateLeftButtons(self):
         for button in self.fsLButtons.keys():
-            rawVal = self.leftStick.getRawButton(button)
-            if self.fsLButtons[button]['value'] is not rawVal:
-                self.fsLButtons[button]['changed'] = True
-                self.fsLButtons[button]['value'] = rawVal
+            rawVal = self.leftStick.getRawButtonPressed(button)
+            self.fsLButtons[button]['value'] = rawVal
         return False
     
     def updateRightButtons(self):
         for button in self.fsRButtons.keys():
             rawVal = self.rightStick.getRawButton(button)
-            if self.fsRButtons[button]['value'] is not rawVal:
-                self.fsRButtons[button]['changed'] = True
-                self.fsRButtons[button]['value'] = rawVal
+            self.fsRButtons[button]['value'] = rawVal
         return False
     
     def getLeftButtons(self, button_id):
@@ -37,7 +33,6 @@ class FlightStickHMI:
         return value
     
     def getRightButtons(self, button_id):
-        print(self.fsRButtons.keys())
         value = self.fsRButtons[button_id]['value']
         self.fsRButtons[button_id]['changed'] = False
         return value

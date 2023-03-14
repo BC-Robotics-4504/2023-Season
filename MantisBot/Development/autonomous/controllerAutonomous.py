@@ -9,37 +9,40 @@ from componentsDrive import DriveTrainModule
 class AutonomousMode(AutonomousStateMachine):
     
     MODE_NAME = "Autonomous Mode"
-    DEFAULT = True
+    DEFAULT = False
     elevator : Elevator
     grabber : Grabber
     imu: IMU
     drivetrain : DriveTrainModule
 
     position = 0
+    
+    elevator_level = 3
+    grabber_level = 2
 
-    def scorePosition(self, elevator_level, grabber_level):
-        self.grabber_level = grabber_level
-        self.elevator_level = elevator_level
-        self.engage()
+    # def scorePosition(self, elevator_level=3, grabber_level=2):
+    #     self.grabber_level = grabber_level
+    #     self.elevator_level = elevator_level
+    #     self.engage()
         
 
-    @state(first = True, must_finish = True)
-    def drive_forward(self):
-        self.drivetrain.setDistance(3)
-        if abs(3 - self.drivetrain.mainLeft_motor.getDistance()) < .001:
-            self.next_state_now('turn_90')
+    # @state(first = True, must_finish = True)
+    # def drive_forward(self):
+    #     self.drivetrain.setDistance(0)
+    #     if abs(3 - self.drivetrain.mainLeft_motor.getDistance()) < .001:
+    #         self.next_state_now('turn_90')
 
 
-    @state(must_finish=True)
-    def turn_90(self):
-        isFinished = False
-        isFinished = self.imu.runPID(self, 90)
-        if isFinished:
-            self.next_state_now('zero_encoder')
-            self.cycles+=1
+    # @state(must_finish=True)
+    # def turn_90(self):
+    #     isFinished = False
+    #     isFinished = self.imu.runPID(self, 90)
+    #     if isFinished:
+    #         self.next_state_now('zero_encoder')
+    #         self.cycles+=1
 
 
-    @state(first = False, must_finish=True)
+    @state(first = True, must_finish=True)
     def raise_grabber(self):
         if self.elevator.goToLevel(self.elevator_level):
             self.next_state_now('extend_grabber')
