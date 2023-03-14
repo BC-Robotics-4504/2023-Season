@@ -12,27 +12,38 @@ class DriveForward(AutonomousStateMachine):
     DEFAULT = True
     drivetrain: DriveTrain
     imu: IMU
-    def setup(self):
-        self.drivetrain.resetDistance()
 
     @state(first=True, must_finish=True)
-    def zero_encoder(self):
+    def zero_drivetrain(self):
         self.drivetrain.resetDistance()
         self.next_state_now('drive_forward')
     
     @state(must_finish=True)
     def drive_forward(self):
-        self.drivetrain.setDistance(3)
-        if abs(3 - self.drivetrain.mainLeft_motor.getDistance()) < .001:
+        dist = 1
+        self.drivetrain.setDistance(dist)
+        if abs(dist - self.drivetrain.mainLeft_motor.getDistance()) < .001:
             self.next_state_now('turn_90')
        
     @state(must_finish=True)
     def turn_90(self):
         isFinished = False
-        isFinished = self.imu.runPID(self, 90)
+        isFinished = self.imu.runPID(90)
         if isFinished:
-            self.next_state_now('zero_encoder')
-            self.cycles+=1
+            self.next_state_now('stop')
+
+    @state(must_finish=True)
+    def stop(self):
+        self.drivetrain.setArcade(0,0)
+        self.next_state_now('drive_forward2')
+
+    @state(must_finish=True)
+    def drive_forward2(self):
+        self.drivetrain.resetDistance()
+        dist = 1
+        self.drivetrain.setDistance(dist)
+        # if abs(3 - self.drivetrain.mainLeft_motor.getDistance()) < .001:
+        #     self.next_state_now('turn_90')
 
 
         

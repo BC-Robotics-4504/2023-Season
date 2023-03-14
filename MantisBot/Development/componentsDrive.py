@@ -202,6 +202,12 @@ class DriveTrainModule:
     
     def clamp(self, num, min_value, max_value):
         return max(min(num, max_value), min_value)
+    
+    def deadzone(self, value, deadzone):
+        if (abs(value) <= deadzone):
+            return 0
+        else:
+            return value
 
     def execute(self):
 
@@ -210,9 +216,9 @@ class DriveTrainModule:
         
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():
-            self.mainLeft_motor.setPercent(self.leftSpeed)
+            self.mainLeft_motor.setPercent(self.deadzone(self.leftSpeed, .05))
             self.leftSpeedChanged = False
 
         if self.is_rightChanged():
-            self.mainRight_motor.setPercent(self.rightSpeed)
+            self.mainRight_motor.setPercent(self.deadzone(self.rightSpeed, .05))
             self.rightSpeedChanged = False

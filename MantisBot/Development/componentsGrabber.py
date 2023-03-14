@@ -95,8 +95,8 @@ class GrabberSparkMax:
 
 class GrabberPneumatics:
 
-    PNEUMATIC_FORWARD_CHANNEL = 0
-    PNEUMATIC_REVERSE_CHANNEL = 1
+    PNEUMATIC_FORWARD_CHANNEL = 1
+    PNEUMATIC_REVERSE_CHANNEL = 0
 
     def __init__(self, can_id):
         self.can_id = can_id

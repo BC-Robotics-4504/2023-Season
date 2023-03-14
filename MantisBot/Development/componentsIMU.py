@@ -53,20 +53,21 @@ class IMUModule:
         return self.target_yaw
     
     def runPID(self, target_heading, tolerance = 5, speed_tolerance = .1):
+        if self.target_yaw == 0:
+            self.setRelativeTargetYaw(target_heading + self.getCurrentYaw())
+
         isFinished = False
-
-        # Convert degree heading into usuable form
-        self.targetAngle_rad = self.getYPR() + radians(target_heading)
-
-        yaw = self.getYPR()[0]
-        rotation_speed = self.imuPID.calculate(yaw, self.targetAngle_rad)
+        yaw = self.getCurrentYaw()
+        rotation_speed = self.imuPID.calculate(-yaw, self.target_yaw)
         rotation_speed = self.drivetrain.clamp(rotation_speed, -1, 1)
+        print(self.getCurrentYaw(), yaw - self.getCurrentYaw())
         self.drivetrain.setArcade(0, rotation_speed)
 
         # If angle is reached
-        if abs(yaw - self.targetAngle_rad) <= tolerance and abs(rotation_speed) <= speed_tolerance:
+        if abs(yaw - target_heading) <= tolerance and abs(rotation_speed) <= speed_tolerance:
             self.imuPID.reset() #TODO: make sure this doesn't break anything
             isFinished = True
+            self.setRelativeTargetYaw(0)
         return isFinished
 
     def execute(self):

@@ -115,6 +115,12 @@ class MyRobot(MagicRobot):
         else:
             self.drivetrain.disable_autoLockout()
 
+        if self.hmi.getLeftButton(6):
+            self.grabber.closeGrabber()
+
+        if self.hmi.getLeftButton(5):
+            self.grabber.openGrabber()
+
         
 
 if __name__ == "__main__":

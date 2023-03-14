@@ -22,7 +22,7 @@ class ScoreLow(StateMachine):
 
     @state(first = True, must_finish=True)
     def raise_grabber1(self):
-        if self.elevator.goToLevel(2):
+        if self.elevator.goToLevel(1):
             self.next_state_now('extend_grabber1')
 
     @state(must_finish=True)
@@ -32,20 +32,22 @@ class ScoreLow(StateMachine):
              
     @state(must_finish=True)
     def lower_grabber1(self):
-        if self.elevator.goToLevel(1):
+        if self.elevator.goToLevel(0):
             self.engaged = False
             self.next_state_now('wait')
             
-    
-
     @timed_state(duration=2, must_finish=True, next_state='raise_grabber2')
     def wait(self):
         imuseless = True
-        # self.next_state('retract_grabber')
+
+    @state(must_finish=True)
+    def close_grabber(self):
+        self.grabber.closeGrabber()
+        self.next_state_now('raise_grabber2')
         
     @state(must_finish=True)
     def raise_grabber2(self):
-        if self.elevator.goToLevel(2):
+        if self.elevator.goToLevel(1):
             self.next_state_now('retract_grabber2')
             
     @state(must_finish=True)
@@ -62,4 +64,4 @@ class ScoreLow(StateMachine):
     @state(must_finish=True)
     def dormant(self):
         if self.engaged:
-            self.next_state_now('raise_grabber')
+            self.next_state_now('raise_grabber1')
