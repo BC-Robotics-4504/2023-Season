@@ -129,7 +129,7 @@ class MyRobot(MagicRobot):
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
             self.station.score()
-            print('L9 Pressed')
+            print('L9 Pressed') 
  
         else:
             self.drivetrain.disable_autoLockout()
