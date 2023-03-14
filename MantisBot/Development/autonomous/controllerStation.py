@@ -29,7 +29,7 @@ class Station(StateMachine):
     
     @state(must_finish=True) #Elevator Actuation Up
     def raise_grabber(self):
-        if self.elevator.goToLevel(3):
+        if self.elevator.goToLevel(2):
             self.next_state_now('extend_grabber')
 
     @state(must_finish=True)    #Grabber Actuation Out
