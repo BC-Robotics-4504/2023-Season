@@ -216,9 +216,9 @@ class DriveTrainModule:
         
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():
-            self.mainLeft_motor.setPercent(self.deadzone(self.leftSpeed, .05))
+            self.mainLeft_motor.setPercent(self.deadzone(self.leftSpeed, .1))
             self.leftSpeedChanged = False
 
         if self.is_rightChanged():
-            self.mainRight_motor.setPercent(self.deadzone(self.rightSpeed, .05))
+            self.mainRight_motor.setPercent(self.deadzone(self.rightSpeed, .1))
             self.rightSpeedChanged = False
