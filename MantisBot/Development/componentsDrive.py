@@ -117,6 +117,9 @@ class DriveTrainModule:
 
         self.autoLockout = True
 
+        self.target_distance = 0
+        self.tolerance = 0.001
+
     def setLeft(self, value):
         self.leftSpeed = value
         self.leftSpeedChanged = True
@@ -133,7 +136,17 @@ class DriveTrainModule:
         self.mainRight_motor.setDistance(value)
         self.mainLeft_motor.setDistance(value)
         return False
-        
+    
+    def goToDistance(self, distance):
+        self.setDistance(distance)
+        return self.isAtDistance()
+    
+    def isAtDistance(self):
+        dL = self.mainLeft_motor.getDistance()
+        if abs(self.target_distance - dL) <= self.tolerance:
+            return True
+        return False       
+
     def is_leftChanged(self):
         return self.leftSpeedChanged
     
@@ -189,6 +202,12 @@ class DriveTrainModule:
     
     def clamp(self, num, min_value, max_value):
         return max(min(num, max_value), min_value)
+    
+    def deadzone(self, value, deadzone):
+        if (abs(value) <= deadzone):
+            return 0
+        else:
+            return value
 
     def execute(self):
 
@@ -197,9 +216,9 @@ class DriveTrainModule:
         
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():
-            self.mainLeft_motor.setPercent(self.leftSpeed)
+            self.mainLeft_motor.setPercent(self.deadzone(self.leftSpeed, .05))
             self.leftSpeedChanged = False
 
         if self.is_rightChanged():
-            self.mainRight_motor.setPercent(self.rightSpeed)
+            self.mainRight_motor.setPercent(self.deadzone(self.rightSpeed, .05))
             self.rightSpeedChanged = False
