@@ -45,10 +45,10 @@ class Superstructure(StateMachine):
     @state(must_finish=True)
     def lower_grabber(self):
         if self.elevator.goToLevel(0):
-            self.engaged = False
             self.next_state_now('wait')
-
+    
     @state(must_finish=True)
     def wait(self):
-        if self.engaged == True:
-            self.next_state_now('extend_grabber')
+        if self.engaged:
+            self.next_state('raise grabber')
+
