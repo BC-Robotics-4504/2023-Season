@@ -9,7 +9,7 @@ from componentsDrive import DriveTrainModule
 class AutonomousMode(AutonomousStateMachine):
     
     MODE_NAME = "Autonomous Mode"
-    DEFAULT = True
+    DEFAULT = False
     elevator : Elevator
     grabber : Grabber
     imu: IMU

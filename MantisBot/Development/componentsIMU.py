@@ -38,7 +38,7 @@ class IMUModule:
         return self.YPR
     
     def updateYPR(self):
-        self.YPR = self.imuSensor.getYawPitchRoll()
+        self.YPR = self.imuSensor.getYawPitchRoll()[-1]
         return False
     
     def setRelativeTargetYaw(self, target_yaw):
@@ -46,7 +46,7 @@ class IMUModule:
         return False
     
     def getCurrentYaw(self):
-        return self.YPR[0]
+        return self.getYPR()[0]
     
     def getTargetYaw(self):
         return self.target_yaw
