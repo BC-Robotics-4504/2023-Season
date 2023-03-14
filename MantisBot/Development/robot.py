@@ -88,6 +88,8 @@ class MyRobot(MagicRobot):
         """Disable Autonomous Lockout of Drivetrain access to the HMI"""
         self.drivetrain.disable_autoLockout()
         self.elevator.enableBrake()
+        self.grabber.enableBrake()
+        self.grabber.openGrabber()
         return False
 
     def teleopPeriodic(self) -> None:
@@ -141,8 +143,10 @@ class MyRobot(MagicRobot):
         if self.hmi.getRightButton(1):
             self.grabber.openGrabber()
 
-    def disabledInit(self):
+    def disabledPeriodic(self):
         self.elevator.disableBrake()
+        self.grabber.disableBrake()
+        self.grabber.openGrabber()
         
 
 if __name__ == "__main__":
