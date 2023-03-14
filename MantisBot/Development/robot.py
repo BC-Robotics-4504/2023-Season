@@ -77,7 +77,7 @@ class MyRobot(MagicRobot):
         self.camera = photonvision.PhotonCamera('MSWebCam')
 
         """User Controller Configuration"""
-        self.hmi_interface = FlightStickHMI(1, 0)
+        self.hmi_interface = FlightStickHMI(0, 1)
 
         """Controllers"""
         # self.ATPVController = AprilTagPVController()

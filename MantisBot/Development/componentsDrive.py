@@ -195,7 +195,7 @@ class DriveTrainModule:
         return self.arcadeSpeed[1]
 
     def check_hmi(self):
-        (leftSpeed, rightSpeed) = self.hmi_interface.getInput()
+        (rightSpeed, leftSpeed) = self.hmi_interface.getInput()
         self.setLeft(leftSpeed)
         self.setRight(rightSpeed)
         return False
