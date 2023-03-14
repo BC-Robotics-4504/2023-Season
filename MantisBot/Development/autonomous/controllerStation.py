@@ -8,7 +8,7 @@ from componentsHMI import HMIModule as HMI
 
 
 class Station(StateMachine):    
-    MODE_NAME = "Score High Controller"
+    MODE_NAME = "Station Controller"
     DEFAULT = False
     elevator : Elevator
     grabber : Grabber
