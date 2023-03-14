@@ -7,7 +7,7 @@ from componentsDrive import DriveTrainModule as DriveTrain
 
 class Superstructure(AutonomousStateMachine):
     MODE_NAME = "Auto Superstructure Controller"
-    DEFAULT = True
+    DEFAULT = False
 
     elevator : Elevator
     grabber : Grabber
