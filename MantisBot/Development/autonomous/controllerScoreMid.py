@@ -36,7 +36,7 @@ class ScoreMid(StateMachine):
 
     @state(must_finish=True)    #Grabber Closes when Left Button 5 is pressed
     def wait_for_confirm(self):
-        if self.hmi.getLeftButton(1):
+        if self.hmi.getRightButton(1):
             self.grabber.closeGrabber()
             self.next_state('retract_grabber')
 

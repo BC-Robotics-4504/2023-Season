@@ -34,6 +34,7 @@ from autonomous.controllerScoreHigh import ScoreHigh
 from autonomous.controllerScoreMid import ScoreMid
 from autonomous.controllerScoreLow import ScoreLow
 from autonomous.controllerStation import Station
+from autonomous.controllerFloor import Floor
 
 class MyRobot(MagicRobot):
     # High level components
@@ -41,6 +42,7 @@ class MyRobot(MagicRobot):
     scoreMid : ScoreMid
     scoreLow : ScoreLow
     station : Station
+    floor : Floor
     
 
     # Low level components
@@ -122,6 +124,12 @@ class MyRobot(MagicRobot):
                 self.drivetrain.enable_autoLockout()
             self.station.score()
             print("L4 Pressed")
+        
+        if self.hmi.getLeftButton(9): #Floor Pickup 
+            if not self.drivetrain.is_lockedout():
+                self.drivetrain.enable_autoLockout()
+            self.station.score()
+            print('L9 Pressed')
  
         else:
             self.drivetrain.disable_autoLockout()

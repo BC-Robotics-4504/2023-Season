@@ -6,8 +6,8 @@ from componentsGrabber import GrabberModule as Grabber
 from componentsIMU import IMUModule as IMU
 
 
-class ScoreLow(StateMachine):    
-    MODE_NAME = "Score Low Contorller"
+class Floor(StateMachine):    
+    MODE_NAME = "Floor Pickup Controller"
     DEFAULT = False
     elevator : Elevator
     grabber : Grabber
@@ -28,7 +28,7 @@ class ScoreLow(StateMachine):
     
     @state(must_finish=True)    #Grabber Actuation Out
     def extend_grabber1(self):
-         if self.grabber.goToLevel(1):
+         if self.grabber.goToLevel(2):
              self.next_state_now('lower_grabber1')
              
     @state(must_finish=True)    #Elevator Actuation Down
@@ -40,7 +40,7 @@ class ScoreLow(StateMachine):
     @state(must_finish=True)    #Grabber Opens when Left Button 5 is Pressed
     def close_grabber(self):
         if self.hmi.getRightButton(1):
-            self.grabber.openGrabber()
+            self.grabber.closeGrabber()
             self.next_state_now('raise_grabber2')
         
     @state(must_finish=True)    #Elevator Actuation Up
