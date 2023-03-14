@@ -57,4 +57,4 @@ class Station(StateMachine):
     @state(must_finish=True)    #Waits for Activation
     def wait(self):
         if self.engaged == True:
-            self.next_state_now('extend_grabber')
+            self.next_state_now('open_grabber')

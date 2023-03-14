@@ -54,4 +54,4 @@ class ScoreMid(StateMachine):
     @state(must_finish=True)    #Waits for Activation
     def dormant(self):
         if self.engaged == True:
-            self.next_state_now('extend_grabber')
+            self.next_state_now('raise_grabber')
