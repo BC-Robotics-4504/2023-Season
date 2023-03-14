@@ -18,7 +18,7 @@ class Station(StateMachine):
     position = 0
     engaged = False
 
-    def scoreStation(self):
+    def score(self):
         self.engaged = True
         self.engage()
 

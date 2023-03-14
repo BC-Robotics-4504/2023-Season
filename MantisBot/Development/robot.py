@@ -101,26 +101,26 @@ class MyRobot(MagicRobot):
                 #TODO: do we want to really lock out the drivetrain here or 
                 # would it be better to go into some low-speed clamp mode?
                 self.drivetrain.enable_autoLockout()
-            self.scoreHigh.scorePosition()
+            self.scoreHigh.score()
             print("L3 Pressed")
 
         if self.hmi.getLeftButton(5): # Mid goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
                 print('lockout')
-            self.scoreMid.scorePosition()
+            self.scoreMid.score()
             print("L5 Pressed")
 
         if self.hmi.getLeftButton(2): #Low Goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            self.scoreLow.scoreLow()
+            self.scoreLow.score()
             print("L2 Pressed")
             
         if self.hmi.getLeftButton(4): #Station
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            self.station.scoreStation()
+            self.station.score()
             print("L4 Pressed")
  
         else:

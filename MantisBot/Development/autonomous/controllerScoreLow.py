@@ -16,7 +16,7 @@ class ScoreLow(StateMachine):
     position = 0
     engaged = False
 
-    def scoreLow(self):
+    def score(self):
         self.engaged = True
         self.engage()
 
