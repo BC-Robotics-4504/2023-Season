@@ -39,9 +39,9 @@ class ScoreLow(StateMachine):
             self.engaged = False
             self.next_state_now('close_grabber')
 
-    @state(must_finish=True)    #Grabber Opens when Left Button 5 is Pressed
+    @state(must_finish=True)    #Grabber Opens when Left Trigger is Pressed
     def close_grabber(self):
-        if self.hmi.getRightButton(1):
+        if self.hmi.getLeftButton(1):
             self.grabber.openGrabber()
             self.next_state_now('raise_grabber2')
         

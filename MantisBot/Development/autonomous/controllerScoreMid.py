@@ -19,7 +19,7 @@ class ScoreMid(StateMachine):
     engaged = False
 
     def score(self):
-        self.grabber_level = 3
+        self.grabber_level = 1
         self.elevator_level = 2
         self.engaged = True
         self.engage()
@@ -34,10 +34,10 @@ class ScoreMid(StateMachine):
         if self.grabber.goToLevel(self.grabber_level):
             self.next_state_now('wait_for_confirm')
 
-    @state(must_finish=True)    #Grabber Closes when Left Button 5 is pressed
+    @state(must_finish=True)    #Grabber opens when Left Trigger is pressed
     def wait_for_confirm(self):
-        if self.hmi.getRightButton(1):
-            self.grabber.closeGrabber()
+        if self.hmi.getLeftButton(1):
+            self.grabber.openGrabber()
             self.next_state('retract_grabber')
 
     @state(must_finish=True)    #Grabber Actuation In

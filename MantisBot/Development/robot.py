@@ -124,24 +124,40 @@ class MyRobot(MagicRobot):
         if self.hmi.getRightButton(4) or self.hmi.getRightButton(6): #Station
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            self.station.score()
+            self.station.pickUp()
             print("R4 or R6 Pressed")
         
         if self.hmi.getRightButton(3) or self.hmi.getRightButton(4): #Floor Pickup 
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            self.floor.score()
+            self.floor.pickUp()
             print('L9 Pressed') 
  
         else:
             self.drivetrain.disable_autoLockout()
 
         if self.hmi.getLeftButton(1):
-            self.grabber.closeGrabber()
-            print()
+            self.grabber.openGrabber()
+            print("L1 Pressed")
 
         if self.hmi.getRightButton(1):
-            self.grabber.openGrabber()
+            self.grabber.closeGrabber()
+            print("R1 Pressed")
+
+
+        #MANUAL SUPERSTRUCTURE CONTROLS
+        if self.hmi.getLeftButton(8):
+            self.grabber.goToLevel(0)
+        
+        if self.hmi.getLeftButton(9):
+            self.elevator.goToLevel(0)
+
+        if self.hmi.getLeftButton(6):
+            self.grabber.goToLevel(2)
+
+        if self.hmi.getLeftButton(11):
+            self.elevator.goToLevel(3)
+
 
     def disabledPeriodic(self):
         self.elevator.disableBrake()

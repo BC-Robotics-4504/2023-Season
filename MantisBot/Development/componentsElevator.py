@@ -3,7 +3,7 @@ from math import pi
 
 ElevatorLevelDict_m = {
     0: 0,
-    1: 0.40,
+    1: 0.25,
     2: 1.0,
     3: 1.025,
 }

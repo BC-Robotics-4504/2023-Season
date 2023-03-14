@@ -9,7 +9,7 @@ from componentsDrive import DriveTrainModule
 class AutonomousMode(AutonomousStateMachine):
     
     MODE_NAME = "Autonomous Mode"
-    DEFAULT = False
+    DEFAULT = True
     elevator : Elevator
     grabber : Grabber
     imu: IMU
@@ -66,7 +66,7 @@ class AutonomousMode(AutonomousStateMachine):
             isFinished = True # FIXME: What is this doing? This variable gets destroyed every function call during this state.
     
     
-    @state(first = True, must_finish = True)
+    @state(must_finish = True)
     def drive_forward(self):
         self.drivetrain.setDistance(3)
         if abs(3 - self.drivetrain.mainLeft_motor.getDistance()) < .001:

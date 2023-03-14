@@ -34,10 +34,10 @@ class ScoreHigh(StateMachine):
         if self.grabber.goToLevel(self.grabber_level):
             self.next_state_now('wait_for_confirm')
 
-    @state(must_finish=True)    #Grabber Closes when Left Button 3 is Pressed
+    @state(must_finish=True)    #Grabber Opens when left trigger is Pressed
     def wait_for_confirm(self):
         if self.hmi.getLeftButton(1):
-            self.grabber.closeGrabber()
+            self.grabber.openGrabber()
             self.next_state('retract_grabber')
 
     @state(must_finish=True)    #Grabber Actuation In
