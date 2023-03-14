@@ -38,6 +38,7 @@ python -m robotpy_installer install robotpy
 | Position | Value | Unit |
 | --- | --- | --- |
 | CAN ID | 13 |  |
+| Idel State |  |  |
 | Gear Ratio | 1:20 |  |
 | Sprocket Diameter | 0.0508 (2) | m (in) |
 | Ground (Default)| XX | m |
