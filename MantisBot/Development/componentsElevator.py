@@ -3,7 +3,7 @@ from math import pi
 
 ElevatorLevelDict_m = {
     0: 0,
-    1: 0.35,
+    1: 0.25,
     2: 1.0,
     3: 1.025,
 }
@@ -116,16 +116,16 @@ class ElevatorModule:
         self.tol = tol
 
     def goToLevel(self, level):
-        distance = positionToNextLevel(level)
-        self.nextPosition = distance
+        distance = positionToNextLevel(self.currentLevel, self.nextLevel)
+        self.nextElevatorPosition = distance
         self.elevator_motor.setDistance(distance)
         return self.isAtLevel()
 
     def getDistance(self):
-        return self.currentPosition
+        return self.currentElevatorPosition
     
     def updateDistance(self):
-        self.currentPosition = self.elevator_motor.getDistance()
+        self.currentElevatorPosition = self.elevator_motor.getDistance()
         return False
 
     def isAtLevel(self):
