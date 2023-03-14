@@ -94,12 +94,11 @@ class MyRobot(MagicRobot):
 
     def teleopPeriodic(self) -> None:
         """Note: drivetrain will automatically function here!"""
-        if self.hmi.getRightButton(2):
-
-            if not self.drivetrain.is_lockedout():
-                self.drivetrain.enable_autoLockout()
-            
-            # self.ATPVController.engage()
+        # if self.hmi.getRightButton(2):
+        #     if not self.drivetrain.is_lockedout():
+        #         self.drivetrain.enable_autoLockout()
+        #     print("L2 Pressed")
+        #     # self.ATPVController.engage()
 
         if self.hmi.getLeftButton(3): # High goal
             if not self.drivetrain.is_lockedout(): 
@@ -109,12 +108,12 @@ class MyRobot(MagicRobot):
             self.scoreHigh.score()
             print("L3 Pressed")
 
-        if self.hmi.getLeftButton(5): # Mid goal
+        if self.hmi.getLeftButton(5) or self.hmi.getLeftButton(4): # Mid goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
                 print('lockout')
             self.scoreMid.score()
-            print("L5 Pressed")
+            print("L5 or L4 Pressed")
 
         if self.hmi.getLeftButton(2): #Low Goal
             if not self.drivetrain.is_lockedout():
@@ -122,16 +121,16 @@ class MyRobot(MagicRobot):
             self.scoreLow.score()
             print("L2 Pressed")
             
-        if self.hmi.getLeftButton(4): #Station
+        if self.hmi.getRightButton(4) or self.hmi.getRightButton(6): #Station
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
             self.station.score()
-            print("L4 Pressed")
+            print("R4 or R6 Pressed")
         
-        if self.hmi.getLeftButton(9): #Floor Pickup 
+        if self.hmi.getRightButton(3) or self.hmi.getRightButton(4): #Floor Pickup 
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            self.station.score()
+            self.floor.score()
             print('L9 Pressed') 
  
         else:
@@ -139,6 +138,7 @@ class MyRobot(MagicRobot):
 
         if self.hmi.getLeftButton(1):
             self.grabber.closeGrabber()
+            print()
 
         if self.hmi.getRightButton(1):
             self.grabber.openGrabber()
