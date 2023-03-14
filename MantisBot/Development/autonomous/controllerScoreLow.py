@@ -20,48 +20,46 @@ class ScoreLow(StateMachine):
         self.engaged = True
         self.engage()
 
-    @state(first = True, must_finish=True)
+    @state(first = True, must_finish=True) #Elevator Actuation Up
     def raise_grabber1(self):
         if self.elevator.goToLevel(1):
             self.next_state_now('extend_grabber1')
-
-    @state(must_finish=True)
+    
+    
+    @state(must_finish=True)    #Grabber Actuation Out
     def extend_grabber1(self):
          if self.grabber.goToLevel(1):
              self.next_state_now('lower_grabber1')
              
-    @state(must_finish=True)
+    @state(must_finish=True)    #Elevator Actuation Down
     def lower_grabber1(self):
         if self.elevator.goToLevel(0):
             self.engaged = False
-            self.next_state_now('wait')
-            
-    @timed_state(duration=2, must_finish=True, next_state='raise_grabber2')
-    def wait(self):
-        imuseless = True
+            self.next_state_now('close_grabber')
 
-    @state(must_finish=True)
+    @state(must_finish=True)    #Grabber Opens when Left Button 5 is Pressed
     def close_grabber(self):
-        self.grabber.closeGrabber()
-        self.next_state_now('raise_grabber2')
+        if self.hmi.getLeftButton(5):
+            self.grabber.openGrabber()
+            self.next_state_now('retract_grabber2')
         
-    @state(must_finish=True)
+    @state(must_finish=True)    #Elevator Actuation Up
     def raise_grabber2(self):
         if self.elevator.goToLevel(1):
             self.next_state_now('retract_grabber2')
             
-    @state(must_finish=True)
+    @state(must_finish=True) # Grabber Actuation In
     def retract_grabber2(self):
         if self.grabber.goToLevel(0):
             self.next_state_now('lower_grabber2')  
 
-    @state(must_finish=True)
+    @state(must_finish=True)    #Elevator Actuation Down
     def lower_grabber2(self):
         if self.elevator.goToLevel(0):
             self.engaged = False
             self.next_state_now('dormant')
     
-    @state(must_finish=True)
+    @state(must_finish=True) #Dormant State for Controller
     def dormant(self):
         if self.engaged:
             self.next_state_now('raise_grabber1')

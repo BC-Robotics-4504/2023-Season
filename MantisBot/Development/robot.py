@@ -30,13 +30,18 @@ from componentsGrabber import GrabberModule, GrabberSparkMax, GrabberPneumatics
 # Controllers
 # from autonomous.controllerAprilTagPVFollower import AprilTagPVController
 from autonomous.DriveForward import DriveForward
-from autonomous.controllerSuperstructure import Superstructure
+from autonomous.controllerScoreHigh import ScoreHigh
+from autonomous.controllerScoreMid import ScoreMid
 from autonomous.controllerScoreLow import ScoreLow
+from autonomous.controllerStation import Station
 
 class MyRobot(MagicRobot):
     # High level components
-    superstructure : Superstructure
+    scoreHigh : ScoreHigh
+    scoreMid : ScoreMid
     scoreLow : ScoreLow
+    station : Station
+    
 
     # Low level components
     drivetrain : DriveTrainModule
@@ -99,17 +104,23 @@ class MyRobot(MagicRobot):
             self.superstructure.scorePosition(elevator_level=3, grabber_level=2)
             print("L3 Pressed")
 
-        if self.hmi.getLeftButton(2): # Mid goal
+        if self.hmi.getLeftButton(5): # Mid goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
                 print('lockout')
             self.superstructure.scorePosition(elevator_level=2, grabber_level=1)
-            print("L2 Pressed")
+            print("L5 Pressed")
 
-        if self.hmi.getLeftButton(4): #Low Goal
+        if self.hmi.getLeftButton(2): #Low Goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
             self.scoreLow.scoreLow()
+            print("L2 Pressed")
+            
+        if self.hmi.getLeftButton(4): #Station
+            if not self.drivetrain.is_lockedout():
+                self.drivetrain.enable_autoLockout()
+            self.station.scoreStation()
             print("L4 Pressed")
  
         else:
@@ -118,7 +129,7 @@ class MyRobot(MagicRobot):
         if self.hmi.getLeftButton(6):
             self.grabber.closeGrabber()
 
-        if self.hmi.getLeftButton(5):
+        if self.hmi.getLeftButton(7):
             self.grabber.openGrabber()
 
         
