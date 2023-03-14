@@ -31,12 +31,10 @@ from componentsGrabber import GrabberModule, GrabberSparkMax, GrabberPneumatics
 # from autonomous.controllerAprilTagPVFollower import AprilTagPVController
 from autonomous.DriveForward import DriveForward
 from autonomous.controllerSuperstructure import Superstructure
-from autonomous.controllerScoreLow import ScoreLow
 
 class MyRobot(MagicRobot):
     # High level components
     superstructure : Superstructure
-    scoreLow : ScoreLow
 
     # Low level components
     drivetrain : DriveTrainModule
@@ -96,30 +94,23 @@ class MyRobot(MagicRobot):
                 #TODO: do we want to really lock out the drivetrain here or 
                 # would it be better to go into some low-speed clamp mode?
                 self.drivetrain.enable_autoLockout()
-            self.superstructure.scorePosition(elevator_level=3, grabber_level=2)
+            self.superstructure.scorePosition(elevator_level=3, grabber_evel=2)
             print("L3 Pressed")
 
         if self.hmi.getLeftButton(2): # Mid goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-                print('lockout')
-            self.superstructure.scorePosition(elevator_level=2, grabber_level=1)
+            self.superstructure.scorePosition(elevator_level=2, grabber_evel=1)
             print("L2 Pressed")
 
         if self.hmi.getLeftButton(4): #Low Goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            self.scoreLow.scoreLow()
+            self.superstructure.scorePosition(elevator_level=1, grabber_evel=1)
             print("L4 Pressed")
  
         else:
             self.drivetrain.disable_autoLockout()
-
-        if self.hmi.getLeftButton(6):
-            self.grabber.closeGrabber()
-
-        if self.hmi.getLeftButton(5):
-            self.grabber.openGrabber()
 
         
 
