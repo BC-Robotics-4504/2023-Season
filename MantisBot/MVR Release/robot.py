@@ -29,7 +29,6 @@ from componentsGrabber import GrabberModule, GrabberSparkMax, GrabberPneumatics
 
 # Controllers
 # from autonomous.controllerAprilTagPVFollower import AprilTagPVController
-from autonomous.DriveForward import DriveForward
 from autonomous.controllerScoreHigh import ScoreHigh
 from autonomous.controllerScoreMid import ScoreMid
 from autonomous.controllerScoreLow import ScoreLow
