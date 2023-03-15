@@ -20,7 +20,7 @@ class AutonomousMode(AutonomousStateMachine):
     elevator_level = 3
     grabber_level = 2
 
-    def scorePosition(self, elevator_level=3, grabber_level=2):
+    def scorePosition(self, elevator_level=4, grabber_level=2):
         self.grabber_level = grabber_level
         self.elevator_level = elevator_level
         self.engage()
@@ -46,6 +46,11 @@ class AutonomousMode(AutonomousStateMachine):
     def extend_grabber(self):
         if self.grabber.goToLevel(self.grabber_level):
             self.next_state_now('wait')
+    
+    @state(must_finish=True)
+    def open_grabber(self):
+        if self.grabber.openGrabber():
+            self.next_state_now('wait')
 
 
     @timed_state(duration=3, must_finish=True, next_state='retract_grabber')
@@ -63,14 +68,15 @@ class AutonomousMode(AutonomousStateMachine):
     @state(must_finish=True)
     def lower_grabber(self):
         if self.elevator.goToLevel(0):
+            self.next_state_now('drive_forward')
             isFinished = True # FIXME: What is this doing? This variable gets destroyed every function call during this state.
     
     
     @state(must_finish = True)
     def drive_forward(self):
-        self.drivetrain.setDistance(3)
-        if abs(3 - self.drivetrain.mainLeft_motor.getDistance()) < .001:
-            self.next_state_now('turn_90')
+        self.drivetrain.setDistance(-3)
+        if abs(-3 - self.drivetrain.mainLeft_motor.getDistance()) < .001:
+            self.next_state_now('stop')
         
         
     @state(must_finish=True)
