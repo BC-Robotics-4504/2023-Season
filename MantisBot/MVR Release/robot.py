@@ -124,13 +124,13 @@ class MyRobot(MagicRobot):
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
             self.station.pickUp()
-            print("R4 or R6 Pressed")
+            print("R5 or R6 Pressed")
         
         if self.hmi.getRightButton(3) or self.hmi.getRightButton(4): #Floor Pickup 
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
             self.floor.pickUp()
-            print('L9 Pressed') 
+            print('R3 or R4 Pressed') 
  
         else:
             self.drivetrain.disable_autoLockout()
@@ -158,7 +158,7 @@ class MyRobot(MagicRobot):
             print("L6 pressed")
 
         if self.hmi.getLeftButton(11):
-            self.elevator.goToLevel(3)
+            self.elevator.goToLevel(3) #TODO: change to 4???
             print("L11 pressed")
 
 

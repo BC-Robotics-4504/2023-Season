@@ -75,7 +75,7 @@ python -m robotpy_installer install robotpy
 | Wheel Diameter | 0.1524 (6) | m (in) |
 
 ### Robot IP Address
-
+`10.45.4.1` 
 ### Sensors
 
 - **[Pigeon 2.0](https://www.google.com/search?client=safari&rls=en&q=pigeon+2.0&ie=UTF-8&oe=UTF-8)**:
@@ -97,30 +97,42 @@ python -m robotpy_installer install robotpy
 
 ## Robot Controls
 
-### **Left Flight Stick**
+### **[Left Flight Stick](https://www.amazon.com/9632910403-Logitech-WingMan-ATTACK-Joystick/dp/B0000ALFC5)**
 
-- Ipnut device ID `0`
-- **Y-Axis**:
-- **Trigger**:
+- Input device ID `0`
+- **Y-Axis**: Move Left Driveside Forward and Back
+- **Trigger**: Open Grabber
+- **L2**: Score a Low Goal
+- **L3**: Score a High Goal 
+- **L4**: Score a Mid Goal 
+- **L5**: Score a Mid Goal 
+- **L6**: Fully extends grabber
+- **L8**: Fully retracts grabber
+- **L9**: Resets elevator 
+- **L11**: Fully extends elevator 
 
-### **Right Flight Stick**
+### **[Right Flight Stick](https://www.logitechg.com/en-us/products/space/extreme-3d-pro-joystick.963290-0403.html)**
 
 - Input device ID `1`
-- **Y-Axis**:
-- **Trigger**:
-
+- **Y-Axis**: Move Right Driveside Forward and Back
+- **Trigger**: Close Grabber
+- **R3**: Pickup Gamepiece from the ground
+- **R4**: Pickup Gamepiece from the ground
+- **R5**: Pickup Gamepiece from the loading zone
+- **R6**: Pickup Gamepiece from the loading zone
 ## Game Controller Functionality
 
-- [ ] **<CONTROLLER_NAME>**: Move toward target AprilTag
-- [ ] **<CONTROLLER_NAME>**: Move toward target retro-reflective tape
-- [ ] **<CONTROLLER_NAME>**: Pick up gamepiece
-- [ ] **<CONTROLLER_NAME>**: Navigate to target and place high/med/low
-- [ ] **<CONTROLLER_NAME>**: Balance on charging station
+-  **<Score_High>**: Score a high goal
+-  **<Score_Mid>**: Score a medium goal
+-  **<Score_Low>**: Score a low goal
+-  **<controller_floor>**: Picks up a gamepiece from the ground 
+-  **<controller_station>**: Picks up a gamepiece from the loading zone 
+-  **<controller_autonomous>**: Controlls autonomous mode
+
 
 ## Autonomous Operation
 
-### **MODE 1**
+  **Our autonomous plan is as follows...**
 
-### **MODE 2**
-
-### **MODE 3**
+  1. Score pre-loaded cargo
+  2. Backup and head out of the community 
