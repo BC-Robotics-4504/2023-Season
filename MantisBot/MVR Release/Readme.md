@@ -2,7 +2,7 @@
 
 ## Robotpy Setup
 
-BC Robotics (Team #4504) has designed their 2023 FIRST Robotics submission using the [Robotpy](https://robotpy.readthedocs.io/en/stable/install/robot.html) with the [MagicBot Framework](https://robotpy.readthedocs.io/en/stable/frameworks/magicbot.html). To keep the relevant libraries current, the follow code will need to be run regularly in a terminal interface:
+BC Robotics (Team #4504) has designed their 2023 FIRST Robotics submission using [Robotpy](https://robotpy.readthedocs.io/en/stable/install/robot.html) with the [MagicBot Framework](https://robotpy.readthedocs.io/en/stable/frameworks/magicbot.html). To keep the relevant libraries current, the follow code will need to be run regularly in a terminal interface:
 
 ```sh
 python -m pip install --upgrade pip
