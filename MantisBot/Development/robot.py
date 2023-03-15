@@ -34,6 +34,7 @@ from autonomous.controllerScoreHigh import ScoreHigh
 from autonomous.controllerScoreMid import ScoreMid
 from autonomous.controllerScoreLow import ScoreLow
 from autonomous.controllerStation import Station
+from autonomous.controllerFloor import Floor
 
 class MyRobot(MagicRobot):
     # High level components
@@ -41,6 +42,7 @@ class MyRobot(MagicRobot):
     scoreMid : ScoreMid
     scoreLow : ScoreLow
     station : Station
+    floor : Floor
     
 
     # Low level components
@@ -75,7 +77,7 @@ class MyRobot(MagicRobot):
         self.camera = photonvision.PhotonCamera('MSWebCam')
 
         """User Controller Configuration"""
-        self.hmi_interface = FlightStickHMI(1, 0)
+        self.hmi_interface = FlightStickHMI(0, 1)
 
         """Controllers"""
         # self.ATPVController = AprilTagPVController()
@@ -85,16 +87,18 @@ class MyRobot(MagicRobot):
     def teleopInit(self):
         """Disable Autonomous Lockout of Drivetrain access to the HMI"""
         self.drivetrain.disable_autoLockout()
+        self.elevator.enableBrake()
+        self.grabber.enableBrake()
+        self.grabber.openGrabber()
         return False
 
     def teleopPeriodic(self) -> None:
         """Note: drivetrain will automatically function here!"""
-        if self.hmi.getRightButton(2):
-
-            if not self.drivetrain.is_lockedout():
-                self.drivetrain.enable_autoLockout()
-            
-            # self.ATPVController.engage()
+        # if self.hmi.getRightButton(2):
+        #     if not self.drivetrain.is_lockedout():
+        #         self.drivetrain.enable_autoLockout()
+        #     print("L2 Pressed")
+        #     # self.ATPVController.engage()
 
         if self.hmi.getLeftButton(3): # High goal
             if not self.drivetrain.is_lockedout(): 
@@ -104,12 +108,12 @@ class MyRobot(MagicRobot):
             self.scoreHigh.score()
             print("L3 Pressed")
 
-        if self.hmi.getLeftButton(5): # Mid goal
+        if self.hmi.getLeftButton(5) or self.hmi.getLeftButton(4): # Mid goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
                 print('lockout')
             self.scoreMid.score()
-            print("L5 Pressed")
+            print("L5 or L4 Pressed")
 
         if self.hmi.getLeftButton(2): #Low Goal
             if not self.drivetrain.is_lockedout():
@@ -117,21 +121,52 @@ class MyRobot(MagicRobot):
             self.scoreLow.score()
             print("L2 Pressed")
             
-        if self.hmi.getLeftButton(4): #Station
+        if self.hmi.getRightButton(5) or self.hmi.getRightButton(6): #Station
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-            self.station.score()
-            print("L4 Pressed")
+            self.station.pickUp()
+            print("R4 or R6 Pressed")
+        
+        if self.hmi.getRightButton(3) or self.hmi.getRightButton(4): #Floor Pickup 
+            if not self.drivetrain.is_lockedout():
+                self.drivetrain.enable_autoLockout()
+            self.floor.pickUp()
+            print('L9 Pressed') 
  
         else:
             self.drivetrain.disable_autoLockout()
 
         if self.hmi.getLeftButton(1):
-            self.grabber.closeGrabber()
+            self.grabber.openGrabber()
+            print("L1 Pressed")
 
         if self.hmi.getRightButton(1):
-            self.grabber.openGrabber()
+            self.grabber.closeGrabber()
+            print("R1 Pressed")
 
+
+        #MANUAL SUPERSTRUCTURE CONTROLS
+        if self.hmi.getLeftButton(8):
+            self.grabber.goToLevel(0)
+            print("L8 Pressed")
+        
+        if self.hmi.getLeftButton(9):
+            self.elevator.goToLevel(0)
+            print("L9 Pressed")
+
+        if self.hmi.getLeftButton(6):
+            self.grabber.goToLevel(2)
+            print("L6 pressed")
+
+        if self.hmi.getLeftButton(11):
+            self.elevator.goToLevel(3)
+            print("L11 pressed")
+
+
+    def disabledPeriodic(self):
+        self.elevator.disableBrake()
+        self.grabber.disableBrake()
+        self.grabber.openGrabber()
         
 
 if __name__ == "__main__":

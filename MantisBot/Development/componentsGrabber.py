@@ -70,6 +70,12 @@ class GrabberSparkMax:
         mainController.setSmartMotionMaxAccel(self.maxAcc, smartMotionSlot)
         mainController.setSmartMotionAllowedClosedLoopError(self.allowedErr, smartMotionSlot)
         return mainController, mainEncoder
+    
+    def disableBrake(self):
+        self.mainMotor.setIdleMode(self.mainMotor.IdleMode.kCoast)
+
+    def enableBrake(self):
+        self.mainMotor.setIdleMode(self.mainMotor.IdleMode.kBrake)
 
     def setPercent(self, value):
         self.mainMotor.set(value)
@@ -95,8 +101,8 @@ class GrabberSparkMax:
 
 class GrabberPneumatics:
 
-    PNEUMATIC_FORWARD_CHANNEL = 1
-    PNEUMATIC_REVERSE_CHANNEL = 0
+    PNEUMATIC_FORWARD_CHANNEL = 0
+    PNEUMATIC_REVERSE_CHANNEL = 1
 
     def __init__(self, can_id):
         self.can_id = can_id
@@ -138,6 +144,11 @@ class GrabberModule:
         self.stateChanged = False
         self.tol = tol
         
+    def disableBrake(self):
+        self.grabber_motor.disableBrake()
+
+    def enableBrake(self):
+        self.grabber_motor.enableBrake()
 
     def goToLevel(self, level):
         distance = GrabberLevelDict_m[level]
