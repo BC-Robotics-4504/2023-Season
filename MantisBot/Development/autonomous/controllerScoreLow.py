@@ -4,7 +4,6 @@ from magicbot import StateMachine, timed_state, state
 from componentsElevator import ElevatorModule as Elevator
 from componentsGrabber import GrabberModule as Grabber
 from componentsIMU import IMUModule as IMU
-from componentsHMI import HMIModule as HMI
 
 
 class ScoreLow(StateMachine):    
@@ -12,8 +11,7 @@ class ScoreLow(StateMachine):
     DEFAULT = False
     elevator : Elevator
     grabber : Grabber
-    imu : IMU
-    hmi : HMI
+    imu: IMU
 
     position = 0
     engaged = False
@@ -30,7 +28,7 @@ class ScoreLow(StateMachine):
     
     @state(must_finish=True)    #Grabber Actuation Out
     def extend_grabber1(self):
-         if self.grabber.goToLevel(2):
+         if self.grabber.goToLevel(1):
              self.next_state_now('lower_grabber1')
              
     @state(must_finish=True)    #Elevator Actuation Down
@@ -39,15 +37,15 @@ class ScoreLow(StateMachine):
             self.engaged = False
             self.next_state_now('close_grabber')
 
-    @state(must_finish=True)    #Grabber Opens when Left Trigger is Pressed
+    @state(must_finish=True)    #Grabber Opens when Left Button 5 is Pressed
     def close_grabber(self):
         if self.hmi.getRightButton(1):
             self.grabber.openGrabber()
-            self.next_state_now('raise_grabber2')
+            self.next_state_now('retract_grabber2')
         
     @state(must_finish=True)    #Elevator Actuation Up
     def raise_grabber2(self):
-        if self.elevator.goToLevel(2):
+        if self.elevator.goToLevel(1):
             self.next_state_now('retract_grabber2')
             
     @state(must_finish=True) # Grabber Actuation In

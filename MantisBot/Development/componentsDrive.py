@@ -5,7 +5,7 @@ from wpilib import SmartDashboard
 
 from math import pi
 
-from componentsHMI import FlightStickHMI, HMIModule
+from componentsHMI import FlightStickHMI
 # from componentsIMU import IMUModule
 
 class ComboSparkMax:
@@ -105,9 +105,6 @@ class DriveTrainModule:
     mainLeft_motor: ComboSparkMax
     mainRight_motor: ComboSparkMax
     hmi_interface: FlightStickHMI
-    hmi : HMIModule
-
-    CLAMP = .1
 
     def __init__(self):
         self.leftSpeed = 0
@@ -198,7 +195,7 @@ class DriveTrainModule:
         return self.arcadeSpeed[1]
 
     def check_hmi(self):
-        (rightSpeed, leftSpeed) = self.hmi_interface.getInput()
+        (leftSpeed, rightSpeed) = self.hmi_interface.getInput()
         self.setLeft(leftSpeed)
         self.setRight(rightSpeed)
         return False
@@ -206,26 +203,22 @@ class DriveTrainModule:
     def clamp(self, num, min_value, max_value):
         return max(min(num, max_value), min_value)
     
-    # def deadzone(self, value, deadzone):
-    #     if (abs(value) <= deadzone):
-    #         return 0
-    #     else:
-    #         return value
+    def deadzone(self, value, deadzone):
+        if (abs(value) <= deadzone):
+            return 0
+        else:
+            return value
 
     def execute(self):
 
         if not self.autoLockout:
             self.check_hmi()
         
-        if self.hmi.getRightButton(2):
-            self.leftSpeed *= self.CLAMP
-            self.rightSpeed *= self.CLAMP
-
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():
-            self.mainLeft_motor.setPercent(self.leftSpeed)
+            self.mainLeft_motor.setPercent(self.deadzone(self.leftSpeed, .05))
             self.leftSpeedChanged = False
 
         if self.is_rightChanged():
-            self.mainRight_motor.setPercent(self.rightSpeed)
+            self.mainRight_motor.setPercent(self.deadzone(self.rightSpeed, .05))
             self.rightSpeedChanged = False

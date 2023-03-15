@@ -13,7 +13,7 @@ class FlightStickHMI:
 
         self.changed = True
 
-        self.DEADZONE = .1
+        self.DEADZONE = .05
 
     def updateLeftButtons(self):
         for button in self.fsLButtons.keys():
