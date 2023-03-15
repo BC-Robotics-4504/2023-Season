@@ -4,8 +4,9 @@ from math import pi
 ElevatorLevelDict_m = {
     0: 0,
     1: 0.25,
-    2: 1.0,
-    3: 1.025,
+    2: 0.40,
+    3: 0.8,
+    4: 1.0620,
 }
 
 def positionToNextLevel(next_level):

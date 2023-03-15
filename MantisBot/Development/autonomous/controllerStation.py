@@ -24,12 +24,12 @@ class Station(StateMachine):
 
     @state(first= True, must_finish=True)    #Grabber opens
     def open_grabber(self):
-        if self.grabber.openGrabber():
-            self.next_state_now('raise_grabber')
+        self.grabber.openGrabber()
+        self.next_state_now('raise_grabber')
     
     @state(must_finish=True) #Elevator Actuation Up
     def raise_grabber(self):
-        if self.elevator.goToLevel(2):
+        if self.elevator.goToLevel(3):
             self.next_state_now('extend_grabber')
 
     @state(must_finish=True)    #Grabber Actuation Out
@@ -41,7 +41,11 @@ class Station(StateMachine):
     def close_grabber(self):
         if self.hmi.getRightButton(1):
             self.grabber.closeGrabber()
-            self.next_state_now('retract_grabber')
+            self.next_state_now('wait')
+
+    @timed_state(duration=1, must_finish=True, next_state='retract_grabber')
+    def wait(self):
+        imuseless = True
 
     @state(must_finish=True) #Grabber Actuation In
     def retract_grabber(self):
@@ -52,9 +56,9 @@ class Station(StateMachine):
     def lower_grabber(self): 
         if self.elevator.goToLevel(1):
             self.engaged = False
-            self.next_state_now('wait')
+            self.next_state_now('dormant')
 
     @state(must_finish=True)    #Waits for Activation
-    def wait(self):
+    def dormant(self):
         if self.engaged == True:
             self.next_state_now('open_grabber')

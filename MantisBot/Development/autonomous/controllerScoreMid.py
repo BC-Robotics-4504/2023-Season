@@ -20,7 +20,7 @@ class ScoreMid(StateMachine):
 
     def score(self):
         self.grabber_level = 1
-        self.elevator_level = 2
+        self.elevator_level = 3
         self.engaged = True
         self.engage()
 

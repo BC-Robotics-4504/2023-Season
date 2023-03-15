@@ -20,7 +20,7 @@ class ScoreHigh(StateMachine):
 
     def score(self):
         self.grabber_level = 2
-        self.elevator_level = 3
+        self.elevator_level = 4
         self.engaged = True
         self.engage()
 

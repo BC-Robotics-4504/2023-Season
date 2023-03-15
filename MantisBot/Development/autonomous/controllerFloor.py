@@ -24,7 +24,7 @@ class Floor(StateMachine):
 
     @state(first = True, must_finish=True) #Elevator Actuation Up
     def raise_grabber1(self):
-        if self.elevator.goToLevel(1):
+        if self.elevator.goToLevel(2):
             self.next_state_now('extend_grabber1')
     
     @state(must_finish=True)    #Grabber Actuation Out
@@ -46,7 +46,7 @@ class Floor(StateMachine):
         
     @state(must_finish=True)    #Elevator Actuation Up
     def raise_grabber2(self):
-        if self.elevator.goToLevel(1):
+        if self.elevator.goToLevel(2):
             self.next_state_now('retract_grabber2')
             
     @state(must_finish=True) # Grabber Actuation In
