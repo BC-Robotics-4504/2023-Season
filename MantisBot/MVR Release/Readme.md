@@ -127,7 +127,7 @@ python -m robotpy_installer install robotpy
 -  **<Score_Low>**: Score a low goal
 -  **<controller_floor>**: Picks up a gamepiece from the ground 
 -  **<controller_station>**: Picks up a gamepiece from the loading zone 
--  **<controller_autonomous>**: Controlls autonomous mode
+-  **<controller_autonomous>**: Controls autonomous mode
 
 
 ## Autonomous Operation
