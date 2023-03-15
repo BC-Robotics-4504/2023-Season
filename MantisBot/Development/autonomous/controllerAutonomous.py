@@ -9,7 +9,7 @@ from componentsDrive import DriveTrainModule
 class AutonomousMode(AutonomousStateMachine):
     
     MODE_NAME = "Autonomous Mode"
-    DEFAULT = True
+    DEFAULT = False
     elevator : Elevator
     grabber : Grabber
     imu: IMU
@@ -25,6 +25,12 @@ class AutonomousMode(AutonomousStateMachine):
         self.elevator_level = elevator_level
         self.engage()
         
+
+    # @state(first = True, must_finish = True)
+    # def drive_forward(self):
+    #     self.drivetrain.setDistance(0)
+    #     if abs(3 - self.drivetrain.mainLeft_motor.getDistance()) < .001:
+    #         self.next_state_now('turn_90')
 
 
     # @state(must_finish=True)
@@ -53,7 +59,7 @@ class AutonomousMode(AutonomousStateMachine):
             self.next_state_now('wait')
 
 
-    @timed_state(duration=3, must_finish=True, next_state='retract_grabber')
+    @timed_state(duration=4, must_finish=True, next_state='retract_grabber')
     def wait(self):
         imuseless = True
         # self.next_state('retract_grabber')
