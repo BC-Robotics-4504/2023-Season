@@ -3,9 +3,10 @@ from math import pi
 
 ElevatorLevelDict_m = {
     0: 0,
-    1: 0.35,
-    2: 1.0,
-    3: 1.025,
+    1: 0.25,
+    2: 0.40,
+    3: 0.8,
+    4: 1.0620,
 }
 
 def positionToNextLevel(next_level):
@@ -78,6 +79,12 @@ class ElevatorSparkMax:
         mainController.setSmartMotionMaxAccel(self.maxAcc, smartMotionSlot)
         mainController.setSmartMotionAllowedClosedLoopError(self.allowedErr, smartMotionSlot)
         return mainController, mainEncoder
+    
+    def disableBrake(self):
+        self.mainMotor.setIdleMode(self.mainMotor.IdleMode.kCoast)
+
+    def enableBrake(self):
+        self.mainMotor.setIdleMode(self.mainMotor.IdleMode.kBrake)
 
     def setPercent(self, value):
         self.mainMotor.set(value)
@@ -114,6 +121,13 @@ class ElevatorModule:
         self.nextLevel = 0
         self.stateChanged = False
         self.tol = tol
+
+    def disableBrake(self):
+        self.elevator_motor.disableBrake()
+
+    def enableBrake(self):
+        self.elevator_motor.enableBrake()
+
 
     def goToLevel(self, level):
         distance = positionToNextLevel(level)
