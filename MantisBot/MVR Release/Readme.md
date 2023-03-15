@@ -23,8 +23,9 @@ python -m robotpy_installer install robotpy
 | CAN ID | 12 |  |
 | Gear Ratio | 1:64 |  |
 | Sprocket Diameter | 0.0762 (3) | m (in) |
-| Retracted | XX | m |
-| Extended | XX | m|
+| Retracted | 0 | m |
+| Mid-Extended | 0.06 | m |
+| Extended | 0.12 | m|
 
 - **[Pneumatic Hub](https://www.revrobotics.com/rev-11-1852/)**:
   - CAN ID `11`
@@ -40,11 +41,11 @@ python -m robotpy_installer install robotpy
 | CAN ID | 13 |  |
 | Gear Ratio | 1:20 |  |
 | Sprocket Diameter | 0.0508 (2) | m (in) |
-| Ground (Default)| XX | m |
-| Score Low | XX | m |
-| Score Mid | XX | m |
-| Score High | XX | m |
-
+| Ground (Default)| 0 | m |
+| Score Low | 0.25 | m |
+| Score Mid | 0.40 | m |
+| Score Extra-Mid | 0.8 | m |
+| Score High | 1.0620 | m |
 
 ### Drivetrain
 
@@ -60,10 +61,6 @@ python -m robotpy_installer install robotpy
 | Follower CAN ID | 1 |  |
 | Gear Ratio | (68/30)x(52/11) |  |
 | Wheel Diameter | 0.1524 (6) | m (in) |
-| Ground (Default)| XX | m |
-| Score Low | XX | m |
-| Score Mid | XX | m |
-| Score High | XX | m |
 
   - *RIGHT SIDE*: 
     - Drives 2x [Neo Brushless Motor V1.1](https://www.revrobotics.com/rev-21-1650/)
@@ -76,10 +73,6 @@ python -m robotpy_installer install robotpy
 | Follower CAN ID | 4 |  |
 | Gear Ratio | (68/30)x(52/11)|  |
 | Wheel Diameter | 0.1524 (6) | m (in) |
-| Ground (Default)| XX | m |
-| Score Low | XX | m |
-| Score Mid | XX | m |
-| Score High | XX | m |
 
 ### Robot IP Address
 
@@ -94,8 +87,6 @@ python -m robotpy_installer install robotpy
 | +X | Right |
 | +Y | Forward |
 | +Z | Up |
-
-
 
 - **[Limelight 2.0](https://docs.limelightvision.io/en/latest/)**:
   - Static IP address `10.4.45.11`
