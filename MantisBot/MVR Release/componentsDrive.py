@@ -5,7 +5,8 @@ from wpilib import SmartDashboard
 
 from math import pi
 
-from componentsHMI import FlightStickHMI, HMIModule
+from componentsHMI_xbox import XboxHMI, HMIModule
+# from componentsHMI import FlightStickHMI, HMIModule
 # from componentsIMU import IMUModule
 
 class ComboSparkMax:
@@ -104,7 +105,7 @@ class ComboSparkMax:
 class DriveTrainModule:
     mainLeft_motor: ComboSparkMax
     mainRight_motor: ComboSparkMax
-    hmi_interface: FlightStickHMI
+    hmi_interface: XboxHMI
     hmi : HMIModule
 
     CLAMP = .1
@@ -217,7 +218,7 @@ class DriveTrainModule:
         if not self.autoLockout:
             self.check_hmi()
         
-        if self.hmi.getRightButton(2):
+        if self.hmi.getButton(2):
             self.leftSpeed *= self.CLAMP
             self.rightSpeed *= self.CLAMP
 

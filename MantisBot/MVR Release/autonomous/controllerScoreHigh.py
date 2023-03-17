@@ -4,7 +4,9 @@ from magicbot import StateMachine, timed_state, state
 from componentsElevator import ElevatorModule as Elevator
 from componentsGrabber import GrabberModule as Grabber
 from componentsIMU import IMUModule as IMU
-from componentsHMI import HMIModule as HMI
+# from componentsHMI import HMIModule as HMI
+from componentsHMI_xbox import HMIModule as HMI
+
 
 
 class ScoreHigh(StateMachine):    
