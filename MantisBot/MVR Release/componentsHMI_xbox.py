@@ -28,16 +28,17 @@ class XboxHMI:
 
     def updateButtons(self):
         self.buttons['LT'] = True if self.XboxController.getLeftTriggerAxis() > 0.5 else False
-        self.buttons['LB'] = self.XboxController.getLeftBumperPressed()
-        self.buttons['LS'] = self.XboxController.getLeftStickButtonPressed()
-        self.buttons['Start'] = self.XboxController.getStartButtonPressed()
-        self.buttons['Back'] = self.XboxController.getBackButtonPressed()
-        self.buttons['A'] = self.XboxController.getAButtonPressed()
-        self.buttons['B'] = self.XboxController.getBButtonPressed()
-        self.buttons['X'] = self.XboxController.getXButtonPressed()
+        self.buttons['LB'] = self.XboxController.getLeftBumper()
+        self.buttons['LS'] = self.XboxController.getLeftStickButton()
+        self.buttons['Start'] = self.XboxController.getStartButton()
+        self.buttons['Back'] = self.XboxController.getBackButton()
+        self.buttons['A'] = self.XboxController.getAButton()
+        self.buttons['B'] = self.XboxController.getBButton()
+        self.buttons['X'] = self.XboxController.getXButton()
+        self.buttons['Y'] = self.XboxController.getYButton()
         self.buttons['RT'] = True if self.XboxController.getRightTriggerAxis() > 0.5 else False
-        self.buttons['RB'] = self.XboxController.getRightBumperPressed()
-        self.buttons['RS'] = self.XboxController.getRightStickButtonPressed()
+        self.buttons['RB'] = self.XboxController.getRightBumper()
+        self.buttons['RS'] = self.XboxController.getRightStickButton()
         return False
     
     def getButtons(self, button_id):
@@ -58,8 +59,6 @@ class XboxHMI:
             rightX = 0
         self.rightX = rightX
         return False
-
-   
 
     def getInput(self):
 
@@ -114,8 +113,7 @@ class HMIModule:
         if button_id in self.hmi_interface.buttons.keys():
             value = self.hmi_interface.getButtons(button_id)
             return value
-        else:
-            return False
+        return False
 
     def is_changed(self):
         return self.changed
@@ -124,5 +122,4 @@ class HMIModule:
         self.hmi_interface.updateButtons()     
         self.hmi_interface.updateAnalogSticks()
         (self.fsL, self.fsR) = self.hmi_interface.getInput()
-        print(self.fsL, self.fsR)
         

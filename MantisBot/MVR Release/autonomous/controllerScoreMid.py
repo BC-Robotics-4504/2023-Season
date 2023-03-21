@@ -38,7 +38,7 @@ class ScoreMid(StateMachine):
 
     @state(must_finish=True)    #Grabber opens when Left Trigger is pressed
     def wait_for_confirm(self):
-        if self.hmi.getLeftButton(1):
+        if self.hmi.getButton('LT'):
             self.grabber.openGrabber()
             self.next_state('retract_grabber')
 

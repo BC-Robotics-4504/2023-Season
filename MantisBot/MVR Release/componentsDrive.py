@@ -218,9 +218,13 @@ class DriveTrainModule:
         if not self.autoLockout:
             self.check_hmi()
         
-        if self.hmi.getButton(2):
+        if self.hmi.getButton('LB'):
             self.leftSpeed *= self.CLAMP
             self.rightSpeed *= self.CLAMP
+            print('[+] Precision Mode ================================')
+
+        # self.check_hmi()
+        # print(self.leftSpeed, self.rightSpeed)
 
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():

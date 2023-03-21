@@ -5,13 +5,13 @@ import wpilib
 GrabberLevelDict_m = {
     0: 0,
     1: 0.06,
-    2: 0.12,
+    2: 0.12
 }
 
-def distanceToNextLevel(current_level, next_level):
-    assert current_level in GrabberLevelDict_m.keys(), '[+] ERROR: current level argument not a valid level'
-    assert next_level in GrabberLevelDict_m.keys(), '[+] ERROR: next level argument not a valid level'
-    return GrabberLevelDict_m[next_level] - GrabberLevelDict_m[current_level]
+# def distanceToNextLevel(current_level, next_level):
+#     assert current_level in GrabberLevelDict_m.keys(), '[+] ERROR: current level argument not a valid level'
+#     assert next_level in GrabberLevelDict_m.keys(), '[+] ERROR: next level argument not a valid level'
+#     return GrabberLevelDict_m[next_level] - GrabberLevelDict_m[current_level]
 
 class GrabberSparkMax:
 
@@ -108,8 +108,8 @@ class GrabberPneumatics:
         self.can_id = can_id
         self.hub = wpilib.PneumaticHub(can_id)
         self.is_open = False
-        self.doubleSolenoid =self.hub.makeDoubleSolenoid(self.PNEUMATIC_FORWARD_CHANNEL, 
-                                                         self.PNEUMATIC_REVERSE_CHANNEL)
+        self.doubleSolenoid = self.hub.makeDoubleSolenoid(self.PNEUMATIC_FORWARD_CHANNEL, 
+                                                          self.PNEUMATIC_REVERSE_CHANNEL)
 
     def reset(self):
         self.hub.clearStickyFaults()
@@ -123,6 +123,7 @@ class GrabberPneumatics:
     def open(self):
         self.doubleSolenoid.set(wpilib.DoubleSolenoid.Value.kReverse) #forward = 1, reverse = 2, off = 0
         self.is_open = True
+        return False
 
     def isOpen(self):
         return self.is_open

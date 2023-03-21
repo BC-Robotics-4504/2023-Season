@@ -28,17 +28,19 @@ class ScoreHigh(StateMachine):
 
     @state(first = True, must_finish=True)  #Elevator Actuation Up
     def raise_grabber(self):
+        print(self.elevator_level)
         if self.elevator.goToLevel(self.elevator_level):
             self.next_state_now('extend_grabber')
 
     @state(must_finish=True)    #Grabber Actuation Out
     def extend_grabber(self):
+        print('here2')
         if self.grabber.goToLevel(self.grabber_level):
             self.next_state_now('wait_for_confirm')
 
     @state(must_finish=True)    #Grabber Opens when left trigger is Pressed
     def wait_for_confirm(self):
-        if self.hmi.getLeftButton(1):
+        if self.hmi.getButton('LT'):
             self.grabber.openGrabber()
             self.next_state('retract_grabber')
 

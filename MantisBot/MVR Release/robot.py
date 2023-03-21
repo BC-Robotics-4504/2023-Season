@@ -100,67 +100,66 @@ class MyRobot(MagicRobot):
         #     print("L2 Pressed")
         #     # self.ATPVController.engage()
 
-        if self.hmi.getButton('Y'): # High goal
+        if self.hmi.getButton('B'): # High goal
             if not self.drivetrain.is_lockedout(): 
                 #TODO: do we want to really lock out the drivetrain here or 
                 # would it be better to go into some low-speed clamp mode?
                 self.drivetrain.enable_autoLockout()
             self.scoreHigh.score()
-            print("Y Pressed")
+            print("[+] High Goal (B) ===============================")
 
         if self.hmi.getButton('X'): # Mid goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
-                print('lockout')
             self.scoreMid.score()
-            print("X Pressed")
+            print("[+] Mid Goal (X) ===============================")
 
-        if self.hmi.getButton('A'): #Low Goal
+        if self.hmi.getButton('Y'): #Low Goal
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
             self.scoreLow.score()
-            print("A Pressed")
+            print("[+] Low Goal (Y) ===============================")
             
-        if self.hmi.getButton('B'): #Station
+        if self.hmi.getButton('A'): #Station
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
             self.station.pickUp()
-            print("B Pressed")
+            print("[+] Station Pickup (A) ===============================")
         
         if self.hmi.getButton('RB'): #Floor Pickup 
             if not self.drivetrain.is_lockedout():
                 self.drivetrain.enable_autoLockout()
             self.floor.pickUp()
-            print('RB Pressed') 
+            print('[+] Floor Pickup (RB) ===============================') 
  
         else:
             self.drivetrain.disable_autoLockout()
 
-        if self.hmi.getButton('LT'):
-            self.grabber.openGrabber()
-            print("LT Pressed")
-
         if self.hmi.getButton('RT'):
+            self.grabber.openGrabber()
+            print("[+] Grabber Opened ===============================")
+
+        if self.hmi.getButton('LT'):
             self.grabber.closeGrabber()
-            print("RT Pressed")
+            print("[+] Grabber Closed ===============================")
 
 
         #MANUAL SUPERSTRUCTURE CONTROLS
-        if self.hmi.getButton('RS'):
+        if self.hmi.getButton('Start'):
             self.grabber.goToLevel(0)
-            print("RS Pressed")
+            print("[+] Grabber Retracting ===============================")
         
-        if self.hmi.getButton('LS'):
-            self.elevator.goToLevel(0)
-            print("LS Pressed")
-
-        if self.hmi.getButton('Select'):
-            self.grabber.goToLevel(2)
-            print("Select pressed")
-
         if self.hmi.getButton('Back'):
-            self.elevator.goToLevel(3) #TODO: change to 4???
-            print("Back pressed")
+            self.elevator.goToLevel(0)
+            print("[+] Elevator Lowering ===============================")
+
+        # if self.hmi.getButton('Select'):
+        #     self.grabber.goToLevel(2)
+        #     print("Select pressed")
+
+        # if self.hmi.getButton('Back'):
+        #     self.elevator.goToLevel(3) #TODO: change to 4???
+        #     print("Back pressed")
 
 
     def disabledPeriodic(self):

@@ -42,7 +42,7 @@ class Floor(StateMachine):
 
     @state(must_finish=True)    #Grabber Closes when Right Trigger is Pressed
     def close_grabber(self):
-        if self.hmi.getRightButton(1):
+        if self.hmi.getButton('RT'):
             self.grabber.closeGrabber()
             self.next_state_now('raise_grabber2')
         

@@ -6,11 +6,11 @@ ElevatorLevelDict_m = {
     1: 0.25,
     2: 0.40,
     3: 0.8,
-    4: 1.0620,
+    4: 1.0620
 }
 
 def positionToNextLevel(next_level):
-    assert next_level in ElevatorLevelDict_m.keys(), '[+] ERROR: next level argument not a valid level'
+    # assert next_level in ElevatorLevelDict_m.keys(), '[+] ERROR: next level argument not a valid level'
     return ElevatorLevelDict_m[next_level]
 
 class ElevatorSparkMax:
@@ -119,7 +119,7 @@ class ElevatorModule:
         self.nextPosition = 0
         self.currentLevel = 0
         self.nextLevel = 0
-        self.stateChanged = False
+        # self.stateChanged = False
         self.tol = tol
 
     def disableBrake(self):
@@ -127,7 +127,6 @@ class ElevatorModule:
 
     def enableBrake(self):
         self.elevator_motor.enableBrake()
-
 
     def goToLevel(self, level):
         distance = positionToNextLevel(level)
@@ -153,12 +152,12 @@ class ElevatorModule:
         # Update elevator position
         self.updateDistance()
 
-        # Move level if needed
-        if self.stateChanged:
-            self.goToNextLevel()
-            self.stateChanged = False
+        # # Move level if needed
+        # if self.stateChanged:
+        #     self.goToNextLevel()
+        #     self.stateChanged = False
 
-        pass
+        # pass
 
 
 
