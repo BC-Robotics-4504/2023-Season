@@ -26,34 +26,28 @@ class ScoreMid(StateMachine):
         self.engaged = True
         self.engage()
 
-    @state(first = True, must_finish=True)  #Elevator Actuation Up
-    def raise_grabber(self):
-        if self.elevator.goToLevel(self.elevator_level):
-            self.next_state_now('extend_grabber')
+    @state(first= True, must_finish= True)
+    def inital_raise(self):
+        if self.elevator.goToLevel(5):
+            self.next_state_now('raise_structure')
 
-    @state(must_finish=True)    #Grabber Actuation Out
-    def extend_grabber(self):
-        if self.grabber.goToLevel(self.grabber_level):
+    @state(must_finish=True)  #Elevator Actuation Up
+    def raise_structure(self):
+        if self.elevator.goToLevel(self.elevator_level) and self.grabber.goToLevel(self.grabber_level):
             self.next_state_now('wait_for_confirm')
 
     @state(must_finish=True)    #Grabber opens when Left Trigger is pressed
     def wait_for_confirm(self):
         if self.hmi.getButton('LT'):
             self.grabber.openGrabber()
-            self.next_state('retract_grabber')
+            self.next_state('retract_structure')
 
     @state(must_finish=True)    #Grabber Actuation In
-    def retract_grabber(self):
-        if self.grabber.goToLevel(0):
-            self.next_state_now('lower_grabber')  
-
-    @state(must_finish=True)    #Grabber Actuation Down
-    def lower_grabber(self):
-        if self.elevator.goToLevel(0):
-            self.engaged = False
-            self.next_state_now('dormant')
+    def retract_structure(self):
+        if self.grabber.goToLevel(0) and self.elevator.goToLevel(0):
+            self.next_state_now('dormant')  
 
     @state(must_finish=True)    #Waits for Activation
     def dormant(self):
         if self.engaged == True:
-            self.next_state_now('raise_grabber')
+            self.next_state_now('inital_raise')

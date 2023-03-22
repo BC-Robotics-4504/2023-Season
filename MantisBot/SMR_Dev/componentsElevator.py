@@ -6,7 +6,8 @@ ElevatorLevelDict_m = {
     1: 0.25,
     2: 0.40,
     3: 0.8,
-    4: 1.0620
+    4: 1.0620,
+    5: 0.20
 }
 
 def positionToNextLevel(next_level):
@@ -48,6 +49,7 @@ class ElevatorSparkMax:
             mtype = rev.CANSparkMaxLowLevel.MotorType.kBrushed
 
         self.mainMotor = rev.CANSparkMax(canID_leader, mtype)
+        self.mainMotor.restoreFactoryDefaults()
         self.mainMotor.setInverted(inverted)
         self.mainController, self.mainEncoder = self.__configureEncoder__(self.mainMotor)
         self.resetDistance()
@@ -55,6 +57,7 @@ class ElevatorSparkMax:
         followerMotors = []
         for canID in self.canID_followers:
             follower = rev.CANSparkMax(canID, mtype)
+            follower.restoreFactoryDefaults()
             follower.setInverted(not inverted)
             follower.follow(self.mainMotor)                              
             followerMotors.append(follower)
@@ -132,6 +135,7 @@ class ElevatorModule:
         distance = positionToNextLevel(level)
         self.nextPosition = distance
         self.elevator_motor.setDistance(distance)
+        print(distance, self.isAtLevel())
         return self.isAtLevel()
 
     def getDistance(self):
