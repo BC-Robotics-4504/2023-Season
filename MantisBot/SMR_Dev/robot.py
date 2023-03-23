@@ -36,14 +36,16 @@ from autonomous.controllerScoreLow import ScoreLow
 from autonomous.controllerStation import Station
 from autonomous.controllerFloor import Floor
 from autonomous.controllerReset import ResetStructure
+from autonomous.controllerSuperstructure import Superstructure
 
 class MyRobot(MagicRobot):
     # High level components
-    scoreHigh : ScoreHigh
-    scoreMid : ScoreMid
-    scoreLow : ScoreLow
-    station : Station
-    floor : Floor
+    # scoreHigh : ScoreHigh
+    # scoreMid : ScoreMid
+    # scoreLow : ScoreLow
+    # station : Station
+    # floor : Floor
+    superstructure : Superstructure
     reset : ResetStructure
     
 
@@ -92,6 +94,9 @@ class MyRobot(MagicRobot):
         self.elevator.enableBrake()
         self.grabber.enableBrake()
         self.grabber.openGrabber()
+
+        self.elevator.goToLevel(2)
+        self.grabber.goToLevel(0)
         return False
 
     def teleopPeriodic(self) -> None:
@@ -102,40 +107,40 @@ class MyRobot(MagicRobot):
         #     print("L2 Pressed")
         #     # self.ATPVController.engage()
 
-        if self.hmi.getButton('B'): # High goal
-            if not self.drivetrain.is_lockedout(): 
-                #TODO: do we want to really lock out the drivetrain here or 
-                # would it be better to go into some low-speed clamp mode?
-                self.drivetrain.enable_autoLockout()
-            self.scoreHigh.score()
-            print("[+] High Goal (B) ===============================")
+        # if self.hmi.getButton('B'): # High goal
+        #     if not self.drivetrain.is_lockedout(): 
+        #         #TODO: do we want to really lock out the drivetrain here or 
+        #         # would it be better to go into some low-speed clamp mode?
+        #         self.drivetrain.enable_autoLockout()
+        #     self.scoreHigh.score()
+        #     print("[+] High Goal (B) ===============================")
 
-        if self.hmi.getButton('X'): # Mid goal
-            if not self.drivetrain.is_lockedout():
-                self.drivetrain.enable_autoLockout()
-            self.scoreMid.score()
-            print("[+] Mid Goal (X) ===============================")
+        # if self.hmi.getButton('X'): # Mid goal
+        #     if not self.drivetrain.is_lockedout():
+        #         self.drivetrain.enable_autoLockout()
+        #     self.scoreMid.score()
+        #     print("[+] Mid Goal (X) ===============================")
 
-        if self.hmi.getButton('Y'): #Low Goal
-            if not self.drivetrain.is_lockedout():
-                self.drivetrain.enable_autoLockout()
-            self.scoreLow.score()
-            print("[+] Low Goal (Y) ===============================")
+        # if self.hmi.getButton('Y'): #Low Goal
+        #     if not self.drivetrain.is_lockedout():
+        #         self.drivetrain.enable_autoLockout()
+        #     self.scoreLow.score()
+        #     print("[+] Low Goal (Y) ===============================")
             
-        if self.hmi.getButton('A'): #Station
-            if not self.drivetrain.is_lockedout():
-                self.drivetrain.enable_autoLockout()
-            self.station.pickUp()
-            print("[+] Station Pickup (A) ===============================")
+        # if self.hmi.getButton('A'): #Station
+        #     if not self.drivetrain.is_lockedout():
+        #         self.drivetrain.enable_autoLockout()
+        #     self.station.pickUp()
+        #     print("[+] Station Pickup (A) ===============================")
         
-        if self.hmi.getButton('RB'): #Floor Pickup 
-            if not self.drivetrain.is_lockedout():
-                self.drivetrain.enable_autoLockout()
-            self.floor.pickUp()
-            print('[+] Floor Pickup (RB) ===============================') 
+        # if self.hmi.getButton('RB'): #Floor Pickup 
+        #     if not self.drivetrain.is_lockedout():
+        #         self.drivetrain.enable_autoLockout()
+        #     self.floor.pickUp()
+        #     print('[+] Floor Pickup (RB) ===============================') 
  
-        else:
-            self.drivetrain.disable_autoLockout()
+        # else:
+        #     self.drivetrain.disable_autoLockout()
 
         if self.hmi.getButton('RT'):
             self.grabber.openGrabber()
@@ -157,10 +162,22 @@ class MyRobot(MagicRobot):
         #     self.grabber.goToLevel(0)
         #     print("[+] Grabber Retracting ===============================")
         
-        if self.hmi.getButton('Back'):
-            self.elevator.goToLevel(0)
+        # if self.hmi.getButton('Back'):
+        #     self.elevator.goToLevel(0)
+        #     self.grabber.goToLevel(0)
+        #     print("[+] Elevator Lowering ===============================")
+
+
+        if self.hmi.getButton('Y'):
+            self.superstructure.actuate(4,2)
+        
+        if self.hmi.getButton('B'):
+            self.superstructure.actuate(3,1)
+        
+        if self.hmi.getButton('A'):
+            self.elevator.goToLevel(1)
             self.grabber.goToLevel(0)
-            print("[+] Elevator Lowering ===============================")
+        
 
         # if self.hmi.getButton('Select'):
         #     self.grabber.goToLevel(2)
