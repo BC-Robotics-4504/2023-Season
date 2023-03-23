@@ -21,18 +21,18 @@ class Floor(StateMachine):
     engaged = False
 
     def pickUp(self):
-        self.engaged = True
         self.engage()
 
-    @state(first = True, must_finish=True) #Elevator Actuation Up
-    def raise_grabber1(self):
-        if self.elevator.goToLevel(2):
-            self.next_state_now('extend_grabber1')
-    
-    @state(must_finish=True)    #Grabber Actuation Out
-    def extend_grabber1(self):
-         if self.grabber.goToLevel(1):
-             self.next_state_now('lower_grabber1')
+    @state(first= True, must_finish= True)
+    def inital_raise(self):
+        self.engaged = True
+        if self.elevator.goToLevel(5):
+            self.next_state_now('raise_structure')
+
+    @state(must_finish=True) #Elevator Actuation Up
+    def raise_structure(self):
+        if self.elevator.goToLevel(2) and self.grabber.goToLevel(1):
+            self.next_state_now('lower_grabber1')
              
     @state(must_finish=True)    #Elevator Actuation Down
     def lower_grabber1(self):
@@ -48,21 +48,16 @@ class Floor(StateMachine):
         
     @state(must_finish=True)    #Elevator Actuation Up
     def raise_grabber2(self):
-        if self.elevator.goToLevel(2):
-            self.next_state_now('retract_grabber2')
-            
-    @state(must_finish=True) # Grabber Actuation In
-    def retract_grabber2(self):
-        if self.grabber.goToLevel(0):
-            self.next_state_now('lower_grabber2')  
+        if self.elevator.goToLevel(2) and self.grabber.goToLevel(0):
+            self.next_state_now('lower_grabber2')
 
     @state(must_finish=True)    #Elevator Actuation Down
     def lower_grabber2(self):
-        if self.elevator.goToLevel(1):
+        if self.elevator.goToLevel(5):
             self.engaged = False
             self.next_state_now('dormant')
     
     @state(must_finish=True) #Dormant State for Controller
     def dormant(self):
         if self.engaged:
-            self.next_state_now('raise_grabber1')
+            self.next_state_now('inital_raise')

@@ -35,6 +35,7 @@ from autonomous.controllerScoreMid import ScoreMid
 from autonomous.controllerScoreLow import ScoreLow
 from autonomous.controllerStation import Station
 from autonomous.controllerFloor import Floor
+from autonomous.controllerReset import ResetStructure
 
 class MyRobot(MagicRobot):
     # High level components
@@ -43,6 +44,7 @@ class MyRobot(MagicRobot):
     scoreLow : ScoreLow
     station : Station
     floor : Floor
+    reset : ResetStructure
     
 
     # Low level components
@@ -142,15 +144,22 @@ class MyRobot(MagicRobot):
         if self.hmi.getButton('LT'):
             self.grabber.closeGrabber()
             print("[+] Grabber Closed ===============================")
+        
+        # if self.hmi.getButton('Back'):
+        #     if not self.drivetrain.is_lockedout():
+        #         self.drivetrain.enable_autoLockout()
+        #     self.reset.reset()
+        #     print("[+] Resetting Structure... ===============================")
 
 
-        #MANUAL SUPERSTRUCTURE CONTROLS
-        if self.hmi.getButton('Start'):
-            self.grabber.goToLevel(0)
-            print("[+] Grabber Retracting ===============================")
+        # #MANUAL SUPERSTRUCTURE CONTROLS
+        # if self.hmi.getButton('Start'):
+        #     self.grabber.goToLevel(0)
+        #     print("[+] Grabber Retracting ===============================")
         
         if self.hmi.getButton('Back'):
             self.elevator.goToLevel(0)
+            self.grabber.goToLevel(0)
             print("[+] Elevator Lowering ===============================")
 
         # if self.hmi.getButton('Select'):

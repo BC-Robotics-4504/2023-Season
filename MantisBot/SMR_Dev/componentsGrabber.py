@@ -16,11 +16,12 @@ GrabberLevelDict_m = {
 class GrabberSparkMax:
 
     # PID coefficients
-    kP = 5e-5
-    kI = 1e-6
+    kP = 1e-5
+    kI = 1e-8
     kD = 0
     kIz = 0
-    kFF = 0.000156
+    # kFF = 0.000156
+    kFF = 0.0005
     kMaxOutput = 1
     kMinOutput = -1
     maxRPM = 5700
@@ -137,7 +138,7 @@ class GrabberModule:
     grabber_motor: GrabberSparkMax
     grabber_pneumatics: GrabberPneumatics
 
-    def __init__(self, tol=0.001):
+    def __init__(self, tol=0.01):
         self.currentPosition = 0
         self.nextPosition = 0
         self.currentLevel = 0

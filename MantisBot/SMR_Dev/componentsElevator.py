@@ -17,11 +17,12 @@ def positionToNextLevel(next_level):
 class ElevatorSparkMax:
 
     # PID coefficients
-    kP = 5e-5
-    kI = 1e-7
+    kP = 1e-5
+    kI = 1e-8
     kD = 0
     kIz = 0
-    kFF = 0.000156
+    # kFF = 0.000156
+    kFF = 0.0005
     kMaxOutput = 1
     kMinOutput = -1
     maxRPM = 5700
@@ -117,7 +118,7 @@ class ElevatorModule:
 
     elevator_motor: ElevatorSparkMax
 
-    def __init__(self, tol=0.001):
+    def __init__(self, tol=0.01):
         self.currentPosition = 0
         self.nextPosition = 0
         self.currentLevel = 0
@@ -135,7 +136,7 @@ class ElevatorModule:
         distance = positionToNextLevel(level)
         self.nextPosition = distance
         self.elevator_motor.setDistance(distance)
-        print(distance, self.isAtLevel())
+        # print(distance, self.isAtLevel())
         return self.isAtLevel()
 
     def getDistance(self):

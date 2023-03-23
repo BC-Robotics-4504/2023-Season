@@ -23,15 +23,9 @@ class ScoreMid(StateMachine):
     def score(self):
         self.grabber_level = 1
         self.elevator_level = 3
-        self.engaged = True
         self.engage()
 
-    @state(first= True, must_finish= True)
-    def inital_raise(self):
-        if self.elevator.goToLevel(5):
-            self.next_state_now('raise_structure')
-
-    @state(must_finish=True)  #Elevator Actuation Up
+    @state(first= True, must_finish=True)  #Elevator Actuation Up
     def raise_structure(self):
         if self.elevator.goToLevel(self.elevator_level) and self.grabber.goToLevel(self.grabber_level):
             self.next_state_now('wait_for_confirm')
@@ -44,10 +38,11 @@ class ScoreMid(StateMachine):
 
     @state(must_finish=True)    #Grabber Actuation In
     def retract_structure(self):
-        if self.grabber.goToLevel(0) and self.elevator.goToLevel(0):
+        if self.grabber.goToLevel(0) and self.elevator.goToLevel(5):
+            self.engaged = False
             self.next_state_now('dormant')  
 
-    @state(must_finish=True)    #Waits for Activation
-    def dormant(self):
-        if self.engaged == True:
-            self.next_state_now('inital_raise')
+    # @state(must_finish=True)    #Waits for Activation
+    # def dormant(self):
+    #     if self.engaged == True:
+    #         self.next_state_now('inital_raise')

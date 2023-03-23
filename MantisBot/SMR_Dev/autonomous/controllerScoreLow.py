@@ -21,13 +21,13 @@ class ScoreLow(StateMachine):
     engaged = False
 
     def score(self):
-        self.engaged = True
         self.engage()
 
     @state(first= True, must_finish= True)
     def inital_raise(self):
+        self.engaged = True
         if self.elevator.goToLevel(5):
-            self.next_state_now('raise_structure')
+            self.next_state_now('deploy_arm')
 
     @state(must_finish=True) #Elevator Actuation Up
     def deploy_arm(self):
@@ -38,7 +38,7 @@ class ScoreLow(StateMachine):
     def lower_arm(self):
         if self.elevator.goToLevel(0):
             self.engaged = False
-            self.next_state_now('close_grabber')
+            self.next_state_now('open_grabber')
 
     @state(must_finish=True)    #Grabber Opens when Left Trigger is Pressed
     def open_grabber(self):
