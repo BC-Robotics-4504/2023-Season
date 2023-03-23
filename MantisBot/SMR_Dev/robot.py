@@ -178,6 +178,11 @@ class MyRobot(MagicRobot):
             self.elevator.goToLevel(1)
             self.grabber.goToLevel(0)
         
+        if self.hmi.getButton('Start') or self.hmi.getButton('Back'):
+            self.elevator.goToLevel(0)
+            self.grabber.goToLevel(0)
+
+        
 
         # if self.hmi.getButton('Select'):
         #     self.grabber.goToLevel(2)
