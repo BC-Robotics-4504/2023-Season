@@ -59,7 +59,7 @@ class AutonomousMode(AutonomousStateMachine):
         isElevatorFinished = self.elevator.goToLevel(0)
         isGrabberFinished = self.grabber.goToLevel(0)
         if isElevatorFinished and isGrabberFinished:
-            self.next_state_now('go_back')
+            self.next_state_now('move_backwards')
             
     @state(must_finish=True)
     def move_backward(self):
