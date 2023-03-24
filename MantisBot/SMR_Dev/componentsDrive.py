@@ -142,6 +142,7 @@ class DriveTrainModule:
         return False
     
     def goToDistance(self, distance):
+        self.target_distance = distance
         self.setDistance(distance)
         return self.isAtDistance()
     

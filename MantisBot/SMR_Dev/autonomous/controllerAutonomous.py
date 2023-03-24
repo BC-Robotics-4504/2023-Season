@@ -29,6 +29,7 @@ class AutonomousMode(AutonomousStateMachine):
     drive_distance = -3.2
 
     def start(self):
+        self.drivetrain.enable_autoLockout()
         self.engage()
 
     @state(first= True, must_finish= True)
@@ -55,7 +56,13 @@ class AutonomousMode(AutonomousStateMachine):
             self.next_state_now('dormant')
             self.isEngaged = False
             
-    @state(must_finish = True) 
+    @state(must_finish=True)
+    def go_back(self):
+        self.drivetrain.goToDistance(3.0)
+        
+
+
+    @state() 
     def dormant(self):
         return False
         
