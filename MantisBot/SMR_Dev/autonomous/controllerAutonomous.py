@@ -32,36 +32,41 @@ class AutonomousMode(AutonomousStateMachine):
         self.drivetrain.enable_autoLockout()
         self.engage()
 
-    @state(first= True, must_finish= True)
-    def clear_bumper(self):
-        self.isEngaged = True
-        isFinished = False
-        if self.elevator.getDistance() >= 0.35:
-            self.next_state_now('actuate_grabber')
-        self.elevator.goToLevel(2)
+    # @state(first= True, must_finish= True)
+    # def clear_bumper(self):
+    #     self.isEngaged = True
+    #     isFinished = False
+    #     if self.elevator.getDistance() >= 0.35:
+    #         self.next_state_now('actuate_grabber_up')
+    #     self.elevator.goToLevel(2)
 
-    @state(must_finish=True)
-    def actuate_grabber(self):
+    @state(first=True, must_finish=True)
+    def actuate_grabber_up(self):
+        self.isEngaged = True
+        # isFinished = False
         isElevatorFinished = self.elevator.goToLevel(self.elevator_level)
-        isGrabberFinished = self.grabber.goToLevel(self.grabber_level)
-        if isElevatorFinished and isGrabberFinished:
-            self.next_state_now('actuate_grabber_down')
-            self.isEngaged = False
+
+        if self.elevator.getDistance() >= 0.35: # Wait until grabber is slightly elevated to extend arm--this should not the affect motion profile, like a separate step would
+
+            isGrabberFinished = self.grabber.goToLevel(self.grabber_level)
+
+            if isElevatorFinished and isGrabberFinished:
+                self.next_state_now('actuate_grabber_down')
+                self.isEngaged = False
     
     @state(must_finish=True)
     def actuate_grabber_down(self):
         isElevatorFinished = self.elevator.goToLevel(0)
         isGrabberFinished = self.grabber.goToLevel(0)
         if isElevatorFinished and isGrabberFinished:
-            self.next_state_now('dormant')
-            self.isEngaged = False
+            self.next_state_now('go_back')
             
     @state(must_finish=True)
-    def go_back(self):
-        self.drivetrain.goToDistance(3.0)
+    def move_backward(self):
+        if self.drivetrain.goToDistance(self.drive_distance):
+            self.next_state_now('dormant')
+            self.isEngaged = False
         
-
-
     @state() 
     def dormant(self):
         return False
