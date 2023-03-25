@@ -8,6 +8,7 @@ from math import pi
 from componentsHMI_xbox import XboxHMI, HMIModule
 # from componentsHMI import FlightStickHMI, HMIModule
 # from componentsIMU import IMUModule
+from componentsElevator import ElevatorModule
 
 class ComboSparkMax:
 
@@ -23,7 +24,7 @@ class ComboSparkMax:
 
     # Smart Motion Coefficients
     maxVel = 2000 # rpm
-    maxAcc = 1500
+    maxAcc = 1000
     minVel = 0
     allowedErr = 0
 
@@ -110,9 +111,10 @@ class DriveTrainModule:
     mainLeft_motor: ComboSparkMax
     mainRight_motor: ComboSparkMax
     hmi_interface: XboxHMI
-    hmi : HMIModule
+    hmi: HMIModule
+    elevator: ElevatorModule
 
-    CLAMP = .1
+    CLAMP = .2
 
     def __init__(self):
         self.leftSpeed = 0
@@ -231,7 +233,8 @@ class DriveTrainModule:
         if not self.autoLockout:
             self.check_hmi()
         
-        if self.hmi.getButton('LB'):
+        # if self.hmi.getButton('LB'):
+        if self.elevator.getDistance() > 0.65 or self.hmi.getButton('LB'):
             self.leftSpeed *= self.CLAMP
             self.rightSpeed *= self.CLAMP
             print('[+] Precision Mode ================================')

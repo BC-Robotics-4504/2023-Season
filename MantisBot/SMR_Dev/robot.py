@@ -30,7 +30,6 @@ from componentsGrabber import GrabberModule, GrabberSparkMax, GrabberPneumatics
 
 # Controllers
 # from autonomous.controllerAprilTagPVFollower import AprilTagPVController
-from autonomous.controllerReset import ResetStructure
 from autonomous.controllerSuperstructure import Superstructure
 
 class MyRobot(MagicRobot):
@@ -41,7 +40,6 @@ class MyRobot(MagicRobot):
     # station : Station
     # floor : Floor
     superstructure : Superstructure
-    reset : ResetStructure
     
 
     # Low level components
@@ -137,11 +135,11 @@ class MyRobot(MagicRobot):
         # else:
         #     self.drivetrain.disable_autoLockout()
 
-        if self.hmi.getButton('RT'):
+        if self.hmi.getButton('RT'): #! Opens Grabber
             self.grabber.openGrabber()
             print("[+] Grabber Opened ===============================")
 
-        if self.hmi.getButton('LT'):
+        if self.hmi.getButton('LT'): #! Closes Grabber
             self.grabber.closeGrabber()
             print("[+] Grabber Closed ===============================")
         
@@ -163,30 +161,33 @@ class MyRobot(MagicRobot):
         #     print("[+] Elevator Lowering ===============================")
 
 
-        if self.hmi.getButton('Y'):
-            self.superstructure.actuate(4,2)
+        if self.hmi.getButton('Y'): #! High Goal
+            self.superstructure.actuate(8,2)
+            
+        if self.hmi.getButton('DU'): #! Station Pickup
+            self.superstructure.actuate(7,2)
         
-        if self.hmi.getButton('B'):
-            self.superstructure.actuate(3,1)
+        if self.hmi.getButton('B'): #! Mid Goal  
+            self.superstructure.actuate(4,1)
         
-        if self.hmi.getButton('A'):
+        if self.hmi.getButton('A'): #! Go to default state. (Slightly above bumper)
             self.elevator.goToLevel(1)
             self.grabber.goToLevel(0)
         
-        if self.hmi.getButton('Start'):
+        if self.hmi.getButton('Start'): #! Resets superstructure to ground state
             self.grabber.openGrabber()
             if self.elevator.getDistance() >=.3:
                 print(self.elevator.getDistance(), self.grabber.getDistance())
-                self.grabber.goToLevel(0)
+                self.grabber.goToLevel(3)
             self.elevator.goToLevel(0)
 
-        if self.hmi.getButton('Back'):
+        if self.hmi.getButton('Back'): #! Resets superstructure to ground state and disable brake. 
             self.elevator.disableBrake()
             self.grabber.disableBrake()
             self.grabber.openGrabber()
             if self.elevator.getDistance() >=.3:
                 print(self.elevator.getDistance(), self.grabber.getDistance())
-                self.grabber.goToLevel(0)
+                self.grabber.goToLevel(3)
             self.elevator.goToLevel(0)
         
 

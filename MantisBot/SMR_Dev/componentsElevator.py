@@ -7,7 +7,11 @@ ElevatorLevelDict_m = {
     2: 0.40,
     3: 0.8,
     4: 1.0620,
-    5: 0.20
+    5: 0.20,
+    6: 1.0720,
+    7: 0.72,
+    8: 1.06
+    
 }
 
 def positionToNextLevel(next_level):

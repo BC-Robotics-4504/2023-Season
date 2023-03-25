@@ -4,8 +4,9 @@ import wpilib
 
 GrabberLevelDict_m = {
     0: 0,
-    1: 0.06,
-    2: 0.12
+    1: 0.10,
+    2: 0.14,
+    3: -0.02
 }
 
 # def distanceToNextLevel(current_level, next_level):

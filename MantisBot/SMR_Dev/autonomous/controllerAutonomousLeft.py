@@ -9,10 +9,10 @@ from componentsGrabber import GrabberModule as Grabber
 from componentsHMI_xbox import HMIModule as HMI
 
 
-class AutonomousMode(AutonomousStateMachine):
+class AutonomousModeLeft(AutonomousStateMachine):
     
-    MODE_NAME = "Autonomous Mode"
-    DEFAULT = True
+    MODE_NAME = "Autonomous Mode Left"
+    DEFAULT = False
     # elevator : Elevator
     # grabber : Grabber
     imu: IMU
@@ -24,7 +24,7 @@ class AutonomousMode(AutonomousStateMachine):
 
     position = 0
     
-    elevator_level = 4
+    elevator_level = 6
     grabber_level = 2
     # drive_distance = -3.2
 
