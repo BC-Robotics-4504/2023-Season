@@ -103,7 +103,6 @@ class ComboSparkMax:
     def setDistance(self, distance):
         rotations = distance * self.distance_to_rotations
         self.mainController.setReference(-rotations, rev.CANSparkMax.ControlType.kSmartMotion)
-        print(self.getDistance())
         return False
 
 
@@ -236,9 +235,6 @@ class DriveTrainModule:
             self.leftSpeed *= self.CLAMP
             self.rightSpeed *= self.CLAMP
             print('[+] Precision Mode ================================')
-
-        # self.check_hmi()
-        # print(self.leftSpeed, self.rightSpeed)
 
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():

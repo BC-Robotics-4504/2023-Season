@@ -30,11 +30,6 @@ from componentsGrabber import GrabberModule, GrabberSparkMax, GrabberPneumatics
 
 # Controllers
 # from autonomous.controllerAprilTagPVFollower import AprilTagPVController
-from autonomous.controllerScoreHigh import ScoreHigh
-from autonomous.controllerScoreMid import ScoreMid
-from autonomous.controllerScoreLow import ScoreLow
-from autonomous.controllerStation import Station
-from autonomous.controllerFloor import Floor
 from autonomous.controllerReset import ResetStructure
 from autonomous.controllerSuperstructure import Superstructure
 

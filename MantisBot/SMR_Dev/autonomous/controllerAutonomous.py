@@ -34,6 +34,7 @@ class AutonomousMode(AutonomousStateMachine):
 
     @state(first= True, must_finish= True)
     def close_grabber(self):
+        self.drivetrain.resetDistance()
         self.grabber.closeGrabber()
         self.next_state_now('slow_drivetrain')
 
@@ -59,13 +60,11 @@ class AutonomousMode(AutonomousStateMachine):
 
             if isElevatorFinished and isGrabberFinished:
                 self.next_state_now('move_score')
-                self.isEngaged = False
     
     @state(must_finish=True)
     def move_score(self):
         if self.drivetrain.goToDistance(0):
             self.next_state_now('open_grabber')
-            self.isEngaged = False
     
     @state(must_finish = True)
     def open_grabber(self):
@@ -78,12 +77,10 @@ class AutonomousMode(AutonomousStateMachine):
 
     @state(must_finish=True)
     def move_backward(self):
-        if not self.drivetrain.goToDistance(-3):
-            if self.drivetrain.getDistance() < -2:
-                isGrabberFinished = self.grabber.goToLevel(0)
-        else:
+        self.grabber.goToLevel(0)
+        self.elevator.goToLevel(5)
+        if self.drivetrain.goToDistance(-3):                
             self.next_state_now('fast_drivetrain')
-            
 
     @state()
     def fast_drivetrain(self):
@@ -93,6 +90,5 @@ class AutonomousMode(AutonomousStateMachine):
     @state() 
     def dormant(self):
         self.isEngaged = False
-        self.elevator.goToLevel(5)
         self.drivetrain.setMaxAccel(1500)
         return False
