@@ -23,7 +23,11 @@ class XboxHMI:
                 'Y': False,
                 'RT': False,
                 'RB': False,
-                'RS': False}
+                'RS': False,
+                'DL': False,
+                'DR': False,
+                'DU': False,
+                'DD': False}
 
 
     def updateButtons(self):
@@ -39,6 +43,23 @@ class XboxHMI:
         self.buttons['RT'] = True if self.XboxController.getRightTriggerAxis() > 0.5 else False
         self.buttons['RB'] = self.XboxController.getRightBumper()
         self.buttons['RS'] = self.XboxController.getRightStickButton()
+
+        # Dpad handler
+        self.buttons['DU'] = False
+        self.buttons['DD'] = False
+        self.buttons['DL'] = False
+        self.buttons['DR'] = False
+        rawDpad = self.XboxController.getPOV()
+        if rawDpad != -1:
+            if rawDpad == 0 or rawDpad == 315 or rawDpad == 45: #Dpad up
+                self.buttons['DU'] = True
+            if rawDpad == 45 or rawDpad == 90 or rawDpad == 135: #Dpad left
+                self.buttons['DL'] = True
+            if rawDpad == 135 or rawDpad == 180 or rawDpad == 225: #Dpad down
+                self.buttons['DD'] = True
+            if rawDpad == 225 or rawDpad == 270 or rawDpad == 315: #Dpad right
+                self.buttons['DR'] = True
+
         return False
     
     def getButtons(self, button_id):
