@@ -178,25 +178,21 @@ class MyRobot(MagicRobot):
             self.elevator.goToLevel(1)
             self.grabber.goToLevel(0)
         
-        if self.hmi.getButton('Start') or self.hmi.getButton('Back'):
+        if self.hmi.getButton('Start'):
+            self.grabber.openGrabber()
+            if self.elevator.getDistance() >=.3:
+                print(self.elevator.getDistance(), self.grabber.getDistance())
+                self.grabber.goToLevel(0)
             self.elevator.goToLevel(0)
-            self.grabber.goToLevel(0)
 
-        
-
-        # if self.hmi.getButton('Select'):
-        #     self.grabber.goToLevel(2)
-        #     print("Select pressed")
-
-        # if self.hmi.getButton('Back'):
-        #     self.elevator.goToLevel(3) #TODO: change to 4???
-        #     print("Back pressed")
-
-
-    def disabledPeriodic(self):
-        self.elevator.disableBrake()
-        self.grabber.disableBrake()
-        self.grabber.openGrabber()
+        if self.hmi.getButton('Back'):
+            self.elevator.disableBrake()
+            self.grabber.disableBrake()
+            self.grabber.openGrabber()
+            if self.elevator.getDistance() >=.3:
+                print(self.elevator.getDistance(), self.grabber.getDistance())
+                self.grabber.goToLevel(0)
+            self.elevator.goToLevel(0)
         
 
 if __name__ == "__main__":

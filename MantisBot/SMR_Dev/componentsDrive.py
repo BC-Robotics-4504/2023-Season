@@ -83,6 +83,11 @@ class ComboSparkMax:
         self.mainMotor.set(value)
         return False
 
+    def setMaxAccel(self, value):
+        self.maxAcc = value
+        self.mainController.setSmartMotionMaxAccel(self.maxAcc, 0)
+        return False
+
     def getVelocity(self):
         vel = -self.mainEncoder.getVelocity() #rpm
         return vel
@@ -123,6 +128,11 @@ class DriveTrainModule:
 
         self.target_distance = 0
         self.tolerance = 0.001
+    
+    def setMaxAccel(self, value):
+        self.mainLeft_motor.setMaxAccel(value)
+        self.mainRight_motor.setMaxAccel(value)
+        return False
 
     def setLeft(self, value):
         self.leftSpeed = value
@@ -140,6 +150,9 @@ class DriveTrainModule:
         self.mainRight_motor.setDistance(value)
         self.mainLeft_motor.setDistance(value)
         return False
+
+    def getDistance(self):
+        return self.mainLeft_motor.getDistance()
     
     def goToDistance(self, distance):
         self.target_distance = distance
