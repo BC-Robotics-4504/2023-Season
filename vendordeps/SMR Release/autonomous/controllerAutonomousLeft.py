@@ -8,10 +8,10 @@ from componentsElevator import ElevatorModule as Elevator
 from componentsGrabber import GrabberModule as Grabber
 from componentsHMI_xbox import HMIModule as HMI
 
-#TODO: Adjust Distances 
-class AutonomousModeRight(AutonomousStateMachine):
+
+class AutonomousModeLeft(AutonomousStateMachine):
     
-    MODE_NAME = "Autonomous Mode Right"
+    MODE_NAME = "Autonomous Mode Left"
     DEFAULT = False
     # elevator : Elevator
     # grabber : Grabber
@@ -24,7 +24,7 @@ class AutonomousModeRight(AutonomousStateMachine):
 
     position = 0
     
-    elevator_level = 4
+    elevator_level = 6
     grabber_level = 2
     # drive_distance = -3.2
 
@@ -79,7 +79,7 @@ class AutonomousModeRight(AutonomousStateMachine):
     def move_backward(self):
         self.grabber.goToLevel(0)
         self.elevator.goToLevel(5)
-        if self.drivetrain.goToDistance(-4):                
+        if self.drivetrain.goToDistance(-3):                
             self.next_state_now('fast_drivetrain')
 
     @state()

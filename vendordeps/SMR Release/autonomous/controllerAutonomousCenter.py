@@ -8,10 +8,10 @@ from componentsElevator import ElevatorModule as Elevator
 from componentsGrabber import GrabberModule as Grabber
 from componentsHMI_xbox import HMIModule as HMI
 
-#TODO: Adjust Distances 
-class AutonomousModeRight(AutonomousStateMachine):
+
+class AutonomousMode(AutonomousStateMachine):
     
-    MODE_NAME = "Autonomous Mode Right"
+    MODE_NAME = "Autonomous Mode Center"
     DEFAULT = False
     # elevator : Elevator
     # grabber : Grabber
@@ -24,7 +24,7 @@ class AutonomousModeRight(AutonomousStateMachine):
 
     position = 0
     
-    elevator_level = 4
+    elevator_level = 6
     grabber_level = 2
     # drive_distance = -3.2
 
@@ -71,16 +71,23 @@ class AutonomousModeRight(AutonomousStateMachine):
         self.grabber.openGrabber()
         self.next_state_now('wait')
     
-    @timed_state(duration=1, must_finish= True, next_state='move_backward')
+    @timed_state(duration=1, must_finish= True, next_state='move_back')
     def wait(self):
         return False
-
+    
     @state(must_finish=True)
-    def move_backward(self):
-        self.grabber.goToLevel(0)
-        self.elevator.goToLevel(5)
-        if self.drivetrain.goToDistance(-4):                
-            self.next_state_now('fast_drivetrain')
+    def move_back(self):
+        if self.drivetrain.goToDistance(-.5):
+            self.next_state_now('actuate_grabber_down')
+    
+    @state(must_finish=True)
+    def actuate_grabber_down(self):
+        # isFinished = False
+        isElevatorFinished = self.elevator.goToLevel(5)
+        isGrabberFinished = self.grabber.goToLevel(3)
+
+        if isElevatorFinished and isGrabberFinished:
+                self.next_state_now('fast_drivetrain')
 
     @state()
     def fast_drivetrain(self):
