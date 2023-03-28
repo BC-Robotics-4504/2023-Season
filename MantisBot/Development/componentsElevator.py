@@ -7,20 +7,26 @@ ElevatorLevelDict_m = {
     2: 0.40,
     3: 0.8,
     4: 1.0620,
+    5: 0.20,
+    6: 1.0720,
+    7: 0.72,
+    8: 1.06
+    
 }
 
 def positionToNextLevel(next_level):
-    assert next_level in ElevatorLevelDict_m.keys(), '[+] ERROR: next level argument not a valid level'
+    # assert next_level in ElevatorLevelDict_m.keys(), '[+] ERROR: next level argument not a valid level'
     return ElevatorLevelDict_m[next_level]
 
 class ElevatorSparkMax:
 
     # PID coefficients
-    kP = 5e-5
-    kI = 1e-7
+    kP = 1e-5
+    kI = 1e-8
     kD = 0
     kIz = 0
-    kFF = 0.000156
+    # kFF = 0.000156
+    kFF = 0.0005
     kMaxOutput = 1
     kMinOutput = -1
     maxRPM = 5700
@@ -48,6 +54,7 @@ class ElevatorSparkMax:
             mtype = rev.CANSparkMaxLowLevel.MotorType.kBrushed
 
         self.mainMotor = rev.CANSparkMax(canID_leader, mtype)
+        self.mainMotor.restoreFactoryDefaults()
         self.mainMotor.setInverted(inverted)
         self.mainController, self.mainEncoder = self.__configureEncoder__(self.mainMotor)
         self.resetDistance()
@@ -55,6 +62,7 @@ class ElevatorSparkMax:
         followerMotors = []
         for canID in self.canID_followers:
             follower = rev.CANSparkMax(canID, mtype)
+            follower.restoreFactoryDefaults()
             follower.setInverted(not inverted)
             follower.follow(self.mainMotor)                              
             followerMotors.append(follower)
@@ -114,12 +122,12 @@ class ElevatorModule:
 
     elevator_motor: ElevatorSparkMax
 
-    def __init__(self, tol=0.001):
+    def __init__(self, tol=0.01):
         self.currentPosition = 0
         self.nextPosition = 0
         self.currentLevel = 0
         self.nextLevel = 0
-        self.stateChanged = False
+        # self.stateChanged = False
         self.tol = tol
 
     def disableBrake(self):
@@ -128,11 +136,11 @@ class ElevatorModule:
     def enableBrake(self):
         self.elevator_motor.enableBrake()
 
-
     def goToLevel(self, level):
         distance = positionToNextLevel(level)
         self.nextPosition = distance
         self.elevator_motor.setDistance(distance)
+        # print(distance, self.isAtLevel())
         return self.isAtLevel()
 
     def getDistance(self):
@@ -153,12 +161,12 @@ class ElevatorModule:
         # Update elevator position
         self.updateDistance()
 
-        # Move level if needed
-        if self.stateChanged:
-            self.goToNextLevel()
-            self.stateChanged = False
+        # # Move level if needed
+        # if self.stateChanged:
+        #     self.goToNextLevel()
+        #     self.stateChanged = False
 
-        pass
+        # pass
 
 
 
