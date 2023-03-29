@@ -4,8 +4,8 @@ import wpilib
 
 GrabberLevelDict_m = {
     0: 0,
-    1: 0.10,
-    2: 0.14,
+    1: 0.08,
+    2: 0.125,
     3: -0.02
 }
 
@@ -29,7 +29,7 @@ class GrabberSparkMax:
 
     # Smart Motion Coefficients
     maxVel = 2000 # rpm
-    maxAcc = 1500
+    maxAcc = 2000
     minVel = 0
     allowedErr = 0
 
