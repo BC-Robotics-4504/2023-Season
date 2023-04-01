@@ -24,7 +24,7 @@ class AutonomousModeRight(AutonomousStateMachine):
 
     position = 0
     
-    elevator_level = 6
+    elevator_level = 4
     grabber_level = 2
     # drive_distance = -3.2
 

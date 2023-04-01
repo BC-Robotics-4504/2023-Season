@@ -5,10 +5,8 @@ from wpilib import SmartDashboard
 
 from math import pi
 
-from componentsHMI_xbox import XboxHMI, HMIModule
-# from componentsHMI import FlightStickHMI, HMIModule
+from componentsHMI import FlightStickHMI, HMIModule
 # from componentsIMU import IMUModule
-from componentsElevator import ElevatorModule
 
 class ComboSparkMax:
 
@@ -24,7 +22,7 @@ class ComboSparkMax:
 
     # Smart Motion Coefficients
     maxVel = 2000 # rpm
-    maxAcc = 1000
+    maxAcc = 1500
     minVel = 0
     allowedErr = 0
 
@@ -84,11 +82,6 @@ class ComboSparkMax:
         self.mainMotor.set(value)
         return False
 
-    def setMaxAccel(self, value):
-        self.maxAcc = value
-        self.mainController.setSmartMotionMaxAccel(self.maxAcc, 0)
-        return False
-
     def getVelocity(self):
         vel = -self.mainEncoder.getVelocity() #rpm
         return vel
@@ -104,17 +97,17 @@ class ComboSparkMax:
     def setDistance(self, distance):
         rotations = distance * self.distance_to_rotations
         self.mainController.setReference(-rotations, rev.CANSparkMax.ControlType.kSmartMotion)
+        print(self.getDistance())
         return False
 
 
 class DriveTrainModule:
     mainLeft_motor: ComboSparkMax
     mainRight_motor: ComboSparkMax
-    hmi_interface: XboxHMI
-    hmi: HMIModule
-    elevator: ElevatorModule
+    hmi_interface: FlightStickHMI
+    hmi : HMIModule
 
-    CLAMP = .2
+    CLAMP = .1
 
     def __init__(self):
         self.leftSpeed = 0
@@ -129,11 +122,6 @@ class DriveTrainModule:
 
         self.target_distance = 0
         self.tolerance = 0.001
-    
-    def setMaxAccel(self, value):
-        self.mainLeft_motor.setMaxAccel(value)
-        self.mainRight_motor.setMaxAccel(value)
-        return False
 
     def setLeft(self, value):
         self.leftSpeed = value
@@ -151,12 +139,8 @@ class DriveTrainModule:
         self.mainRight_motor.setDistance(value)
         self.mainLeft_motor.setDistance(value)
         return False
-
-    def getDistance(self):
-        return self.mainLeft_motor.getDistance()
     
     def goToDistance(self, distance):
-        self.target_distance = distance
         self.setDistance(distance)
         return self.isAtDistance()
     
@@ -233,11 +217,9 @@ class DriveTrainModule:
         if not self.autoLockout:
             self.check_hmi()
         
-        # if self.hmi.getButton('LB'):
-        if self.elevator.getDistance() > 0.65 or self.hmi.getButton('LB'):
+        if self.hmi.getRightButton(2):
             self.leftSpeed *= self.CLAMP
             self.rightSpeed *= self.CLAMP
-            print('[+] Precision Mode ================================')
 
         '''This gets called at the end of the control loop'''
         if self.is_leftChanged():
