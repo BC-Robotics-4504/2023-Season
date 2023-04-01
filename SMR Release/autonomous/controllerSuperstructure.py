@@ -25,21 +25,21 @@ class Superstructure(StateMachine):
         self.elevator_level = elevator_level
         self.engage()
 
-    @state(first= True, must_finish= True)
-    def clear_bumper(self):
-        self.isEngaged = True
-        isFinished = False
-        if self.elevator.getDistance() >= 0.35:
-            self.next_state_now('actuate_grabber')
-        self.elevator.goToLevel(2)
+    # @state(first= True, must_finish= True)
+    # def clear_bumper(self):
+    #     self.isEngaged = True
+    #     isFinished = False
+    #     self.elevator.goToLevel(2)
 
-    @state(must_finish=True)
+    @state(first=True, must_finish=True)
     def actuate_grabber(self):
+        self.isEngaged = True
         isElevatorFinished = self.elevator.goToLevel(self.elevator_level)
-        isGrabberFinished = self.grabber.goToLevel(self.grabber_level)
-        if isElevatorFinished and isGrabberFinished:
-            self.next_state_now('dormant')
-            self.isEngaged = False
+        if self.elevator.getDistance() >= 0.35:
+            isGrabberFinished = self.grabber.goToLevel(self.grabber_level)
+            if isElevatorFinished and isGrabberFinished:
+                self.next_state_now('dormant')
+                self.isEngaged = False
 
     @state()    #Waits For Activation
     def dormant(self):

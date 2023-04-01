@@ -234,7 +234,7 @@ class DriveTrainModule:
             self.check_hmi()
         
         # if self.hmi.getButton('LB'):
-        if self.elevator.getDistance() > 0.65 or self.hmi.getButton('LB'):
+        if self.elevator.getDistance() > 0.50 or self.hmi.getButton('LB'):
             self.leftSpeed *= self.CLAMP
             self.rightSpeed *= self.CLAMP
             print('[+] Precision Mode ================================')

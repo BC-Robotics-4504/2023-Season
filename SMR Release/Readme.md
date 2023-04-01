@@ -1,4 +1,4 @@
-# Smokey Mountain Regional
+# 2023 Smoky Mountains Regional
 
 ## Robotpy Setup
 

@@ -1,4 +1,4 @@
-# Miami Valley Regional
+# Smokey Mountain Regional
 
 ## Robotpy Setup
 

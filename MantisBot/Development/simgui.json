@@ -4,21 +4,5 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Autonomous Mode": "String Chooser"
     }
-  },
-  "NetworkTables": {
-    "transitory": {
-      "SmartDashboard": {
-        "Autonomous Mode": {
-          "open": true
-        },
-        "open": true
-      },
-      "photonvision": {
-        "open": true
-      }
-    }
-  },
-  "NetworkTables Info": {
-    "visible": true
   }
 }
