@@ -93,5 +93,10 @@
 #     def execute(self):
 #         self.updateYPR()
 
+<<<<<<< HEAD
 #         if self.isEnabled():
 #             self.updatePID()
+=======
+        if self.isEnabled():
+            self.updatePID()
+>>>>>>> d9eec81e5c781b81732594d0650dcc942d753b7c
