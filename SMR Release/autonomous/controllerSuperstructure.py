@@ -3,7 +3,7 @@ from magicbot import StateMachine, timed_state, state
 # this is one of your components
 from componentsElevator import ElevatorModule as Elevator
 from componentsGrabber import GrabberModule as Grabber
-from componentsIMU import IMUModule as IMU
+# from componentsIMU import IMUModule as IMU
 # from componentsHMI import HMIModule as HMI
 from componentsHMI_xbox import HMIModule as HMI
 
@@ -14,7 +14,7 @@ class Superstructure(StateMachine):
     DEFAULT = False
     elevator : Elevator
     grabber : Grabber
-    imu: IMU
+    # imu: IMU
     hmi : HMI
 
     position = 0

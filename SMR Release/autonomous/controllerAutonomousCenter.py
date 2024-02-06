@@ -2,7 +2,7 @@ from magicbot import AutonomousStateMachine, state, timed_state
 
 # from componentsElevator import ElevatorModule as Elevator
 # from componentsGrabber import GrabberModule as Grabber
-from componentsIMU import IMUModule as IMU
+# from componentsIMU import IMUModule as IMU
 from componentsDrive import DriveTrainModule
 from componentsElevator import ElevatorModule as Elevator
 from componentsGrabber import GrabberModule as Grabber
@@ -15,11 +15,11 @@ class AutonomousMode(AutonomousStateMachine):
     DEFAULT = False
     # elevator : Elevator
     # grabber : Grabber
-    imu: IMU
+    # imu: IMU
     drivetrain : DriveTrainModule
     elevator : Elevator
     grabber : Grabber
-    imu: IMU
+    # imu: IMU
     hmi : HMI
 
     position = 0

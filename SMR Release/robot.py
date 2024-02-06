@@ -13,14 +13,14 @@
 from magicbot import MagicRobot
 import wpilib
 import rev
-import ctre
-import photonvision
+# import ctre
+# import photonvision
 
 # Components
 from componentsDrive import DriveTrainModule, ComboSparkMax
 # from componentsColor import ColorModule
 from componentsGrabber import GrabberModule
-from componentsIMU import IMUModule
+# from componentsIMU import IMUModule
 from componentsHMI_xbox import XboxHMI, HMIModule
 # from componentsHMI import HMIModule, FlightStickHMI
 # from componentsPhotonVision import PhotonVisionModule
@@ -45,7 +45,7 @@ class MyRobot(MagicRobot):
     # Low level components
     drivetrain : DriveTrainModule
     # color : ColorModule
-    imu : IMUModule
+    # imu : IMUModule
     hmi : HMIModule
     # vision : PhotonVisionModule
     # limelight : LimelightModule
@@ -67,11 +67,11 @@ class MyRobot(MagicRobot):
         # """Sensor Setups"""
         # self.colorSensor = rev.ColorSensorV3(wpilib.I2C.Port.kOnboard)
         
-        """IMU Configuration"""
-        self.imuSensor = ctre.Pigeon2(15)
+        # """IMU Configuration"""
+        # self.imuSensor = ctre.Pigeon2(15)
 
-        """Camera Configurtation"""
-        self.camera = photonvision.PhotonCamera('MSWebCam')
+        # """Camera Configurtation"""
+        # self.camera = photonvision.PhotonCamera('MSWebCam')
 
         """User Controller Configuration"""
         self.hmi_interface = XboxHMI(0)

@@ -4,5 +4,8 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Autonomous Mode": "String Chooser"
     }
+  },
+  "NetworkTables Info": {
+    "visible": true
   }
 }

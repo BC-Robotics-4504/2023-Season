@@ -49,7 +49,7 @@ class ElevatorSparkMax:
         self.distance_to_rotations = gear_ratio/(pi*wheel_diameter)
 
         if motorType == 'brushless':
-            mtype = rev.CANSparkMaxLowLevel.MotorType.kBrushless
+            mtype = rev.CANSparkMax.MotorType.kBrushless
         else:
             mtype = rev.CANSparkMaxLowLevel.MotorType.kBrushed
 
